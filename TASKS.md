@@ -62,7 +62,12 @@
 - [x] Added transcript display (`#transcript`) to `intake.html`
 - [x] Added quick text demo (`#demoText` + `#demoButton`) for typing without microphone
 - [x] Added navigation links (`map.html` sidebar, `conflict.html` back links)
-- [x] Created `frontend/public/index.html` redirect to onboarding
+- [x] Created wizard intro page (`wizard.html`) with voice, icons, and citizen/company choices
+- [x] Updated `index.html` redirect to wizard; linked wizard from onboarding and intake
+- [x] Added wizard speech to conflict page with remediation and nearest-window guidance
+- [x] Added wizard voice test button (`sayWizardWelcome`) on intake page
+- [x] Wired intake submit to check conflicts first via `/api/ai/check-conflicts`; redirects to conflict page if overlaps found
+- [x] Updated `TASKS.md` to track wizard voice, conflict flow, and backend wiring
 - [x] Linked `onboarding.html` CTAs to `intake.html` and `map.html`
 - [x] Added "Extract with AI" button in `intake.html` (calls `/api/ai/extract`)
 - [x] Wired ElevenLabs STT (`speech_to_text.convert`) in `backend/ai.js`; `audioBase64` → transcript → Gemini
@@ -76,8 +81,7 @@
 ## WHAT IS MISSING / NEXT WORK
 
 1. **Gemini rate limits / billing link** (current blocker): free tier hits `429` after ~20 requests; link `.env` `GEMINI_API_KEY` to a new billing-enabled AI Studio key (`https://aistudio.google.com/app/apikey`) or migrate fully to Vertex AI / `google-cloud/vertexai` SDK.
-2. **Wizard modal / 3-page flow**: after AI extraction, auto-populate form then show conflict result before final POST; persist only after user confirms.
-3. **Real-time map refresh**: after POST success, trigger `map.html` to re-fetch `/api/projects/county/:county`; could use `BroadcastChannel` or simple reload.
+2. **Real-time map refresh**: after POST success, trigger `map.html` to re-fetch `/api/projects/county/:county`; could use `BroadcastChannel` or simple reload.
 4. **Error handling & sanitization**: strict date parsing, county regex, duplicate-title guard already partially there; add rate limiting and input length caps.
 5. **GoDaddy / deployment**: add `.env` production variables, deploy script, HTTPS/production URL; currently only local `PORT=3000`.
 6. **Health / monitoring**: expose `/health` to frontend for status indicator; optional.

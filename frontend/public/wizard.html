@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Architech Wizard</title>
+<style>
+  :root {
+    --bg: #0b1426;
+    --panel: rgba(255,255,255,0.06);
+    --primary: #7ad1ff;
+    --accent: #c084fc;
+    --gold: #ffd166;
+    --text: #e8f1ff;
+    --muted: #9fb6d4;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: radial-gradient(ellipse at 20% 10%, #1b2a4a 0%, #0b1426 70%);
+    font-family: 'Segoe UI', Arial, sans-serif; color: var(--text); display: flex; align-items: center; justify-content: center; padding: 24px;
+  }
+  .wizard-card {
+    width: min(100%, 720px); background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 28px; padding: 40px 32px; text-align: center; box-shadow: 0 30px 80px rgba(0,0,0,0.4), inset 0 0 60px rgba(122,209,255,0.08);
+  }
+  .wizard-icon {
+    width: 120px; height: 120px; margin: 0 auto 24px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 40px rgba(122,209,255,0.35);
+  }
+  .wizard-icon svg { width: 80px; height: 80px; fill: #fff; }
+  h1 { margin: 0 0 10px; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: 0.02em; }
+  .subtitle { color: var(--muted); font-size: 1.05rem; line-height: 1.5; margin-bottom: 28px; }
+  .wizard-speech { background: var(--panel); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 18px; margin-bottom: 28px; font-style: italic; font-size: 1.05rem; color: #fff; }
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 560px) { .choices { grid-template-columns: 1fr; } }
+  .choice-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 18px 24px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: var(--text); text-decoration: none; font-weight: 700; font-size: 1rem; transition: transform 0.15s ease, background 0.15s ease; cursor: pointer;
+  }
+  .choice-btn:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
+  .choice-btn .arrow { font-size: 1.2rem; }
+  .listen-btn {
+    margin-top: 24px; padding: 12px 22px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.08); color: var(--text); font-weight: 700; cursor: pointer; transition: background 0.15s ease;
+  }
+  .listen-btn:hover { background: rgba(255,255,255,0.15); }
+  footer { margin-top: 28px; font-size: 0.85rem; color: var(--muted); }
+</style>
+</head>
+<body>
+<main class="wizard-card" role="main" aria-label="Architech Wizard">
+  <div class="wizard-icon" aria-label="Wizard icon">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <h1>Greeting, traveler.</h1>
+  <p class="subtitle">I am the Architech Wizard. I help coordinate construction projects, spot conflicts, and guide you clearly. Are you here to check a project, or to begin one?</p>
+  <div class="wizard-speech" id="wizardSpeech" aria-live="polite">Welcome. I can speak to you, and I can guide you through the process. Tell me: are you a citizen looking at nearby work, or a company ready to submit a project?</div>
+  <div class="choices">
+    <a class="choice-btn" href="map.html"><span class="arrow">&#9679;</span> Citizen — View local map</a>
+    <a class="choice-btn" href="intake.html"><span class="arrow">&#9654;</span> Company — Submit project</a>
+  </div>
+  <button class="listen-btn" id="listenBtn" onclick="speakWizard('Welcome. I am the Architech Wizard. I guide construction coordination. Are you a citizen looking at nearby work, or a company ready to submit a project?')">Listen to wizard</button>
+  <footer>Wizard voice starts when you click — or when the page loads.</footer>
+</main>
+
+<script src="wizard-voice.js"></script>
+<script>
+  const wizardText = "Welcome. I am the Architech Wizard. I guide construction coordination. Are you a citizen looking at nearby work, or a company ready to submit a project?";
+
+  // Auto-speak on load after brief delay
+  window.addEventListener('load', () => {
+    if (window.speechSynthesis) {
+      const loadVoices = () => {
+        try { speakWizard(wizardText); } catch(e){}
+      };
+      setTimeout(loadVoices, 600);
+    }
+  });
+</script>
+</script>
+</body>
+</html>
