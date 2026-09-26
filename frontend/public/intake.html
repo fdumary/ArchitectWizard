@@ -220,10 +220,20 @@
 
         <div class="actions">
           <button type="submit" class="primary-button">Save details</button>
+          <button type="button" class="secondary-button" id="aiButton">Extract with AI</button>
           <button type="button" class="secondary-button" id="clearButton">Clear</button>
         </div>
-
         <p class="status" id="status" aria-live="polite"></p>
+        <p id="transcript" style="font-size:0.85rem;color:#627d8b;margin-top:8px;min-height:1.4em;">Voice transcript will appear here.</p>
+
+        <div style="margin-top:14px;padding:16px;background:#f9fbfd;border:1px solid #dfeaf5;border-radius:12px;">
+          <label for="demoText" style="font-weight:700;color:#183246;">Quick text demo (no speaking):</label>
+          <textarea id="demoText" rows="2" style="width:100%;margin-top:6px;padding:10px;border:1px solid #dfeaf5;border-radius:10px;resize:vertical;font-size:0.95rem;" placeholder="Ex: Upgrade water main in Orange County from June 1 to June 30"></textarea>
+          <button type="button" class="secondary-button" id="demoButton" style="margin-top:8px;">Run AI extract on text</button>
+          <p id="demoResult" style="margin-top:8px;font-size:0.9rem;color:#183246;min-height:1.2em;"></p>
+        </div>
+
+        <p style="margin-top:12px;font-size:0.9rem;color:#627d8b;">← <a href="onboarding.html">Back to start</a> | <a href="map.html">County map</a></p>
       </form>
     </main>
 
@@ -343,39 +353,108 @@
         }
       });
 
+      document.getElementById('aiButton').addEventListener('click', async () => {
+        const text = descriptionInput.value.trim();
+        if (!text) { setStatus('Add a description first.', 'error'); return; }
+        setStatus('Sending to Gemini / backend...');
+        try {
+          const res = await fetch('/api/ai/extract', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'AI extraction failed');
+          const ext = data.county || data.title || 'N/A';
+          setStatus('AI found: '+ext, 'success');
+        } catch (e) {
+          setStatus(e.message || 'AI error', 'error');
+        }
+      });
+
+      document.getElementById('demoButton').addEventListener('click', async () => {
+        const text = document.getElementById('demoText').value.trim();
+        const out = document.getElementById('demoResult');
+        if (!text) { out.textContent = 'Enter some text first.'; out.style.color = '#c63d3d'; return; }
+        out.textContent = 'Sending...'; out.style.color = '#183246';
+        try {
+          const res = await fetch('/api/ai/extract', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'AI failed');
+          out.innerHTML = '<strong>County:</strong> '+(data.county||'N/A')+' · <strong>Start:</strong> '+(data.startTime?new Date(data.startTime).toLocaleDateString():'N/A')+' · <strong>End:</strong> '+(data.endTime?new Date(data.endTime).toLocaleDateString():'N/A')+' · <strong>Title:</strong> '+(data.title||'N/A');
+          out.style.color = '#0d7d61';
+          // Auto-fill form too
+          if (data.title) projectNameInput.value = data.title;
+          if (data.county) countyInput.value = data.county;
+          if (data.description) descriptionInput.value = data.description;
+          if (data.startTime) startDateInput.value = new Date(data.startTime).toISOString().split('T')[0];
+          if (data.endTime) endDateInput.value = new Date(data.endTime).toISOString().split('T')[0];
+          saveDraft();
+        } catch (e) {
+          out.textContent = 'Error: ' + (e.message || 'unknown');
+          out.style.color = '#c63d3d';
+        }
+      });
+
       document.getElementById('clearButton').addEventListener('click', () => {
         form.reset();
         localStorage.removeItem(STORAGE_KEY);
         setStatus('Draft cleared.', 'success');
       });
 
-      document.getElementById('voiceButton').addEventListener('click', () => {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-        if (!SpeechRecognition) {
-          setStatus('Voice input is not supported in this browser.', 'error');
-          return;
+      document.getElementById('voiceButton').addEventListener('click', async () => {
+        if (!navigator.mediaDevices || !window.MediaRecorder) {
+          setStatus('Recording not supported.', 'error'); return;
         }
-
-        const recognition = new SpeechRecognition();
-        recognition.lang = 'en-US';
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
-
-        recognition.onresult = (event) => {
-          const transcript = Array.from(event.results).map((result) => result[0].transcript).join(' ').trim();
-          if (transcript) {
-            descriptionInput.value = transcript;
-            saveDraft();
-            setStatus('Voice transcript captured for the project description.', 'success');
-          }
-        };
-
-        recognition.onerror = () => {
-          setStatus('Voice capture could not be completed. Please type the description manually.', 'error');
-        };
-
-        recognition.start();
+        setStatus('Recording... press button again to stop.');
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          const mediaRecorder = new MediaRecorder(stream);
+          const chunks = [];
+          mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
+          mediaRecorder.start();
+          let stopped = false;
+          const stopHandler = () => {
+            if (stopped || mediaRecorder.state === 'inactive') return;
+            stopped = true;
+            mediaRecorder.stop();
+            stream.getTracks().forEach(t => t.stop());
+          };
+          document.getElementById('voiceButton').addEventListener('click', stopHandler, { once: true });
+          setTimeout(stopHandler, 6000);
+          mediaRecorder.onstop = async () => {
+            const blob = new Blob(chunks, { type: 'audio/webm' });
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+              const base64 = reader.result.split(',')[1];
+              setStatus('Sending audio to Eleven Labs → Gemini...');
+              try {
+                const res = await fetch('/api/ai/extract', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ audioBase64: base64, mimeType: 'audio/webm' })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'AI failed');
+                if (data.title) projectNameInput.value = data.title;
+                if (data.county) countyInput.value = data.county;
+                if (data.company) companyInput.value = data.company;
+                if (data.description) descriptionInput.value = data.description;
+                if (data.company) companyInput.value = data.company;
+                if (data.startTime) startDateInput.value = new Date(data.startTime).toISOString().split('T')[0];
+                if (data.endTime) endDateInput.value = new Date(data.endTime).toISOString().split('T')[0];
+                saveDraft();
+                document.getElementById('transcript').textContent = 'Heard: ' + (data.transcript || 'No transcript');
+                setStatus('Filled from voice: ' + (data.county || data.title || 'OK'), 'success');
+              } catch (e) {
+                setStatus('Audio parsing failed: ' + (e.message || 'unknown'), 'error');
+              }
+            };
+            reader.readAsDataURL(blob);
+          };
+        } catch (e) {
+          setStatus('Microphone error: ' + (e.message || ''), 'error');
+        }
       });
 
       restoreDraft();

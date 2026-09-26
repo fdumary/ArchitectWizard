@@ -1,15 +1,15 @@
 # ShellHacks2026 — Task Tracker
 
-**Project**: Sperry Tech challenge — Construction project coordination platform  
-**Focus**: Gemini, GoDaddy, MongoDB Atlas, Eleven Labs integration  
-**Current state**: MongoDB connected and tested ✅
+**Project**: Sperry Tech challenge — Construction project coordination platform
+**Focus**: Gemini, GoDaddy, MongoDB Atlas, Eleven Labs integration
+**Current state**: MongoDB connected; backend REST APIs live; frontend pages linked to backend via `express.static`. Missing production wiring and audio pipeline.
 
 ---
 
 ## Legend
 - `[ ]` — Not started
 - `[x]` — Complete
-- `[→]` — In progress
+- `[+]` — In progress / partially done
 
 ---
 
@@ -17,15 +17,15 @@
 
 | # | Task | File(s) | Progress | Notes |
 |---|------|---------|----------|-------|
-| 1 | ✅ MongoDB Atlas connection & basic CRUD | `server.js`, `.env` | `[x]` | Connected, seed data works (`seed.js`), `startServer()` runs |
-| 2 | Project creation endpoint | `server.js` (lines 45‑71) | `[x]` | POST `/api/projects` — validates title, county, startTime, endTime |
-| 3 | Conflict detection endpoint | `server.js` (lines 97‑126) | `[x]` | GET `/api/projects/conflicts` — temporal overlap check per county |
-| 4 | Top‑3 upcoming projects per county | `server.js` (lines 74‑93) | `[x]` | GET `/api/projects/county/:county` — sorts by startTime, limits 3 |
-| 5 | Health check endpoint | `server.js` (lines 129‑136) | `[x]` | GET `/health` — returns total project count |
-| 6 | Add Gemini NLP integration | `server.js` (new endpoint) | `[x]` | Receive transcribed text + audio, extract county/start/end using Gemini |
-| 7 | Eleven Labs audio → text pipeline | `server.js` / new `ai.js` | `[ ]` | Wire up Eleven Labs API key, feed audio to Gemini for intent extraction |
-| 8 | GoDaddy domain / deployment config | `package.json`, `.env` | `[ ]` | Setup production URL, environment vars for deployed endpoints |
-| 9 | Error handling & input sanitization | `server.js` | `[ ]` | Guard against malformed dates, missing fields, invalid county regex |
+| 1 | MongoDB Atlas connection & basic CRUD | `backend/server.js`, `.env` | `[x]` | Connected, seed data works (`seed.js`), `startServer()` runs |
+| 2 | Project creation endpoint | `backend/server.js` (lines 45–71) | `[x]` | POST `/api/projects` validates title, county, startTime, endTime |
+| 3 | Conflict detection endpoint | `backend/server.js` (lines 97–126) | `[x]` | GET `/api/projects/conflicts` temporal overlap per county |
+| 4 | Top 3 upcoming per county | `backend/server.js` (lines 74–93) | `[x]` | GET `/api/projects/county/:county` sorts by startTime, limits 3 |
+| 5 | Health check endpoint | `backend/server.js` (lines 129–136) | `[x]` | GET `/health` returns total project count |
+| 6 | Add Gemini NLP integration | `backend/server.js`, `backend/ai.js` | `[x]` | `/api/ai/extract` + `/api/ai/check-conflicts`; prompt engineered |
+| 7 | Eleven Labs audio → Gemini pipeline | `backend/ai.js`, `.env`, `frontend/public/intake.html` | `[x]` | `audioBase64` → `transcribeAudio()` (ElevenLabs STT) → Gemini extract; form fills automatically; `elevenlabs` package installed |
+| 8 | GoDaddy domain / deployment config | `package.json`, `.env`, server config | `[ ]` | No production URL or deploy script; `PORT=3000` only |
+| 9 | Error handling & input sanitization | `backend/server.js` | `[ ]` | Basic 400/409/500 only; missing malformed date guards, county regex strictness, XSS sanitization |
 
 ---
 
@@ -33,14 +33,14 @@
 
 | # | Task | File(s) | Progress | Notes |
 |---|------|---------|----------|-------|
-| 1 | Chatbot/wizard intro page (page 1) | `public/` (create) | `[x]` | Implemented in `frontend/public/index.html`: project name, company, county, dates, description, local draft save, and POST body matches backend contract |
-| 2 | Audio recording & Eleven Labs submit (page 2) | `public/` (create) | `[x]` | Record button → Eleven Labs API → returns text transcript |
-| 3 | Gemini NLP processing (page 2→3) | `public/` (create) | `[x]` | Send transcript to Gemini, receive `{county, startTime, endTime}` |
-| 4 | Conflict feedback from wizard (page 3) | `public/` (create) | `[x]` | Compare extracted data with backend `/api/projects/conflicts`, show result |
-| 5 | Florida county map (page 4) | `public/` (create) | `[x]` | Interactive map — clicking a county calls `/api/projects/county/:county` |
-| 6 | Display top 3 upcoming projects | `public/` (create) | `[x]` | Render list under map with title, company, start/end dates |
-| 7 | Responsive UI for construction companies & citizens | `public/` (create) | `[x]` | Two tones: professional for firms, friendly for citizens |
-| 8 | Frontend → backend API wiring | `public/` + `server.js` | `[x]` | All GET/POST calls go through Express routes |
+| 1 | Chatbot/wizard intro page (page 1) | `frontend/public/onboarding.html` | `[x]` | Two-tone cards; links to `intake.html` and `map.html` now live |
+| 2 | Audio recording & Eleven Labs submit (page 2) | `frontend/public/intake.html` | `[x]` | Voice button uses `MediaRecorder`; sends `audioBase64` to `/api/ai/extract`; fills title, county, dates, description from Gemini response |
+| 3 | Gemini NLP processing (page 2→3) | `frontend/public/intake.html`, `conflict.html` | `[+]` | `intake.html` now has "Extract with AI" button hitting `/api/ai/extract`; `conflict.html` hits `/api/ai/check-conflicts` |
+| 4 | Conflict feedback from wizard (page 3) | `frontend/public/conflict.html` | `[+]` | New page created; shows county, dates, conflict count, overlapping project list |
+| 5 | Florida county map (page 4) | `frontend/public/map.html` | `[x]` | SVG map with click handlers; calls `/api/projects/county/:county`; renders top 3 |
+| 6 | Display top 3 upcoming projects | `frontend/public/map.html` | `[x]` | Renders under sidebar with title, company, start/end dates |
+| 7 | Responsive UI for construction companies & citizens | `frontend/public/onboarding.html`, `intake.html` | `[x]` | Firm (blue) + citizen (green) tones; mobile grid works |
+| 8 | Frontend + backend API wiring | `backend/server.js`, `frontend/public/` | `[+]` | Added `express.static('frontend/public')`; `index.html` redirects; pages call `/api/projects`, `/api/ai/*`; missing: real-time refresh after save, login/auth |
 
 ---
 
@@ -48,28 +48,33 @@
 
 | # | Task | File(s) | Progress | Notes |
 |---|------|---------|----------|-------|
-| 1 | Gemini text extraction prompt engineering | `server.js` / `ai.js` | `[x]` | Prompt: "Extract county, start date, end date from this construction project description..." |
-| 2 | Eleven Labs audio → Gemini pipeline | `server.js` / `ai.js` | `[ ] | Record audio → Eleven Labs ASR → Gemini NLP → conflict check |
-| 3 | Wizard pop-up with feedback | `public/` + `server.js` | `[ ] | After conflict check, show modal: "Your project overlaps X other projects in Orange County" |
-| 4 | Persist user‑submitted projects to MongoDB | `server.js` (POST) | `[ ] | After wizard, call POST `/api/projects` with user data |
-| 5 | Real‑time map refresh after new project | `public/` + `server.js` | `[ ] | After save, re‑fetch `/api/projects/county/:county` and update UI |
----
-
-## DONE THIS SESSION
-
-- [x] MongoDB Atlas connected and verified (`server.js` `startServer()`)
-- [x] Seed data loaded (`seed.js` — 7 projects across Orange, Volusia, Leon counties)
-- [x] Core CRUD & conflict endpoints implemented (`server.js`)
-- [x] README already exists but is minimal — task tracker created above
-- [x] Gemini NLP integration complete (`server.js` `/api/ai/extract` + `/api/ai/check-conflicts`, `ai.js`, `ai.test.js`)
-- [x] Gemini text extraction prompt engineering implemented (`ai.js` system prompt)
+| 1 | Gemini text extraction prompt engineering | `backend/ai.js` | `[x]` | System prompt + JSON response schema set |
+| 2 | Eleven Labs audio + Gemini pipeline | `backend/ai.js`, `.env` | `[x]` | ElevenLabs `speech_to_text.convert` wired; transcript fed to Gemini; `audioBase64` handled in `extractProjectFields`; `intake.html` uses MediaRecorder |
+| 3 | Wizard pop-up with feedback | `frontend/public/intake.html`, `conflict.html` | `[+]` | Conflict page exists; need modal in wizard (page 3 pop-up) instead of separate page for smoother flow |
+| 4 | Persist user-submitted projects to MongoDB | `backend/server.js` (POST `/api/projects`) | `[x]` | Save works; not yet linked to wizard after conflict confirmation |
+| 5 | Real-time map refresh after new project | `frontend/public/map.html` | `[ ]` | No post-save refresh; could poll `/api/projects/county/:county` or use server-sent events |
 
 ---
 
-## NEXT IMMEDIATE STEPS (choose one)
+## DONE THIS SESSION (updates made now)
+- [x] Added `express.static('frontend/public')` to `backend/server.js` so backend serves frontend
+- [x] Created `frontend/public/index.html` redirect to onboarding
+- [x] Linked `onboarding.html` CTAs to `intake.html` and `map.html`
+- [x] Added "Extract with AI" button in `intake.html` (calls `/api/ai/extract`)
+- [x] Wired ElevenLabs STT (`speech_to_text.convert`) in `backend/ai.js`; `audioBase64` → transcript → Gemini
+- [x] Updated `intake.html` voice button to record via `MediaRecorder`, send base64, auto-fill form
+- [x] Created `frontend/public/conflict.html` wired to `/api/ai/check-conflicts` + conflict list render
+- [x] Added link from `intake.html` to `conflict.html`
+- [x] Installed `elevenlabs` package; `.env` key (`ELEVENLABS_API_KEY`) present
 
-1. **Add Gemini Eleven Labs integration** — wire audio → Gemini → extracted fields → conflict check
-2. **Build the chatbot wizard front‑end** — 3‑page flow starting with project input
-3. **Add error handling & GoDaddy deployment config** — prepare for production
+---
 
-*Run `node seed.js` after setting your MONGO_URI in `.env` to populate sample projects.*
+## WHAT IS MISSING / NEXT WORK
+
+1. **Wizard modal / 3-page flow**: merge `conflict.html` into wizard (page 3 pop-up) after AI extraction, ask user to confirm then POST to `/api/projects`; persist to MongoDB after confirmation.
+3. **Real-time map refresh**: after POST success, trigger `map.html` to re-fetch `/api/projects/county/:county`; could use `BroadcastChannel` or simple reload.
+4. **Error handling & sanitization**: strict date parsing, county regex, duplicate-title guard already partially there; add rate limiting and input length caps.
+5. **GoDaddy / deployment**: add `.env` production variables, deploy script, HTTPS/production URL; currently only local `PORT=3000`.
+6. **Health / monitoring**: expose `/health` to frontend for status indicator; optional.
+
+Run `node backend/seed.js` with `MONGO_URI` set to populate sample data, then start with `node backend/server.js` and open `http://localhost:3000/`.

@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const { extractProjectFields } = require('./ai');
@@ -14,7 +14,8 @@ if (!MONGO_URI) {
 }
 
 const app = express();
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.static('frontend/public'));
 
 let db;
 let projectsCollection;
@@ -30,6 +31,12 @@ async function startServer() {
 
     // Recommended: create compound indexes for fast lookups
     await projectsCollection.createIndex({ county: 1, startTime: 1, endTime: 1 });
+
+    // Prevent duplicate (title + county) entries
+    await projectsCollection.createIndex(
+      { title: 1, county: 1 },
+      { unique: true }
+    );
 
     console.log(`Connected successfully to MongoDB Atlas: [${DB_NAME}] -> [${COLLECTION_NAME}]`);
 
@@ -51,10 +58,27 @@ app.post('/api/projects', async (req, res) => {
       return res.status(400).json({ error: 'title, county, startTime, endTime required' });
     }
 
+    // Normalize county to match index/format
+    const rawCounty = (county || "Orange").trim();
+    const cleanCounty = rawCounty
+      .toLowerCase()
+      .split('-')
+      .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+      .join('-');
+    const cleanTitle = (title || '').trim();
+
+    const existing = await projectsCollection.findOne({
+      title: cleanTitle,
+      county: cleanCounty,
+    });
+    if (existing) {
+      return res.status(409).json({ error: 'Project already exists for this title and county' });
+    }
+
     const newProject = {
-      title,
+      title: cleanTitle,
       description: description || '',
-      county,
+      county: cleanCounty,
       startTime: new Date(startTime),
       endTime: new Date(endTime),
       company: company || 'Unspecified',
@@ -83,8 +107,8 @@ app.post('/api/ai/extract', async (req, res) => {
     const extracted = await extractProjectFields({ text, audioBase64, mimeType });
     res.json({ success: true, ...extracted });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'AI extraction failed', detail: err.message });
+    console.error('AI extraction error:', err.message || err);
+    res.status(502).json({ error: 'AI service unavailable', detail: err.message || err });
   }
 });
 
@@ -105,7 +129,7 @@ app.post('/api/ai/check-conflicts', async (req, res) => {
     }
     const conflicts = await projectsCollection
       .find({
-        county: { $regex: new RegExp(`^${county}$`, 'i') },
+        county: { $regex: new RegExp(`^\\s*${county}\\s*$`, 'i') },
         startTime: { $lte: new Date(endTime) },
         endTime: { $gte: new Date(startTime) },
       })
@@ -113,8 +137,8 @@ app.post('/api/ai/check-conflicts', async (req, res) => {
       .toArray();
     res.json({ success: true, county, startTime, endTime, title, description, conflictCount: conflicts.length, conflicts });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'AI conflict check failed', detail: err.message });
+    console.error('AI conflict check error:', err.message || err);
+    res.status(502).json({ error: 'AI service unavailable', detail: err.message || err });
   }
 });
 
@@ -125,7 +149,7 @@ app.get('/api/projects/county/:county', async (req, res) => {
 
     // Matches county and sorts by earliest start time, returns top 3
     const countyProjects = await projectsCollection
-      .find({ county: { $regex: new RegExp(`^${county}$`, 'i') } }) // case-insensitive match
+      .find({ county: { $regex: new RegExp(`^\\s*${county}\\s*$`, 'i') } }) // case-insensitive match
       .sort({ startTime: 1 })
       .limit(3)
       .toArray();
@@ -155,7 +179,7 @@ app.get('/api/projects/conflicts', async (req, res) => {
 
     const conflicts = await projectsCollection
       .find({
-        county: { $regex: new RegExp(`^${county}$`, 'i') },
+        county: { $regex: new RegExp(`^\\s*${county}\\s*$`, 'i') },
         startTime: { $lte: queryEnd },
         endTime: { $gte: queryStart }
       })
