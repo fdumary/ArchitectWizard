@@ -35,7 +35,7 @@
 |---|------|---------|----------|-------|
 | 1 | Chatbot/wizard intro page (page 1) | `public/` (create) | `[x]` | User types/speaks project name, start/end dates; stores input locally |
 | 2 | Audio recording & Eleven Labs submit (page 2) | `public/` (create) | `[x]` | Record button → Eleven Labs API → returns text transcript |
-| 3 | Gemini NLP processing (page 2→3) | `public/` (create) | `[ ]` | Send transcript to Gemini, receive `{county, startTime, endTime}` |
+| 3 | Gemini NLP processing (page 2→3) | `public/` (create) | `[x]` | Send transcript to Gemini, receive `{county, startTime, endTime}` |
 | 4 | Conflict feedback from wizard (page 3) | `public/` (create) | `[ ]` | Compare extracted data with backend `/api/projects/conflicts`, show result |
 | 5 | Florida county map (page 4) | `public/` (create) | `[ ]` | Interactive map — clicking a county calls `/api/projects/county/:county` |
 | 6 | Display top 3 upcoming projects | `public/` (create) | `[ ] | | Render list under map with title, company, start/end dates |
