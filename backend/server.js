@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const { MongoClient } = require('mongodb');
-const { extractProjectFields } = require('./backend/ai');
+const { extractProjectFields } = require('./ai');
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
