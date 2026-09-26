@@ -71,7 +71,7 @@ fetch('florida-counties.geojson')
         fillOpacity: 0.6
       },
       onEachFeature: (feature, layer) => {
-        const COUNTYNAME = feature.properties.NAME || feature.properties.COUNTY;
+        const COUNTYNAME = feature.properties.COUNTYNAME; 
 
         layer.on('click', () => {
           if (selectedLayer) {
