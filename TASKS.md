@@ -23,7 +23,7 @@
 | 4 | Top 3 upcoming per county | `backend/server.js` (lines 74–93) | `[x]` | GET `/api/projects/county/:county` sorts by startTime, limits 3 |
 | 5 | Health check endpoint | `backend/server.js` (lines 129–136) | `[x]` | GET `/health` returns total project count |
 | 6 | Add Gemini NLP integration | `backend/server.js`, `backend/ai.js` | `[x]` | `/api/ai/extract` + `/api/ai/check-conflicts`; prompt engineered |
-| 7 | Eleven Labs audio → Gemini pipeline | `backend/ai.js`, `.env` | `[ ]` | Audio base64 accepted but no Eleven Labs ASR API call wired; need `ELEVENLABS_API_KEY` + transcription step |
+| 7 | Eleven Labs audio → Gemini pipeline | `backend/ai.js`, `.env`, `frontend/public/intake.html` | `[x]` | `audioBase64` → `transcribeAudio()` (ElevenLabs STT) → Gemini extract; form fills automatically; `elevenlabs` package installed |
 | 8 | GoDaddy domain / deployment config | `package.json`, `.env`, server config | `[ ]` | No production URL or deploy script; `PORT=3000` only |
 | 9 | Error handling & input sanitization | `backend/server.js` | `[ ]` | Basic 400/409/500 only; missing malformed date guards, county regex strictness, XSS sanitization |
 
@@ -34,7 +34,7 @@
 | # | Task | File(s) | Progress | Notes |
 |---|------|---------|----------|-------|
 | 1 | Chatbot/wizard intro page (page 1) | `frontend/public/onboarding.html` | `[x]` | Two-tone cards; links to `intake.html` and `map.html` now live |
-| 2 | Audio recording & Eleven Labs submit (page 2) | `frontend/public/intake.html` | `[+]` | Voice button uses browser `SpeechRecognition`; Eleven Labs upload not implemented; needs `audioBase64` → `/api/ai/extract` path |
+| 2 | Audio recording & Eleven Labs submit (page 2) | `frontend/public/intake.html` | `[x]` | Voice button uses `MediaRecorder`; sends `audioBase64` to `/api/ai/extract`; fills title, county, dates, description from Gemini response |
 | 3 | Gemini NLP processing (page 2→3) | `frontend/public/intake.html`, `conflict.html` | `[+]` | `intake.html` now has "Extract with AI" button hitting `/api/ai/extract`; `conflict.html` hits `/api/ai/check-conflicts` |
 | 4 | Conflict feedback from wizard (page 3) | `frontend/public/conflict.html` | `[+]` | New page created; shows county, dates, conflict count, overlapping project list |
 | 5 | Florida county map (page 4) | `frontend/public/map.html` | `[x]` | SVG map with click handlers; calls `/api/projects/county/:county`; renders top 3 |
@@ -49,7 +49,7 @@
 | # | Task | File(s) | Progress | Notes |
 |---|------|---------|----------|-------|
 | 1 | Gemini text extraction prompt engineering | `backend/ai.js` | `[x]` | System prompt + JSON response schema set |
-| 2 | Eleven Labs audio + Gemini pipeline | `backend/ai.js`, `.env` | `[ ]` | Need Eleven Labs ASR endpoint; feed transcript to `/api/ai/extract`; then conflict check |
+| 2 | Eleven Labs audio + Gemini pipeline | `backend/ai.js`, `.env` | `[x]` | ElevenLabs `speech_to_text.convert` wired; transcript fed to Gemini; `audioBase64` handled in `extractProjectFields`; `intake.html` uses MediaRecorder |
 | 3 | Wizard pop-up with feedback | `frontend/public/intake.html`, `conflict.html` | `[+]` | Conflict page exists; need modal in wizard (page 3 pop-up) instead of separate page for smoother flow |
 | 4 | Persist user-submitted projects to MongoDB | `backend/server.js` (POST `/api/projects`) | `[x]` | Save works; not yet linked to wizard after conflict confirmation |
 | 5 | Real-time map refresh after new project | `frontend/public/map.html` | `[ ]` | No post-save refresh; could poll `/api/projects/county/:county` or use server-sent events |
@@ -61,16 +61,17 @@
 - [x] Created `frontend/public/index.html` redirect to onboarding
 - [x] Linked `onboarding.html` CTAs to `intake.html` and `map.html`
 - [x] Added "Extract with AI" button in `intake.html` (calls `/api/ai/extract`)
+- [x] Wired ElevenLabs STT (`speech_to_text.convert`) in `backend/ai.js`; `audioBase64` → transcript → Gemini
+- [x] Updated `intake.html` voice button to record via `MediaRecorder`, send base64, auto-fill form
 - [x] Created `frontend/public/conflict.html` wired to `/api/ai/check-conflicts` + conflict list render
 - [x] Added link from `intake.html` to `conflict.html`
-- [x] Updated `tasks.md` to match actual hook-up state
+- [x] Installed `elevenlabs` package; `.env` key (`ELEVENLABS_API_KEY`) present
 
 ---
 
 ## WHAT IS MISSING / NEXT WORK
 
-1. **Eleven Labs integration** (highest impact): wire `ELEVENLABS_API_KEY`, upload audio from `intake.html`, get transcript, pass to `/api/ai/extract`; add `audioBase64` pipeline in `ai.js`.
-2. **Wizard modal / 3-page flow**: merge `conflict.html` into wizard (page 3 pop-up) after AI extraction, ask user to confirm then POST to `/api/projects`; persist to MongoDB after confirmation.
+1. **Wizard modal / 3-page flow**: merge `conflict.html` into wizard (page 3 pop-up) after AI extraction, ask user to confirm then POST to `/api/projects`; persist to MongoDB after confirmation.
 3. **Real-time map refresh**: after POST success, trigger `map.html` to re-fetch `/api/projects/county/:county`; could use `BroadcastChannel` or simple reload.
 4. **Error handling & sanitization**: strict date parsing, county regex, duplicate-title guard already partially there; add rate limiting and input length caps.
 5. **GoDaddy / deployment**: add `.env` production variables, deploy script, HTTPS/production URL; currently only local `PORT=3000`.
