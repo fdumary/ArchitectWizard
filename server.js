@@ -50,12 +50,27 @@ app.post('/api/projects', async (req, res) => {
       return res.status(400).json({ error: 'title, county, startTime, endTime required' });
     }
 
+    if (typeof title !== 'string' || !title.trim()) {
+      return res.status(400).json({ error: 'title cannot be left empty' });
+    }
+
+    const parsedStartTime = new Date(startTime);
+    const parsedEndTime = new Date(endTime);
+
+    if (isNaN(parsedStartTime.getTime()) || isNaN(parsedEndTime.getTime())) {
+      return res.status(400).json({ error: 'Invalid format for start or end time' });
+    }
+
+    if (parsedStartTime >= parsedEndTime) {
+      return res.status(400).json({ error: 'start time must be before end time' });
+    }
+
     const newProject = {
       title,
       description: description || '',
       county,
-      startTime: new Date(startTime),
-      endTime: new Date(endTime),
+      startTime: parsedStartTime,
+      endTime: parsedEndTime,
       company: company || 'Unspecified',
       createdAt: new Date()
     };
