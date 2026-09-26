@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Intake Wizard</title>
+    <style>
+      :root {
+        --bg: #eaf6ff;
+        --panel: #f9fbff;
+        --primary: #1c4dbd;
+        --primary-dark: #112f76;
+        --primary-soft: #dfeaff;
+        --accent: #21c7cf;
+        --accent-soft: #dffaf8;
+        --text: #16314a;
+        --muted: #5f7a90;
+        --border: #d5e2f2;
+        --success: #0d8b71;
+        --error: #c53b48;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(circle at top, #f4fbff 0%, #dfeeff 30%, #d8ebff 100%);
+        font-family: Arial, Helvetica, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .wizard-card {
+        width: min(100%, 720px);
+        background: rgba(255,255,255,0.88);
+        border: 1px solid rgba(19, 91, 180, 0.12);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 22px 50px rgba(14, 38, 78, 0.12);
+        backdrop-filter: blur(4px);
+      }
+
+      .hero {
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 40%, var(--accent) 100%);
+        color: #fff;
+        padding: 30px 28px 24px;
+        border-bottom: 1px solid rgba(255,255,255,0.18);
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(2rem, 2.5vw, 2.8rem);
+        letter-spacing: 0.02em;
+      }
+
+      .hero p {
+        margin: 10px 0 0;
+        color: rgba(255,255,255,0.9);
+        line-height: 1.5;
+      }
+
+      form {
+        padding: 28px;
+        background: linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%);
+      }
+
+      .field {
+        margin-bottom: 18px;
+      }
+
+      label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 8px;
+        color: var(--text);
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        background: #f7fbff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 14px;
+        color: var(--text);
+        font-size: 1rem;
+        box-shadow: inset 0 1px 2px rgba(17, 47, 118, 0.04);
+      }
+
+      textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .voice-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 8px;
+      }
+
+      .voice-button,
+      .primary-button,
+      .secondary-button {
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        padding: 12px 16px;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .voice-button:hover,
+      .primary-button:hover,
+      .secondary-button:hover {
+        transform: translateY(-1px);
+      }
+
+      .voice-button {
+        background: var(--accent-soft);
+        color: var(--primary-dark);
+        border: 1px solid rgba(33, 199, 207, 0.3);
+        box-shadow: 0 4px 12px rgba(33, 199, 207, 0.12);
+      }
+
+      .primary-button {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        color: white;
+        width: 100%;
+        box-shadow: 0 10px 18px rgba(28, 77, 189, 0.22);
+      }
+
+      .secondary-button {
+        background: var(--primary-soft);
+        color: var(--primary-dark);
+      }
+
+      .actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .status {
+        min-height: 24px;
+        margin-top: 16px;
+        font-size: 0.96rem;
+        font-weight: 700;
+      }
+
+      .status.success { color: var(--success); }
+      .status.error { color: var(--error); }
+
+      @media (max-width: 640px) {
+        .row, .actions {
+          grid-template-columns: 1fr;
+          display: grid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wizard-card">
+      <section class="hero">
+        <h1>Project intake</h1>
+        <p>Share a short project description, plus the dates and location. This form saves the details to the API in the format the backend expects.</p>
+      </section>
+
+      <form id="projectWizard" novalidate>
+        <div class="field">
+          <label for="projectName">Project name</label>
+          <input id="projectName" name="projectName" type="text" placeholder="Example: Lakeview Utility Upgrade" />
+          <div class="voice-row">
+            <button type="button" class="voice-button" id="voiceButton">Use voice input</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="company">Company</label>
+          <input id="company" name="company" type="text" placeholder="Example: Harbor Utilities" />
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="county">County</label>
+            <select id="county" name="county">
+              <option value="Orange">Orange</option>
+              <option value="Volusia">Volusia</option>
+              <option value="Leon">Leon</option>
+              <option value="Miami-Dade">Miami-Dade</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" placeholder="Example: We are upgrading the water main and sidewalk in the downtown corridor."></textarea>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="startDate">Start date</label>
+            <input id="startDate" name="startDate" type="date" />
+          </div>
+
+          <div class="field">
+            <label for="endDate">End date</label>
+            <input id="endDate" name="endDate" type="date" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="primary-button">Save details</button>
+          <button type="button" class="secondary-button" id="aiButton">Extract with AI</button>
+          <button type="button" class="secondary-button" id="clearButton">Clear</button>
+        </div>
+        <p class="status" id="status" aria-live="polite"></p>
+        <p id="transcript" style="font-size:0.85rem;color:#627d8b;margin-top:8px;min-height:1.4em;">Voice transcript will appear here.</p>
+
+        <div style="margin-top:14px;padding:16px;background:#f9fbfd;border:1px solid #dfeaf5;border-radius:12px;">
+          <label for="demoText" style="font-weight:700;color:#183246;">Quick text demo (no speaking):</label>
+          <textarea id="demoText" rows="2" style="width:100%;margin-top:6px;padding:10px;border:1px solid #dfeaf5;border-radius:10px;resize:vertical;font-size:0.95rem;" placeholder="Ex: Upgrade water main in Orange County from June 1 to June 30"></textarea>
+          <button type="button" class="secondary-button" id="demoButton" style="margin-top:8px;">Run AI extract on text</button>
+          <p id="demoResult" style="margin-top:8px;font-size:0.9rem;color:#183246;min-height:1.2em;"></p>
+        </div>
+
+        <p style="margin-top:12px;font-size:0.9rem;color:#627d8b;">← <a href="onboarding.html">Back to start</a> | <a href="map.html">County map</a></p>
+      </form>
+    </main>
+
+    <script>
+      const STORAGE_KEY = 'projectWizardDraft';
+      const form = document.getElementById('projectWizard');
+      const projectNameInput = document.getElementById('projectName');
+      const companyInput = document.getElementById('company');
+      const descriptionInput = document.getElementById('description');
+      const countyInput = document.getElementById('county');
+      const startDateInput = document.getElementById('startDate');
+      const endDateInput = document.getElementById('endDate');
+      const statusElement = document.getElementById('status');
+
+      function setStatus(message, type = '') {
+        statusElement.textContent = message;
+        statusElement.className = 'status';
+        if (type) {
+          statusElement.classList.add(type);
+        }
+      }
+
+      function restoreDraft() {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+
+        try {
+          const draft = JSON.parse(raw);
+          projectNameInput.value = draft.projectName || '';
+          companyInput.value = draft.company || '';
+          descriptionInput.value = draft.description || '';
+          countyInput.value = draft.county || 'Orange';
+          startDateInput.value = draft.startDate || '';
+          endDateInput.value = draft.endDate || '';
+        } catch (error) {
+          localStorage.removeItem(STORAGE_KEY);
+        }
+      }
+
+      function saveDraft() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          projectName: projectNameInput.value.trim(),
+          company: companyInput.value.trim(),
+          description: descriptionInput.value.trim(),
+          county: countyInput.value,
+          startDate: startDateInput.value,
+          endDate: endDateInput.value
+        }));
+      }
+
+      function validateProject() {
+        if (!projectNameInput.value.trim()) {
+          return 'Please enter a project name.';
+        }
+
+        if (!startDateInput.value) {
+          return 'Please select a start date.';
+        }
+
+        if (!endDateInput.value) {
+          return 'Please select an end date.';
+        }
+
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(endDateInput.value);
+
+        if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
+          return 'Please provide valid dates.';
+        }
+
+        if (endDate < startDate) {
+          return 'End date must be on or after the start date.';
+        }
+
+        return '';
+      }
+
+      [projectNameInput, companyInput, descriptionInput, countyInput, startDateInput, endDateInput].forEach((field) => {
+        field.addEventListener('input', saveDraft);
+        field.addEventListener('change', saveDraft);
+      });
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const errorMessage = validateProject();
+        if (errorMessage) {
+          setStatus(errorMessage, 'error');
+          return;
+        }
+
+        const payload = {
+          title: projectNameInput.value.trim(),
+          description: descriptionInput.value.trim(),
+          county: countyInput.value,
+          startTime: new Date(startDateInput.value).toISOString(),
+          endTime: new Date(endDateInput.value).toISOString(),
+          company: companyInput.value.trim() || 'Unspecified'
+        };
+
+        try {
+          const response = await fetch('/api/projects', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          const result = await response.json();
+          if (!response.ok) {
+            throw new Error(result.error || 'Failed to save project details.');
+          }
+
+          saveDraft();
+          setStatus('Project details saved successfully.', 'success');
+        } catch (error) {
+          setStatus(error.message || 'Unable to save project details.', 'error');
+        }
+      });
+
+      document.getElementById('aiButton').addEventListener('click', async () => {
+        const text = descriptionInput.value.trim();
+        if (!text) { setStatus('Add a description first.', 'error'); return; }
+        setStatus('Sending to Gemini / backend...');
+        try {
+          const res = await fetch('/api/ai/extract', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'AI extraction failed');
+          const ext = data.county || data.title || 'N/A';
+          setStatus('AI found: '+ext, 'success');
+        } catch (e) {
+          setStatus(e.message || 'AI error', 'error');
+        }
+      });
+
+      document.getElementById('demoButton').addEventListener('click', async () => {
+        const text = document.getElementById('demoText').value.trim();
+        const out = document.getElementById('demoResult');
+        if (!text) { out.textContent = 'Enter some text first.'; out.style.color = '#c63d3d'; return; }
+        out.textContent = 'Sending...'; out.style.color = '#183246';
+        try {
+          const res = await fetch('/api/ai/extract', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'AI failed');
+          out.innerHTML = '<strong>County:</strong> '+(data.county||'N/A')+' · <strong>Start:</strong> '+(data.startTime?new Date(data.startTime).toLocaleDateString():'N/A')+' · <strong>End:</strong> '+(data.endTime?new Date(data.endTime).toLocaleDateString():'N/A')+' · <strong>Title:</strong> '+(data.title||'N/A');
+          out.style.color = '#0d7d61';
+          // Auto-fill form too
+          if (data.title) projectNameInput.value = data.title;
+          if (data.county) countyInput.value = data.county;
+          if (data.description) descriptionInput.value = data.description;
+          if (data.startTime) startDateInput.value = new Date(data.startTime).toISOString().split('T')[0];
+          if (data.endTime) endDateInput.value = new Date(data.endTime).toISOString().split('T')[0];
+          saveDraft();
+        } catch (e) {
+          out.textContent = 'Error: ' + (e.message || 'unknown');
+          out.style.color = '#c63d3d';
+        }
+      });
+
+      document.getElementById('clearButton').addEventListener('click', () => {
+        form.reset();
+        localStorage.removeItem(STORAGE_KEY);
+        setStatus('Draft cleared.', 'success');
+      });
+
+      document.getElementById('voiceButton').addEventListener('click', async () => {
+        if (!navigator.mediaDevices || !window.MediaRecorder) {
+          setStatus('Recording not supported.', 'error'); return;
+        }
+        setStatus('Recording... press button again to stop.');
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          const mediaRecorder = new MediaRecorder(stream);
+          const chunks = [];
+          mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
+          mediaRecorder.start();
+          let stopped = false;
+          const stopHandler = () => {
+            if (stopped || mediaRecorder.state === 'inactive') return;
+            stopped = true;
+            mediaRecorder.stop();
+            stream.getTracks().forEach(t => t.stop());
+          };
+          document.getElementById('voiceButton').addEventListener('click', stopHandler, { once: true });
+          setTimeout(stopHandler, 6000);
+          mediaRecorder.onstop = async () => {
+            const blob = new Blob(chunks, { type: 'audio/webm' });
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+              const base64 = reader.result.split(',')[1];
+              setStatus('Sending audio to Eleven Labs → Gemini...');
+              try {
+                const res = await fetch('/api/ai/extract', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ audioBase64: base64, mimeType: 'audio/webm' })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'AI failed');
+                if (data.title) projectNameInput.value = data.title;
+                if (data.county) countyInput.value = data.county;
+                if (data.company) companyInput.value = data.company;
+                if (data.description) descriptionInput.value = data.description;
+                if (data.company) companyInput.value = data.company;
+                if (data.startTime) startDateInput.value = new Date(data.startTime).toISOString().split('T')[0];
+                if (data.endTime) endDateInput.value = new Date(data.endTime).toISOString().split('T')[0];
+                saveDraft();
+                document.getElementById('transcript').textContent = 'Heard: ' + (data.transcript || 'No transcript');
+                setStatus('Filled from voice: ' + (data.county || data.title || 'OK'), 'success');
+              } catch (e) {
+                setStatus('Audio parsing failed: ' + (e.message || 'unknown'), 'error');
+              }
+            };
+            reader.readAsDataURL(blob);
+          };
+        } catch (e) {
+          setStatus('Microphone error: ' + (e.message || ''), 'error');
+        }
+      });
+
+      restoreDraft();
+    </script>
+  </body>
+</html>
