@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conflict Review | Sperry Tech</title>
+  <style>
+    :root {
+      --ink: #1d2a3a;
+      --muted: #63768a;
+      --line: #dbe5f1;
+      --panel: #ffffff;
+      --blue: #174db5;
+      --cyan: #1dbbc9;
+      --blue-soft: #edf4ff;
+      --warning: #ae5c00;
+      --warning-soft: #fff4e4;
+      --success: #08785f;
+      --success-soft: #e8f8f2;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 28px 20px 44px;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at top, #f7fbff 0%, #e4f0ff 35%, #d8ebff 100%);
+    }
+
+    .page { width: min(100%, 1100px); margin: 0 auto; }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .wizard-icon {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+      flex: 0 0 auto;
+    }
+
+    .eyebrow {
+      margin: 0 0 5px;
+      color: var(--blue);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { margin-bottom: 7px; font-size: clamp(1.8rem, 4vw, 2.7rem); color: #123d91; }
+    .intro { margin-bottom: 0; color: var(--muted); line-height: 1.55; }
+
+    .panel {
+      padding: 24px;
+      border: 1px solid rgba(23, 77, 181, 0.12);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 18px 46px rgba(31, 70, 119, 0.12);
+    }
+
+    .status {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 22px;
+      padding: 15px 17px;
+      border-radius: 14px;
+      background: var(--warning-soft);
+      border: 1px solid #f0d3a4;
+      color: var(--warning);
+      line-height: 1.5;
+    }
+
+    .status.success { background: var(--success-soft); border-color: #b9e7d7; color: var(--success); }
+    .status strong { display: block; margin-bottom: 3px; }
+
+    .comparison {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .project-card {
+      min-width: 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #fff 0%, #f7faff 100%);
+    }
+
+    .project-card.conflicting { border-color: #edc98f; background: linear-gradient(180deg, #fffdf8 0%, #fff8ed 100%); }
+
+    .project-label {
+      display: inline-block;
+      margin-bottom: 11px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .conflicting .project-label { background: #ffecd0; color: var(--warning); }
+    .project-card h2 { margin-bottom: 17px; font-size: 1.35rem; overflow-wrap: anywhere; }
+
+    .details { display: grid; gap: 12px; margin: 0; }
+    .detail { padding-bottom: 11px; border-bottom: 1px solid var(--line); }
+    .detail:last-child { padding-bottom: 0; border-bottom: 0; }
+    dt { margin-bottom: 4px; color: var(--muted); font-size: 0.76rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+    dd { margin: 0; line-height: 1.45; overflow-wrap: anywhere; }
+
+    .overlap {
+      margin: 20px 0;
+      padding: 18px;
+      border: 1px solid #efcf9b;
+      border-radius: 16px;
+      background: var(--warning-soft);
+    }
+
+    .overlap h2, .recommendation h2 { margin-bottom: 9px; font-size: 1.15rem; color: #834700; }
+    .overlap p { margin-bottom: 0; line-height: 1.55; }
+
+    .recommendation {
+      margin-top: 20px;
+      padding: 19px;
+      border: 1px solid #b9e7d7;
+      border-radius: 16px;
+      background: var(--success-soft);
+    }
+
+    .recommendation h2 { color: var(--success); }
+    .recommendation p { margin-bottom: 0; line-height: 1.55; }
+
+    .empty {
+      padding: 30px 20px;
+      text-align: center;
+      color: var(--muted);
+      border: 1px dashed #b9cce2;
+      border-radius: 16px;
+      background: #f8fbff;
+      line-height: 1.6;
+    }
+
+    .navigation { margin-top: 22px; text-align: center; font-size: 0.9rem; }
+    .navigation a { color: var(--blue); }
+
+    @media (max-width: 700px) {
+      body { padding: 20px 14px 32px; }
+      .panel { padding: 18px; }
+      .comparison { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <img class="wizard-icon" src="assets/wizard icon.png" alt="Wizard hat" />
+      <div>
+        <p class="eyebrow">Wizard conflict review</p>
+        <h1>Here is what overlaps</h1>
+        <p class="intro">The wizard has compared the project dates and found the details that need attention.</p>
+      </div>
+    </header>
+
+    <section class="panel">
+      <div id="status" class="status" aria-live="polite">
+        <div><strong>The wizard says:</strong><span id="statusMessage">Reviewing the project timelines...</span></div>
+      </div>
+      <div id="content"></div>
+      <nav class="navigation"><a href="intake.html">Back to intake</a> &nbsp;|&nbsp; <a href="map.html">County map</a> &nbsp;|&nbsp; <a href="index.html">Start</a></nav>
+    </section>
+  </main>
+
+  <script>
+    const content = document.getElementById('content');
+    const status = document.getElementById('status');
+    const statusMessage = document.getElementById('statusMessage');
+    const query = new URLSearchParams(window.location.search);
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>'"]/g, (character) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      })[character]);
+    }
+
+    function dateValue(value) {
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+
+    function dateText(value) {
+      const date = dateValue(value);
+      return date ? date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'Not provided';
+    }
+
+    function timeText(value) {
+      const date = dateValue(value);
+      return date ? date.toLocaleString(undefined, { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' }) : 'Not provided';
+    }
+
+    function projectCard(project, label, className) {
+      return `<article class="project-card ${className}">
+        <span class="project-label">${escapeHtml(label)}</span>
+        <h2>${escapeHtml(project.title || 'Untitled project')}</h2>
+        <dl class="details">
+          <div class="detail"><dt>Company</dt><dd>${escapeHtml(project.company || 'Unspecified')}</dd></div>
+          <div class="detail"><dt>County</dt><dd>${escapeHtml(project.county || 'Not provided')}</dd></div>
+          <div class="detail"><dt>Starts</dt><dd>${timeText(project.startTime)}</dd></div>
+          <div class="detail"><dt>Ends</dt><dd>${timeText(project.endTime)}</dd></div>
+          <div class="detail"><dt>Description</dt><dd>${escapeHtml(project.description || 'No description provided.')}</dd></div>
+        </dl>
+      </article>`;
+    }
+
+    function overlapWindow(first, second) {
+      const start = new Date(Math.max(dateValue(first.startTime)?.getTime() || 0, dateValue(second.startTime)?.getTime() || 0));
+      const end = new Date(Math.min(dateValue(first.endTime)?.getTime() || 0, dateValue(second.endTime)?.getTime() || 0));
+      return { start, end };
+    }
+
+    function dayAfter(date) {
+      const next = new Date(date);
+      next.setDate(next.getDate() + 1);
+      return next;
+    }
+
+    function dayBefore(date) {
+      const previous = new Date(date);
+      previous.setDate(previous.getDate() - 1);
+      return previous;
+    }
+
+    function recommendation(current, conflicts) {
+      const currentStart = dateValue(current.startTime);
+      const currentEnd = dateValue(current.endTime);
+      if (!currentStart || !currentEnd || !conflicts.length) return 'Review the timelines with the project coordinator before confirming a new schedule.';
+
+      const sorted = conflicts
+        .map((project) => ({ start: dateValue(project.startTime), end: dateValue(project.endTime) }))
+        .filter((period) => period.start && period.end)
+        .sort((a, b) => a.start - b.start);
+
+      const before = dayBefore(sorted[0].start);
+      if (before >= currentStart) {
+        return `The nearest open option begins on ${dateText(currentStart)} and ends on ${dateText(before)}. Moving the project before the conflict may keep the work window intact.`;
+      }
+
+      const after = dayAfter(sorted[sorted.length - 1].end);
+      const duration = Math.max(0, currentEnd - currentStart);
+      const suggestedEnd = new Date(after.getTime() + duration);
+      return `The nearest suggested option begins on ${dateText(after)} and runs through ${dateText(suggestedEnd)}. Moving the project after the conflicting work is the clearest way to avoid the overlap.`;
+    }
+
+    function render(data) {
+      const conflicts = Array.isArray(data.conflicts) ? data.conflicts : [];
+      const current = {
+        title: data.title || 'New project',
+        description: data.description || 'Project submitted for conflict review.',
+        county: data.county,
+        startTime: data.startTime,
+        endTime: data.endTime,
+        company: data.company || 'Your company'
+      };
+
+      if (!conflicts.length) {
+        status.classList.add('success');
+        statusMessage.textContent = 'No conflicting project was found for this time window.';
+        content.innerHTML = '<div class="empty">The wizard found a clear path. No existing project overlaps these dates and this county.</div>';
+        return;
+      }
+
+      statusMessage.textContent = `${conflicts.length} existing project${conflicts.length === 1 ? '' : 's'} overlap${conflicts.length === 1 ? 's' : ''} this time window.`;
+      const firstConflict = conflicts[0];
+      const overlap = overlapWindow(current, firstConflict);
+
+      content.innerHTML = `<div class="comparison">
+        ${projectCard(current, 'Your project', '')}
+        ${projectCard(firstConflict, 'Conflicting project', 'conflicting')}
+      </div>
+      <section class="overlap">
+        <h2>Conflicting time point</h2>
+        <p>The schedules overlap from <strong>${timeText(overlap.start)}</strong> through <strong>${timeText(overlap.end)}</strong> in ${escapeHtml(data.county || firstConflict.county || 'the selected county')}.</p>
+      </section>
+      <section class="recommendation">
+        <h2>The wizard recommends</h2>
+        <p>${escapeHtml(recommendation(current, conflicts))}</p>
+      </section>`;
+    }
+
+    async function loadConflict() {
+      const payload = {
+        title: query.get('title') || '',
+        description: query.get('description') || '',
+        county: query.get('county') || '',
+        startTime: query.get('startTime') || '',
+        endTime: query.get('endTime') || ''
+      };
+
+      if (!payload.county || !payload.startTime || !payload.endTime) {
+        statusMessage.textContent = 'Add county, start time, and end time to review a project conflict.';
+        content.innerHTML = '<div class="empty">No conflict details were supplied yet. Submit a project for review, then open this page with its project details.</div>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/projects/conflicts?county=${encodeURIComponent(payload.county)}&startTime=${encodeURIComponent(payload.startTime)}&endTime=${encodeURIComponent(payload.endTime)}`);
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || 'Conflict review failed.');
+        render({ ...payload, ...result });
+      } catch (error) {
+        statusMessage.textContent = error.message || 'The wizard could not load the conflict details.';
+        content.innerHTML = '<div class="empty">Please return to intake and try the conflict check again.</div>';
+      }
+    }
+
+    loadConflict();
+  </script>
+</body>
+</html>
