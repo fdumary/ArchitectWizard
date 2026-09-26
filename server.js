@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const { MongoClient } = require('mongodb');
+const { extractProjectFields } = require('./ai');
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
@@ -67,6 +68,53 @@ app.post('/api/projects', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to create project' });
+  }
+});
+
+// AI NLP EXTRACTION — Gemini
+// POST /api/ai/extract  { text, audioBase64?, mimeType? }
+// Returns extracted { county, startTime, endTime, title, description }
+app.post('/api/ai/extract', async (req, res) => {
+  try {
+    const { text, audioBase64, mimeType } = req.body;
+    if (!text && !audioBase64) {
+      return res.status(400).json({ error: 'text or audioBase64 required' });
+    }
+    const extracted = await extractProjectFields({ text, audioBase64, mimeType });
+    res.json({ success: true, ...extracted });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'AI extraction failed', detail: err.message });
+  }
+});
+
+// AI EXTRACT + CONFLICT CHECK — convenience route
+// POST /api/ai/check-conflicts  same body as /api/ai/extract
+// Runs extraction then conflict check against the given county/period.
+app.post('/api/ai/check-conflicts', async (req, res) => {
+  try {
+    const { text, audioBase64, mimeType } = req.body;
+    if (!text && !audioBase64) {
+      return res.status(400).json({ error: 'text or audioBase64 required' });
+    }
+    const { county, startTime, endTime, title, description } = await extractProjectFields({
+      text, audioBase64, mimeType,
+    });
+    if (!county || !startTime || !endTime) {
+      return res.status(400).json({ error: 'Gemini could not extract county/startTime/endTime' });
+    }
+    const conflicts = await projectsCollection
+      .find({
+        county: { $regex: new RegExp(`^${county}$`, 'i') },
+        startTime: { $lte: new Date(endTime) },
+        endTime: { $gte: new Date(startTime) },
+      })
+      .sort({ startTime: 1 })
+      .toArray();
+    res.json({ success: true, county, startTime, endTime, title, description, conflictCount: conflicts.length, conflicts });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'AI conflict check failed', detail: err.message });
   }
 });
 

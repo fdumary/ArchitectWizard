@@ -22,7 +22,7 @@
 | 3 | Conflict detection endpoint | `server.js` (lines 97‑126) | `[x]` | GET `/api/projects/conflicts` — temporal overlap check per county |
 | 4 | Top‑3 upcoming projects per county | `server.js` (lines 74‑93) | `[x]` | GET `/api/projects/county/:county` — sorts by startTime, limits 3 |
 | 5 | Health check endpoint | `server.js` (lines 129‑136) | `[x]` | GET `/health` — returns total project count |
-| 6 | Add Gemini NLP integration | `server.js` (new endpoint) | `[→]` | Receive transcribed text + audio, extract county/start/end using Gemini |
+| 6 | Add Gemini NLP integration | `server.js` (new endpoint) | `[x]` | Receive transcribed text + audio, extract county/start/end using Gemini |
 | 7 | Eleven Labs audio → text pipeline | `server.js` / new `ai.js` | `[ ]` | Wire up Eleven Labs API key, feed audio to Gemini for intent extraction |
 | 8 | GoDaddy domain / deployment config | `package.json`, `.env` | `[ ]` | Setup production URL, environment vars for deployed endpoints |
 | 9 | Error handling & input sanitization | `server.js` | `[ ]` | Guard against malformed dates, missing fields, invalid county regex |
@@ -48,12 +48,11 @@
 
 | # | Task | File(s) | Progress | Notes |
 |---|------|---------|----------|-------|
-| 1 | Gemini text extraction prompt engineering | `server.js` / `ai.js` | `[ ] | Prompt: "Extract county, start date, end date from this construction project description..." |
+| 1 | Gemini text extraction prompt engineering | `server.js` / `ai.js` | `[x]` | Prompt: "Extract county, start date, end date from this construction project description..." |
 | 2 | Eleven Labs audio → Gemini pipeline | `server.js` / `ai.js` | `[ ] | Record audio → Eleven Labs ASR → Gemini NLP → conflict check |
 | 3 | Wizard pop-up with feedback | `public/` + `server.js` | `[ ] | After conflict check, show modal: "Your project overlaps X other projects in Orange County" |
 | 4 | Persist user‑submitted projects to MongoDB | `server.js` (POST) | `[ ] | After wizard, call POST `/api/projects` with user data |
 | 5 | Real‑time map refresh after new project | `public/` + `server.js` | `[ ] | After save, re‑fetch `/api/projects/county/:county` and update UI |
-
 ---
 
 ## DONE THIS SESSION
@@ -62,6 +61,8 @@
 - [x] Seed data loaded (`seed.js` — 7 projects across Orange, Volusia, Leon counties)
 - [x] Core CRUD & conflict endpoints implemented (`server.js`)
 - [x] README already exists but is minimal — task tracker created above
+- [x] Gemini NLP integration complete (`server.js` `/api/ai/extract` + `/api/ai/check-conflicts`, `ai.js`, `ai.test.js`)
+- [x] Gemini text extraction prompt engineering implemented (`ai.js` system prompt)
 
 ---
 
