@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Florida County Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
       :root {
         --bg: #ebf7ff;
@@ -76,29 +77,9 @@
         box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
       }
 
-      svg {
-        width: 100%;
-        height: auto;
-        display: block;
+      #map {
+        height: 560px;
         border-radius: 12px;
-      }
-
-      .county {
-        fill: #dfeef9;
-        stroke: #5e82ad;
-        stroke-width: 2;
-        cursor: pointer;
-        transition: fill 0.2s ease, transform 0.2s ease, filter 0.2s ease;
-      }
-
-      .county:hover {
-        fill: #cee1f5;
-        filter: brightness(1.02);
-      }
-
-      .county.selected {
-        fill: #b9d5f5;
-        stroke: var(--primary-dark);
       }
 
       .sidebar {
@@ -166,56 +147,7 @@
 
       <div class="content">
         <div class="map-wrap">
-          <svg viewBox="0 0 700 640" aria-label="Florida county map">
-            <path class="county" data-county="Escambia" d="M80 75 L160 60 L200 110 L180 180 L120 200 L90 150 Z" />
-            <path class="county" data-county="Santa Rosa" d="M170 60 L250 75 L275 150 L220 175 L170 145 Z" />
-            <path class="county" data-county="Okaloosa" d="M250 75 L330 70 L355 130 L300 170 L270 150 Z" />
-            <path class="county" data-county="Walton" d="M330 70 L410 75 L430 135 L370 170 L345 140 Z" />
-            <path class="county" data-county="Holmes" d="M80 170 L145 190 L160 245 L115 270 L70 220 Z" />
-            <path class="county" data-county="Jackson" d="M145 190 L220 185 L250 245 L202 294 L120 270 Z" />
-            <path class="county" data-county="Washington" d="M220 185 L290 190 L310 245 L255 286 L200 292 Z" />
-            <path class="county" data-county="Bay" d="M290 190 L360 180 L390 235 L345 290 L295 260 Z" />
-            <path class="county" data-county="Gulf" d="M360 180 L430 178 L448 238 L410 290 L355 265 Z" />
-            <path class="county" data-county="Calhoun" d="M120 270 L200 292 L214 350 L150 382 L93 330 Z" />
-            <path class="county" data-county="Leon" d="M200 292 L270 286 L305 340 L249 392 L190 380 Z" />
-            <path class="county" data-county="Liberty" d="M270 286 L345 290 L370 345 L328 412 L250 392 Z" />
-            <path class="county" data-county="Franklin" d="M345 290 L420 290 L445 340 L390 392 L365 350 Z" />
-            <path class="county" data-county="Gadsden" d="M160 380 L252 392 L265 455 L200 500 L142 468 Z" />
-            <path class="county" data-county="Jefferson" d="M252 392 L328 412 L348 475 L286 520 L215 500 Z" />
-            <path class="county" data-county="Wakulla" d="M328 412 L390 392 L420 470 L362 525 L315 485 Z" />
-            <path class="county" data-county="Taylor" d="M85 330 L150 382 L142 468 L90 520 L60 430 Z" />
-            <path class="county" data-county="Madison" d="M135 470 L210 500 L222 560 L170 600 L110 560 Z" />
-            <path class="county" data-county="Hamilton" d="M210 500 L286 520 L300 590 L240 610 L180 570 Z" />
-            <path class="county" data-county="Duval" d="M430 120 L520 100 L560 165 L520 220 L455 205 Z" />
-            <path class="county" data-county="Nassau" d="M520 95 L590 110 L610 170 L565 190 L520 160 Z" />
-            <path class="county" data-county="Baker" d="M435 205 L520 220 L550 270 L500 315 L430 290 Z" />
-            <path class="county" data-county="Bradford" d="M500 315 L550 270 L610 286 L620 345 L560 365 L500 340 Z" />
-            <path class="county" data-county="Clay" d="M430 290 L500 340 L485 405 L420 390 L395 340 Z" />
-            <path class="county" data-county="St. Johns" d="M485 405 L555 390 L592 440 L556 488 L485 470 Z" />
-            <path class="county" data-county="Flagler" d="M395 340 L420 390 L390 470 L338 468 L322 388 Z" />
-            <path class="county" data-county="Volusia" d="M322 388 L390 470 L370 545 L300 540 L280 463 Z" />
-            <path class="county" data-county="Lake" d="M520 385 L590 390 L620 460 L585 535 L510 520 L480 455 Z" />
-            <path class="county" data-county="Orange" d="M590 390 L660 402 L680 490 L615 550 L548 515 Z" />
-            <path class="county" data-county="Seminole" d="M520 385 L548 515 L490 540 L435 500 L450 430 Z" />
-            <path class="county" data-county="Osceola" d="M615 550 L680 490 L680 590 L615 620 L560 570 Z" />
-            <path class="county" data-county="Polk" d="L395 540 L470 560 L500 620 L432 635 L360 595 Z" />
-            <path class="county" data-county="Hillsborough" d="M470 560 L550 570 L580 625 L500 640 L430 610 Z" />
-            <path class="county" data-county="Pasco" d="M360 595 L430 610 L440 655 L370 685 L320 642 Z" />
-            <path class="county" data-county="Pinellas" d="M320 642 L370 685 L335 715 L283 692 L272 650 Z" />
-            <path class="county" data-county="Manatee" d="M520 620 L590 610 L610 670 L555 705 L495 680 Z" />
-            <path class="county" data-county="Sarasota" d="M440 655 L495 680 L485 720 L420 730 L380 700 Z" />
-            <path class="county" data-county="Charlotte" d="M380 700 L420 730 L395 785 L330 770 L315 725 Z" />
-            <path class="county" data-county="Lee" d="M315 725 L395 785 L385 835 L300 850 L265 780 Z" />
-            <path class="county" data-county="Collier" d="M385 785 L470 790 L490 865 L420 900 L345 870 Z" />
-            <path class="county" data-county="Monroe" d="M470 790 L575 810 L590 900 L490 920 L455 860 Z" />
-            <path class="county" data-county="Palm Beach" d="M560 300 L640 315 L660 420 L610 470 L540 420 Z" />
-            <path class="county" data-county="Broward" d="M555 470 L612 500 L620 560 L565 575 L520 530 Z" />
-            <path class="county" data-county="Miami-Dade" d="M520 530 L565 575 L550 655 L475 665 L440 603 Z" />
-            <path class="county" data-county="Indian River" d="M590 245 L660 225 L684 290 L640 340 L580 320 Z" />
-            <path class="county" data-county="Martin" d="M620 330 L680 350 L690 420 L640 470 L585 435 Z" />
-            <path class="county" data-county="St. Lucie" d="M590 350 L640 470 L620 540 L560 515 L540 420 Z" />
-            <path class="county" data-county="Okeechobee" d="M500 420 L540 420 L560 515 L500 530 L470 476 Z" />
-          </svg>
+          <div id="map"></div>
         </div>
 
         <aside class="sidebar">
@@ -230,68 +162,7 @@
       </div>
     </main>
 
-    <script>
-      const countyTitle = document.getElementById('countyTitle');
-      const projectList = document.getElementById('projectList');
-      const statusEl = document.getElementById('status');
-
-      function setStatus(message, type = 'success') {
-        statusEl.textContent = message;
-        statusEl.className = 'status';
-        statusEl.classList.add(type);
-      }
-
-      function renderProjects(county, projects) {
-        countyTitle.textContent = county;
-
-        if (!projects || !projects.length) {
-          projectList.innerHTML = '<li>No upcoming projects found for this county.</li>';
-          return;
-        }
-
-        projectList.innerHTML = projects
-          .map((project) => {
-            const start = project.startTime ? new Date(project.startTime).toLocaleDateString() : 'Unknown';
-            const end = project.endTime ? new Date(project.endTime).toLocaleDateString() : 'Unknown';
-            return `
-              <li>
-                <strong>${project.title || 'Untitled project'}</strong><br />
-                ${project.company || 'Unspecified company'}<br />
-                ${start} to ${end}
-              </li>
-            `;
-          })
-          .join('');
-      }
-
-      async function fetchCountyProjects(county) {
-        setStatus(`Loading ${county}...`, 'success');
-
-        try {
-          const response = await fetch(`/api/projects/county/${encodeURIComponent(county)}`);
-          const data = await response.json();
-
-          if (!response.ok) {
-            throw new Error(data.error || 'Failed to load county projects.');
-          }
-
-          renderProjects(county, data.projects || []);
-          setStatus('Projects loaded.', 'success');
-        } catch (error) {
-          console.error(error);
-          projectList.innerHTML = '<li>Unable to load county projects.</li>';
-          setStatus(error.message || 'Project load failed.', 'error');
-        }
-      }
-
-      document.querySelectorAll('.county').forEach((countyElement) => {
-        countyElement.addEventListener('click', () => {
-          document.querySelectorAll('.county').forEach((el) => el.classList.remove('selected'));
-          countyElement.classList.add('selected');
-          const county = countyElement.dataset.county;
-          fetchCountyProjects(county);
-        });
-      });
-    </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="map.js"></script>
   </body>
 </html>
