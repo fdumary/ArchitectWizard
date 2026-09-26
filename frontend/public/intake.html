@@ -150,6 +150,29 @@
         margin-top: 12px;
       }
 
+      .guide-banner {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--primary-soft);
+        color: var(--primary-dark);
+        border: 1px solid rgba(28, 77, 189, 0.15);
+        border-radius: 999px;
+        padding: 7px 12px;
+        font-size: 0.74rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+
+      .helper-text {
+        margin: 0 0 12px;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.5;
+      }
+
       .status {
         min-height: 24px;
         margin-top: 16px;
@@ -172,10 +195,12 @@
     <main class="wizard-card">
       <section class="hero">
         <h1>Project intake</h1>
-        <p>Share a short project description, plus the dates and location. This form saves the details to the API in the format the backend expects.</p>
+        <p>Welcome. Tell us the essentials and we will map the project clearly, accurately, and in a way that stays easy to follow.</p>
       </section>
 
       <form id="projectWizard" novalidate>
+        <div class="guide-banner">Guide step 1: project details</div>
+        <p class="helper-text">This wizard keeps the process simple: enter the project basics, confirm the timeline, and let the system guide you to the next step.</p>
         <div class="field">
           <label for="projectName">Project name</label>
           <input id="projectName" name="projectName" type="text" placeholder="Example: Lakeview Utility Upgrade" />
