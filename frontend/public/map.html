@@ -94,6 +94,20 @@
         font-size: 1.5rem;
       }
 
+      .guide-badge {
+        display: inline-block;
+        background: rgba(28, 79, 189, 0.08);
+        border: 1px solid rgba(28, 79, 189, 0.12);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--primary-dark);
+        margin-bottom: 12px;
+      }
+
       .status {
         min-height: 28px;
         margin-bottom: 12px;
@@ -128,7 +142,7 @@
     <main class="panel">
       <section class="header">
         <h1>Florida county map</h1>
-        <p>Choose a county to view the upcoming project list and spot nearby scheduling risks.</p>
+        <p>Guide view: choose a county to review upcoming work, understand local timing, and spot overlap before project activity begins.</p>
       </section>
 
       <div class="content">
@@ -137,7 +151,9 @@
         </div>
 
         <aside class="sidebar">
+          <span class="guide-badge">Guide step 2</span>
           <h2 id="countyTitle">Select a county</h2>
+          <p style="font-size:0.85rem;color:#627d8b;">Follow the map guide to compare local project timing and stay informed before work begins.</p>
           <p id="status" class="status" aria-live="polite">Ready</p>
           <ul id="projectList">
             <li>Click a county to load the top 3 upcoming projects.</li>
