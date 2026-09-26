@@ -56,37 +56,24 @@
     <a class="choice-btn" href="map.html"><span class="arrow">&#9679;</span> Citizen — View local map</a>
     <a class="choice-btn" href="intake.html"><span class="arrow">&#9654;</span> Company — Submit project</a>
   </div>
-  <button class="listen-btn" id="listenBtn" onclick="speakWizard()">Listen to wizard</button>
+  <button class="listen-btn" id="listenBtn" onclick="speakWizard('Welcome. I am the Architech Wizard. I guide construction coordination. Are you a citizen looking at nearby work, or a company ready to submit a project?')">Listen to wizard</button>
   <footer>Wizard voice starts when you click — or when the page loads.</footer>
 </main>
 
+<script src="wizard-voice.js"></script>
 <script>
   const wizardText = "Welcome. I am the Architech Wizard. I guide construction coordination. Are you a citizen looking at nearby work, or a company ready to submit a project?";
-
-  function speakWizard() {
-    if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(wizardText);
-    u.rate = 0.85;
-    u.pitch = 1.15;
-    u.volume = 1;
-    // Try to pick a wizard-like voice if available
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(v => v.name.toLowerCase().includes('google') || v.name.toLowerCase().includes('samantha') || v.name.toLowerCase().includes('karen'));
-    if (preferred) u.voice = preferred;
-    window.speechSynthesis.speak(u);
-  }
 
   // Auto-speak on load after brief delay
   window.addEventListener('load', () => {
     if (window.speechSynthesis) {
-      // Some browsers need voices loaded
       const loadVoices = () => {
-        try { speakWizard(); } catch(e){}
+        try { speakWizard(wizardText); } catch(e){}
       };
       setTimeout(loadVoices, 600);
     }
   });
+</script>
 </script>
 </body>
 </html>

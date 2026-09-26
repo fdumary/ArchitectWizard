@@ -33,6 +33,7 @@ button{background:linear-gradient(135deg,var(--primary) 0%, var(--accent) 100%);
   <div id="result" class="result" style="display:none;"></div>
   <p style="text-align:center;margin-top:14px;color:#627d8b;font-size:0.9rem;">← <a href="intake.html">Back to intake</a> | <a href="map.html">County map</a> | <a href="onboarding.html">Start</a></p>
 </main>
+<script src="wizard-voice.js"></script>
 <script>
   const form = document.getElementById('conflictForm');
   const status = document.getElementById('status');
@@ -42,19 +43,6 @@ button{background:linear-gradient(135deg,var(--primary) 0%, var(--accent) 100%);
     status.textContent = msg;
     status.className = 'status';
     if(type) status.classList.add(type);
-  }
-
-  function speakWizard(text, rate=0.85, pitch=1.2) {
-    if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text || 'I see conflicts. Review the overlapping projects and consider the nearest available window.');
-    u.rate = rate; u.pitch = pitch; u.volume = 1;
-    try {
-      const voices = window.speechSynthesis.getVoices();
-      const v = voices.find(x => x.name.toLowerCase().includes('google') || x.name.toLowerCase().includes('samantha') || x.name.toLowerCase().includes('karen'));
-      if (v) u.voice = v;
-    } catch(e){}
-    window.speechSynthesis.speak(u);
   }
 
   function speakWizardConflict() {

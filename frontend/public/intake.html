@@ -271,6 +271,7 @@
       </form>
     </main>
 
+    <script src="wizard-voice.js"></script>
     <script>
       const STORAGE_KEY = 'projectWizardDraft';
       const form = document.getElementById('projectWizard');
@@ -513,15 +514,13 @@
 
       restoreDraft();
 
+      // Welcome with same wizard voice
+      window.addEventListener('load', () => {
+        setTimeout(() => speakWizard('Welcome. I am the Architech Wizard. You can use your voice to fill this form out.'), 800);
+      });
+
       function sayWizardWelcome() {
-        if (!window.speechSynthesis) { alert('Speech not supported'); return; }
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance('Welcome. I am the Architech Wizard.');
-        u.rate = 0.8; u.pitch = 1.2; u.volume = 1;
-        const voices = window.speechSynthesis.getVoices();
-        const v = voices.find(x => x.name.toLowerCase().includes('google') || x.name.toLowerCase().includes('samantha') || x.name.toLowerCase().includes('karen'));
-        if (v) u.voice = v;
-        window.speechSynthesis.speak(u);
+        speakWizard('Welcome. I am the Architech Wizard.');
       }
     </script>
   </body>
