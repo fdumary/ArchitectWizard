@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Construction UI</title>
+    <style>
+      :root {
+        --firm-bg: #f2f7fb;
+        --firm-panel: #ffffff;
+        --firm-primary: #0d5ea8;
+        --firm-primary-dark: #0a467d;
+        --firm-accent: #dfeaf5;
+        --citizen-bg: #f5fbf7;
+        --citizen-panel: #ffffff;
+        --citizen-primary: #0f7d5d;
+        --citizen-primary-dark: #0c664a;
+        --citizen-accent: #dff5eb;
+        --text: #183246;
+        --muted: #627d8b;
+        --border: #dfeaf3;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #edf5fb 0%, #f9fbff 100%);
+        font-family: Arial, Helvetica, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .wrapper {
+        width: min(100%, 1100px);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 18px 42px rgba(17, 42, 63, 0.08);
+      }
+
+      .firm {
+        background: var(--firm-bg);
+      }
+
+      .citizen {
+        background: var(--citizen-bg);
+      }
+
+      .header {
+        padding: 22px 22px 18px;
+        color: white;
+      }
+
+      .firm .header {
+        background: linear-gradient(135deg, var(--firm-primary) 0%, var(--firm-primary-dark) 100%);
+      }
+
+      .citizen .header {
+        background: linear-gradient(135deg, var(--citizen-primary) 0%, var(--citizen-primary-dark) 100%);
+      }
+
+      .header h2 {
+        margin: 0;
+        font-size: clamp(1.6rem, 2vw, 2rem);
+      }
+
+      .header p {
+        margin: 10px 0 0;
+        color: rgba(255,255,255,0.85);
+        line-height: 1.5;
+      }
+
+      .body {
+        padding: 22px;
+      }
+
+      .tag {
+        display: inline-block;
+        border-radius: 999px;
+        padding: 7px 12px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+        margin-bottom: 16px;
+      }
+
+      .firm .tag {
+        background: var(--firm-accent);
+        color: var(--firm-primary-dark);
+      }
+
+      .citizen .tag {
+        background: var(--citizen-accent);
+        color: var(--citizen-primary-dark);
+      }
+
+      .feature-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        gap: 12px;
+      }
+
+      .feature-list li {
+        background: rgba(255,255,255,0.6);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 12px 14px;
+        line-height: 1.5;
+      }
+
+      .cta {
+        display: inline-block;
+        margin-top: 18px;
+        padding: 12px 18px;
+        border-radius: 12px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .firm .cta {
+        background: var(--firm-primary);
+        color: white;
+      }
+
+      .citizen .cta {
+        background: var(--citizen-primary);
+        color: white;
+      }
+
+      @media (max-width: 760px) {
+        .wrapper {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="wrapper">
+      <section class="card firm">
+        <div class="header">
+          <h2>For construction firms</h2>
+          <p>Professional coordination, milestone visibility, and schedule oversight.</p>
+        </div>
+        <div class="body">
+          <span class="tag">Professional</span>
+          <ul class="feature-list">
+            <li>Track project windows, overlap alerts, and county-level coordination.</li>
+            <li>Review schedule alignment before work begins and after changes are made.</li>
+            <li>Share clean, audit-ready project data with contractors and agencies.</li>
+          </ul>
+          <a class="cta" href="#">Review portfolio</a>
+        </div>
+      </section>
+
+      <section class="card citizen">
+        <div class="header">
+          <h2>For citizens</h2>
+          <p>Clear local updates that explain what is happening nearby and when.</p>
+        </div>
+        <div class="body">
+          <span class="tag">Friendly</span>
+          <ul class="feature-list">
+            <li>See upcoming local projects in plain language and short date ranges.</li>
+            <li>Understand how public work may affect access, noise, and timing.</li>
+            <li>Stay informed with a simple, approachable project summary.</li>
+          </ul>
+          <a class="cta" href="#">Explore local updates</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
