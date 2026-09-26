@@ -1,2 +1,268 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><title>Sperry Tech — Construction Coordination</title></head><body><script>location.href='onboarding.html';</script></body></html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome | Sperry Tech</title>
+  <style>
+    :root {
+      --ink: #202020;
+      --muted: #777777;
+      --line: #e9e9e9;
+      --blue: #2167e8;
+      --blue-dark: #174db5;
+      --soft-blue: #edf4ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #fff;
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 34px 22px 42px;
+    }
+
+    .page {
+      width: min(100%, 940px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .wizard-art {
+      width: min(54vw, 360px);
+      height: min(54vw, 360px);
+      object-fit: contain;
+      margin: 8px auto 24px;
+    }
+
+    h1 {
+      margin: 0 0 30px;
+      font-size: clamp(1.8rem, 3vw, 2.35rem);
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .conversation {
+      width: min(100%, 720px);
+    }
+
+    .prompt {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.55;
+    }
+
+    .composer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      min-height: 64px;
+      padding: 8px 12px 8px 18px;
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      box-shadow: 0 7px 24px rgba(0, 0, 0, 0.08);
+      text-align: left;
+    }
+
+    .composer textarea {
+      flex: 1;
+      min-width: 0;
+      height: 42px;
+      padding: 10px 0;
+      border: 0;
+      outline: 0;
+      resize: none;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .composer textarea::placeholder { color: #a4a4a4; }
+
+    .icon-button {
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: #555;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    .icon-button:hover { background: #f3f3f3; }
+    .icon-button.listening { color: var(--blue); background: var(--soft-blue); }
+
+    .send-button {
+      flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--blue);
+      color: white;
+      font-size: 1.15rem;
+      cursor: pointer;
+    }
+
+    .send-button:hover { background: var(--blue-dark); }
+
+    .answer {
+      min-height: 28px;
+      margin: 18px 0 0;
+      color: var(--blue-dark);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .choice {
+      padding: 16px 18px;
+      border: 1px solid #dce5f5;
+      border-radius: 14px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+    }
+
+    .choice:hover {
+      border-color: #9ebcf1;
+      box-shadow: 0 8px 18px rgba(33, 103, 232, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .tips {
+      width: min(100%, 720px);
+      margin-top: 34px;
+      padding: 18px 22px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .tips strong { color: var(--ink); }
+
+    @media (max-width: 560px) {
+      body { padding: 22px 16px 30px; }
+      .wizard-art { margin-top: 10px; margin-bottom: 18px; }
+      h1 { margin-bottom: 24px; }
+      .choices { grid-template-columns: 1fr; }
+      .composer { padding-left: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <img class="wizard-art" src="assets/wizard icon.png" alt="Blue wizard hat" />
+    <h1>Welcome</h1>
+
+    <section class="conversation" aria-label="Wizard assistant">
+      <p class="prompt" id="prompt">Hello. Are you a citizen checking local projects, or a company adding a project to check for conflicts?</p>
+      <form class="composer" id="wizardForm">
+        <textarea id="message" rows="1" placeholder="Ask anything" aria-label="Type a response"></textarea>
+        <button class="icon-button" id="voiceButton" type="button" aria-label="Use voice input" title="Use voice input">&#127908;</button>
+        <button class="send-button" type="submit" aria-label="Send response" title="Send response">&#8594;</button>
+      </form>
+      <p class="answer" id="answer" aria-live="polite"></p>
+
+      <div class="choices" aria-label="Choose a role">
+        <button class="choice" type="button" data-role="citizen">I am a citizen</button>
+        <button class="choice" type="button" data-role="company">I represent a company</button>
+      </div>
+    </section>
+
+    <aside class="tips">
+      <strong>Helpful tip:</strong> You can type your answer or select the microphone and speak. Companies can use voice input on the intake form to describe a project, dates, and county before the system checks for conflicts.
+    </aside>
+  </main>
+
+  <script>
+    const form = document.getElementById('wizardForm');
+    const message = document.getElementById('message');
+    const answer = document.getElementById('answer');
+    const voiceButton = document.getElementById('voiceButton');
+
+    function continueTo(role) {
+      if (role === 'citizen') {
+        answer.textContent = 'Thank you. Opening the county map so you can review local projects.';
+        window.setTimeout(() => { window.location.href = 'map.html'; }, 350);
+        return;
+      }
+
+      answer.textContent = 'Thank you. Opening the intake form where you can add the project details.';
+      window.setTimeout(() => { window.location.href = 'intake.html'; }, 350);
+    }
+
+    function detectRole(text) {
+      const normalized = text.toLowerCase();
+      if (/\b(citizen|resident|public|local)\b/.test(normalized)) return 'citizen';
+      if (/\b(company|business|contractor|firm|project)\b/.test(normalized)) return 'company';
+      return null;
+    }
+
+    document.querySelectorAll('[data-role]').forEach((button) => {
+      button.addEventListener('click', () => continueTo(button.dataset.role));
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const role = detectRole(message.value);
+      if (role) {
+        continueTo(role);
+      } else {
+        answer.textContent = 'Please tell us whether you are a citizen or a company, or choose one of the options below.';
+      }
+    });
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      voiceButton.addEventListener('click', () => {
+        recognition.start();
+        voiceButton.classList.add('listening');
+        answer.textContent = 'Listening...';
+      });
+
+      recognition.addEventListener('result', (event) => {
+        message.value = event.results[0][0].transcript;
+        answer.textContent = 'I heard: “' + message.value + '”';
+        const role = detectRole(message.value);
+        if (role) continueTo(role);
+      });
+
+      recognition.addEventListener('end', () => voiceButton.classList.remove('listening'));
+      recognition.addEventListener('error', () => {
+        voiceButton.classList.remove('listening');
+        answer.textContent = 'Voice input was unavailable. Please type your answer or choose an option.';
+      });
+    } else {
+      voiceButton.disabled = true;
+      voiceButton.title = 'Voice input is not supported in this browser';
+      voiceButton.setAttribute('aria-label', 'Voice input is not supported in this browser');
+    }
+  </script>
+</body>
+</html>
