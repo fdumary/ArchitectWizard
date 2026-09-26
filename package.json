@@ -1,0 +1,14 @@
+{
+  "name": "construction-project-backend",
+  "version": "1.0.0",
+  "description": "Construction project coordination backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.4",
+    "express": "^4.22.3",
+    "mongodb": "^6.21.0"
+  }
+}
