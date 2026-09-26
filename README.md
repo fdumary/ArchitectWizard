@@ -1,4 +1,4 @@
-# ShellHacks2026
+# ArchitectWizard
 
 ## Setup
 

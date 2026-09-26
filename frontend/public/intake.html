@@ -6,15 +6,18 @@
     <title>Project Intake Wizard</title>
     <style>
       :root {
-        --bg: #edf5fb;
-        --panel: #ffffff;
-        --primary: #0d5ea8;
-        --primary-dark: #0a467d;
-        --text: #183246;
-        --muted: #678099;
-        --border: #dfeaf5;
-        --success: #0d7d61;
-        --error: #c63d3d;
+        --bg: #eaf6ff;
+        --panel: #f9fbff;
+        --primary: #1c4dbd;
+        --primary-dark: #112f76;
+        --primary-soft: #dfeaff;
+        --accent: #21c7cf;
+        --accent-soft: #dffaf8;
+        --text: #16314a;
+        --muted: #5f7a90;
+        --border: #d5e2f2;
+        --success: #0d8b71;
+        --error: #c53b48;
       }
 
       * { box-sizing: border-box; }
@@ -22,7 +25,7 @@
       body {
         margin: 0;
         min-height: 100vh;
-        background: linear-gradient(135deg, #edf5fd 0%, #f9fbff 100%);
+        background: radial-gradient(circle at top, #f4fbff 0%, #dfeeff 30%, #d8ebff 100%);
         font-family: Arial, Helvetica, sans-serif;
         display: flex;
         align-items: center;
@@ -32,32 +35,36 @@
 
       .wizard-card {
         width: min(100%, 720px);
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 20px;
+        background: rgba(255,255,255,0.88);
+        border: 1px solid rgba(19, 91, 180, 0.12);
+        border-radius: 24px;
         overflow: hidden;
-        box-shadow: 0 16px 38px rgba(17, 42, 63, 0.08);
+        box-shadow: 0 22px 50px rgba(14, 38, 78, 0.12);
+        backdrop-filter: blur(4px);
       }
 
       .hero {
-        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 40%, var(--accent) 100%);
         color: #fff;
-        padding: 28px 26px 22px;
+        padding: 30px 28px 24px;
+        border-bottom: 1px solid rgba(255,255,255,0.18);
       }
 
       .hero h1 {
         margin: 0;
         font-size: clamp(2rem, 2.5vw, 2.8rem);
+        letter-spacing: 0.02em;
       }
 
       .hero p {
         margin: 10px 0 0;
-        color: rgba(255,255,255,0.86);
+        color: rgba(255,255,255,0.9);
         line-height: 1.5;
       }
 
       form {
         padding: 28px;
+        background: linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%);
       }
 
       .field {
@@ -75,12 +82,13 @@
       textarea,
       select {
         width: 100%;
-        background: #f9fbfd;
+        background: #f7fbff;
         border: 1px solid var(--border);
         border-radius: 12px;
         padding: 12px 14px;
         color: var(--text);
         font-size: 1rem;
+        box-shadow: inset 0 1px 2px rgba(17, 47, 118, 0.04);
       }
 
       textarea {
@@ -108,22 +116,32 @@
         font-weight: 700;
         cursor: pointer;
         padding: 12px 16px;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .voice-button:hover,
+      .primary-button:hover,
+      .secondary-button:hover {
+        transform: translateY(-1px);
       }
 
       .voice-button {
-        background: #edf4fb;
+        background: var(--accent-soft);
         color: var(--primary-dark);
+        border: 1px solid rgba(33, 199, 207, 0.3);
+        box-shadow: 0 4px 12px rgba(33, 199, 207, 0.12);
       }
 
       .primary-button {
-        background: var(--primary);
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
         color: white;
         width: 100%;
+        box-shadow: 0 10px 18px rgba(28, 77, 189, 0.22);
       }
 
       .secondary-button {
-        background: #edf3f8;
-        color: var(--text);
+        background: var(--primary-soft);
+        color: var(--primary-dark);
       }
 
       .actions {

@@ -6,15 +6,16 @@
     <title>Florida County Map</title>
     <style>
       :root {
-        --bg: #eff6fb;
-        --panel: #ffffff;
-        --primary: #0d5ea8;
-        --primary-dark: #0a467d;
-        --text: #183247;
-        --muted: #617d8d;
-        --border: #dfeaf5;
-        --success: #0d7b62;
-        --warning: #bf7b14;
+        --bg: #ebf7ff;
+        --panel: #f9fbff;
+        --primary: #1b4fbd;
+        --primary-dark: #112f76;
+        --accent: #22c7cf;
+        --text: #16314a;
+        --muted: #5b7690;
+        --border: #d4e3f3;
+        --success: #0d8b71;
+        --warning: #d88b28;
         --error: #c63d3d;
       }
 
@@ -23,7 +24,7 @@
       body {
         margin: 0;
         min-height: 100vh;
-        background: linear-gradient(135deg, #edf5fb 0%, #f9fbff 100%);
+        background: radial-gradient(circle at top, #f5fbff 0%, #dfeeff 28%, #d3ebff 100%);
         font-family: Arial, Helvetica, sans-serif;
         color: var(--text);
         display: flex;
@@ -34,27 +35,28 @@
 
       .panel {
         width: min(100%, 1000px);
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        box-shadow: 0 18px 42px rgba(17, 42, 63, 0.08);
+        background: rgba(255,255,255,0.9);
+        border: 1px solid rgba(18, 47, 118, 0.12);
+        border-radius: 24px;
+        box-shadow: 0 18px 42px rgba(15, 41, 87, 0.12);
         overflow: hidden;
       }
 
       .header {
-        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 42%, var(--accent) 100%);
         color: white;
-        padding: 28px 26px 20px;
+        padding: 30px 28px 22px;
       }
 
       .header h1 {
         margin: 0;
-        font-size: clamp(2rem, 2.5vw, 2.6rem);
+        font-size: clamp(2rem, 2.5vw, 2.7rem);
+        letter-spacing: 0.02em;
       }
 
       .header p {
         margin: 12px 0 0;
-        color: rgba(255,255,255,0.82);
+        color: rgba(255,255,255,0.86);
         line-height: 1.5;
       }
 
@@ -63,13 +65,15 @@
         grid-template-columns: 2fr 1fr;
         gap: 24px;
         padding: 24px;
+        background: linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%);
       }
 
       .map-wrap {
         border: 1px solid var(--border);
-        border-radius: 16px;
-        background: #f9fbff;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #f9fbff 0%, #edf6ff 100%);
         padding: 18px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
       }
 
       svg {
@@ -80,25 +84,27 @@
       }
 
       .county {
-        fill: #dfeef8;
-        stroke: #6d8fad;
+        fill: #dfeef9;
+        stroke: #5e82ad;
         stroke-width: 2;
         cursor: pointer;
-        transition: fill 0.2s ease, transform 0.2s ease;
+        transition: fill 0.2s ease, transform 0.2s ease, filter 0.2s ease;
       }
 
       .county:hover {
-        fill: #cfe3f5;
+        fill: #cee1f5;
+        filter: brightness(1.02);
       }
 
       .county.selected {
-        fill: #9ec0e8;
+        fill: #b9d5f5;
+        stroke: var(--primary-dark);
       }
 
       .sidebar {
         border: 1px solid var(--border);
-        border-radius: 16px;
-        background: #f9fbff;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #f9fcff 0%, #edf6ff 100%);
         padding: 18px;
       }
 
@@ -124,6 +130,10 @@
       li {
         margin-bottom: 8px;
         line-height: 1.4;
+        background: rgba(255,255,255,0.65);
+        border: 1px solid rgba(214,227,244,0.9);
+        border-radius: 10px;
+        padding: 8px 10px;
       }
 
       @media (max-width: 780px) {

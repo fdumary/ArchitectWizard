@@ -6,19 +6,19 @@
     <title>Responsive Construction UI</title>
     <style>
       :root {
-        --firm-bg: #f2f7fb;
+        --firm-bg: #edf6ff;
         --firm-panel: #ffffff;
-        --firm-primary: #0d5ea8;
-        --firm-primary-dark: #0a467d;
-        --firm-accent: #dfeaf5;
-        --citizen-bg: #f5fbf7;
+        --firm-primary: #1b4fbd;
+        --firm-primary-dark: #112f76;
+        --firm-accent: #dfeaff;
+        --citizen-bg: #eefaf8;
         --citizen-panel: #ffffff;
-        --citizen-primary: #0f7d5d;
-        --citizen-primary-dark: #0c664a;
-        --citizen-accent: #dff5eb;
-        --text: #183246;
-        --muted: #627d8b;
-        --border: #dfeaf3;
+        --citizen-primary: #0b8d7a;
+        --citizen-primary-dark: #0d5d4f;
+        --citizen-accent: #dffaf5;
+        --text: #17314a;
+        --muted: #5d7788;
+        --border: #d9e7f5;
       }
 
       * { box-sizing: border-box; }
@@ -26,7 +26,7 @@
       body {
         margin: 0;
         min-height: 100vh;
-        background: linear-gradient(135deg, #edf5fb 0%, #f9fbff 100%);
+        background: radial-gradient(circle at top, #f5fbff 0%, #dfeeff 26%, #d8ebff 100%);
         font-family: Arial, Helvetica, sans-serif;
         display: flex;
         align-items: center;
@@ -42,18 +42,18 @@
       }
 
       .card {
-        border: 1px solid var(--border);
-        border-radius: 18px;
+        border: 1px solid rgba(18, 47, 118, 0.12);
+        border-radius: 22px;
         overflow: hidden;
-        box-shadow: 0 18px 42px rgba(17, 42, 63, 0.08);
+        box-shadow: 0 20px 44px rgba(14, 38, 78, 0.12);
       }
 
       .firm {
-        background: var(--firm-bg);
+        background: linear-gradient(180deg, var(--firm-bg) 0%, #f9fbff 100%);
       }
 
       .citizen {
-        background: var(--citizen-bg);
+        background: linear-gradient(180deg, var(--citizen-bg) 0%, #f9fffc 100%);
       }
 
       .header {
@@ -62,11 +62,11 @@
       }
 
       .firm .header {
-        background: linear-gradient(135deg, var(--firm-primary) 0%, var(--firm-primary-dark) 100%);
+        background: linear-gradient(135deg, var(--firm-primary) 0%, var(--firm-primary-dark) 55%, #1f7bc8 100%);
       }
 
       .citizen .header {
-        background: linear-gradient(135deg, var(--citizen-primary) 0%, var(--citizen-primary-dark) 100%);
+        background: linear-gradient(135deg, var(--citizen-primary) 0%, var(--citizen-primary-dark) 55%, #2bb7a8 100%);
       }
 
       .header h2 {
@@ -76,7 +76,7 @@
 
       .header p {
         margin: 10px 0 0;
-        color: rgba(255,255,255,0.85);
+        color: rgba(255,255,255,0.88);
         line-height: 1.5;
       }
 
@@ -114,7 +114,7 @@
       }
 
       .feature-list li {
-        background: rgba(255,255,255,0.6);
+        background: rgba(255,255,255,0.7);
         border: 1px solid var(--border);
         border-radius: 12px;
         padding: 12px 14px;
@@ -128,15 +128,16 @@
         border-radius: 12px;
         font-weight: 700;
         text-decoration: none;
+        box-shadow: 0 8px 16px rgba(17, 47, 118, 0.08);
       }
 
       .firm .cta {
-        background: var(--firm-primary);
+        background: linear-gradient(135deg, var(--firm-primary) 0%, #3e7fe6 100%);
         color: white;
       }
 
       .citizen .cta {
-        background: var(--citizen-primary);
+        background: linear-gradient(135deg, var(--citizen-primary) 0%, #35b9a7 100%);
         color: white;
       }
 
