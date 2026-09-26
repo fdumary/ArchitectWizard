@@ -33,7 +33,7 @@
 
 | # | Task | File(s) | Progress | Notes |
 |---|------|---------|----------|-------|
-| 1 | Chatbot/wizard intro page (page 1) | `public/` (create) | `[ ]` | User types/speaks project name, start/end dates; stores input locally |
+| 1 | Chatbot/wizard intro page (page 1) | `public/` (create) | `[x]` | User types/speaks project name, start/end dates; stores input locally |
 | 2 | Audio recording & Eleven Labs submit (page 2) | `public/` (create) | `[ ]` | Record button → Eleven Labs API → returns text transcript |
 | 3 | Gemini NLP processing (page 2→3) | `public/` (create) | `[ ]` | Send transcript to Gemini, receive `{county, startTime, endTime}` |
 | 4 | Conflict feedback from wizard (page 3) | `public/` (create) | `[ ]` | Compare extracted data with backend `/api/projects/conflicts`, show result |
