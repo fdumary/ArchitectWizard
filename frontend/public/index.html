@@ -281,7 +281,7 @@
         });
       });
 
-      form.addEventListener('submit', (event) => {
+      form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         const validationMessage = validateProject();
@@ -290,8 +290,35 @@
           return;
         }
 
-        saveDraft();
-        setStatus('Project details saved locally and ready for the next step.', 'success');
+        const payload = {
+          title: projectNameInput.value.trim(),
+          description: '',
+          county: 'Orange',
+          startTime: new Date(startDateInput.value).toISOString(),
+          endTime: new Date(endDateInput.value).toISOString(),
+          company: 'Unspecified'
+        };
+
+        try {
+          const response = await fetch('/api/projects', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          const result = await response.json();
+
+          if (!response.ok) {
+            throw new Error(result.error || 'Failed to save project details.');
+          }
+
+          saveDraft();
+          setStatus('Project details saved successfully.', 'success');
+        } catch (error) {
+          setStatus(error.message || 'Unable to save project details.', 'error');
+        }
       });
 
       document.getElementById('clearButton').addEventListener('click', () => {
