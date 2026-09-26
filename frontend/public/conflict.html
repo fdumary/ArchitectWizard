@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Conflict Check</title>
+<style>
+:root{--bg:#edf5fb;--panel:#fff;--primary:#0d5ea8;--text:#183246;--border:#dfeaf5;--success:#0d7d61;--error:#c63d3d;}
+*{box-sizing:border-box;}
+body{margin:0;min-height:100vh;background:linear-gradient(135deg,#edf5fb 0%,#f9fbff 100%);font-family:Arial,sans-serif;display:flex;align-items:center;justify-content:center;padding:24px;}
+.card{width:min(100%,720px);background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:28px;box-shadow:0 16px 38px rgba(17,42,63,0.08);}
+h1{margin:0 0 8px;font-size:1.8rem;color:var(--primary);}
+p{color:#627d8b;margin:0 0 18px;}
+textarea{width:100%;min-height:120px;padding:12px;border:1px solid var(--border);border-radius:12px;font-size:1rem;resize:vertical;}
+button{background:var(--primary);color:#fff;border:none;border-radius:12px;padding:12px 18px;font-weight:700;cursor:pointer;margin-top:12px;}
+.status{min-height:24px;margin-top:14px;font-weight:700;}
+.success{color:var(--success);}
+.error{color:var(--error);}
+.result{margin-top:16px;padding:14px;background:#f9fbfd;border:1px solid var(--border);border-radius:12px;line-height:1.4;}
+</style>
+</head>
+<body>
+<main class="card">
+  <h1>Project conflict check</h1>
+  <p>Paste your project description to use Gemini + backend conflict detection.</p>
+  <form id="conflictForm" novalidate>
+    <textarea id="textInput" placeholder="Example: We will upgrade the water main in Orange County from June 1 to June 30."></textarea>
+    <button type="submit">Check conflicts</button>
+  </form>
+  <p id="status" class="status" aria-live="polite"></p>
+  <div id="result" class="result" style="display:none;"></div>
+</main>
+<script>
+  const form = document.getElementById('conflictForm');
+  const status = document.getElementById('status');
+  const result = document.getElementById('result');
+
+  function setStatus(msg, type=''){
+    status.textContent = msg;
+    status.className = 'status';
+    if(type) status.classList.add(type);
+  }
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const text = document.getElementById('textInput').value.trim();
+    if(!text){ setStatus('Enter a description.', 'error'); return; }
+    setStatus('Analyzing with Gemini + backend...');
+    try{
+      const res = await fetch('/api/ai/check-conflicts', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({text})
+      });
+      const data = await res.json();
+      if(!res.ok){ throw new Error(data.error || 'Check failed'); }
+      result.style.display = 'block';
+      result.innerHTML = '<strong>County:</strong> '+(data.county||'N/A')+
+        '<br><strong>Dates:</strong> '+(data.startTime?new Date(data.startTime).toLocaleDateString():'N/A')+
+        ' to '+(data.endTime?new Date(data.endTime).toLocaleDateString():'N/A')+
+        '<br><strong>Conflicts:</strong> '+(data.conflictCount||0)+
+        '<br><strong>Title:</strong> '+(data.title||'N/A');
+      if(data.conflicts && data.conflicts.length){
+        result.innerHTML += '<ul>' + data.conflicts.map(c=>'<li><strong>'+ (c.title||'Untitled') +'</strong> ('+(c.company||'Unknown')+') — '+(c.startTime?new Date(c.startTime).toLocaleDateString():'N/A')+' to '+(c.endTime?new Date(c.endTime).toLocaleDateString():'N/A')+'</li>').join('') + '</ul>';
+      }
+      setStatus('Conflict check complete.', 'success');
+    }catch(err){
+      setStatus(err.message || 'Error', 'error');
+      result.style.display = 'none';
+    }
+  });
+</script>
+<p style="text-align:center;margin-top:14px;color:#627d8b;font-size:0.9rem;">← <a href="intake.html">Back to intake</a> | <a href="map.html">County map</a> | <a href="onboarding.html">Start</a></p>
+</body>
+</html>

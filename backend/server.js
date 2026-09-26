@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const { extractProjectFields } = require('./ai');
@@ -15,6 +15,7 @@ if (!MONGO_URI) {
 
 const app = express();
 app.use(express.json());
+app.use(express.static('frontend/public'));
 
 let db;
 let projectsCollection;
@@ -106,8 +107,8 @@ app.post('/api/ai/extract', async (req, res) => {
     const extracted = await extractProjectFields({ text, audioBase64, mimeType });
     res.json({ success: true, ...extracted });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'AI extraction failed', detail: err.message });
+    console.error('AI extraction error:', err.message || err);
+    res.status(502).json({ error: 'AI service unavailable', detail: err.message || err });
   }
 });
 
@@ -136,8 +137,8 @@ app.post('/api/ai/check-conflicts', async (req, res) => {
       .toArray();
     res.json({ success: true, county, startTime, endTime, title, description, conflictCount: conflicts.length, conflicts });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'AI conflict check failed', detail: err.message });
+    console.error('AI conflict check error:', err.message || err);
+    res.status(502).json({ error: 'AI service unavailable', detail: err.message || err });
   }
 });
 

@@ -202,10 +202,11 @@
 
         <div class="actions">
           <button type="submit" class="primary-button">Save details</button>
+          <button type="button" class="secondary-button" id="aiButton">Extract with AI</button>
           <button type="button" class="secondary-button" id="clearButton">Clear</button>
         </div>
-
         <p class="status" id="status" aria-live="polite"></p>
+        <p style="margin-top:12px;font-size:0.9rem;color:#627d8b;">← <a href="onboarding.html">Back to start</a> | <a href="map.html">County map</a></p>
       </form>
     </main>
 
@@ -322,6 +323,25 @@
           setStatus('Project details saved successfully.', 'success');
         } catch (error) {
           setStatus(error.message || 'Unable to save project details.', 'error');
+        }
+      });
+
+      document.getElementById('aiButton').addEventListener('click', async () => {
+        const text = descriptionInput.value.trim();
+        if (!text) { setStatus('Add a description first.', 'error'); return; }
+        setStatus('Sending to Gemini / backend...');
+        try {
+          const res = await fetch('/api/ai/extract', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'AI extraction failed');
+          const ext = data.county || data.title || 'N/A';
+          setStatus('AI found: '+ext, 'success');
+        } catch (e) {
+          setStatus(e.message || 'AI error', 'error');
         }
       });
 
