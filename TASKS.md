@@ -57,7 +57,11 @@
 ---
 
 ## DONE THIS SESSION (updates made now)
-- [x] Added `express.static('frontend/public')` to `backend/server.js` so backend serves frontend
+- [x] Added server error catches (`502` for AI failures) so Gemini 503/429 doesn't crash server (`startServer` crashes fixed with `express.json({limit:'50mb'})` and try/catch guards)
+- [x] Added `responseSchema` (JSON mode) + `safeCompanyFallback` + lazy date parser to `ai.js`
+- [x] Added transcript display (`#transcript`) to `intake.html`
+- [x] Added quick text demo (`#demoText` + `#demoButton`) for typing without microphone
+- [x] Added navigation links (`map.html` sidebar, `conflict.html` back links)
 - [x] Created `frontend/public/index.html` redirect to onboarding
 - [x] Linked `onboarding.html` CTAs to `intake.html` and `map.html`
 - [x] Added "Extract with AI" button in `intake.html` (calls `/api/ai/extract`)
@@ -71,7 +75,8 @@
 
 ## WHAT IS MISSING / NEXT WORK
 
-1. **Wizard modal / 3-page flow**: merge `conflict.html` into wizard (page 3 pop-up) after AI extraction, ask user to confirm then POST to `/api/projects`; persist to MongoDB after confirmation.
+1. **Gemini rate limits / billing link** (current blocker): free tier hits `429` after ~20 requests; link `.env` `GEMINI_API_KEY` to a new billing-enabled AI Studio key (`https://aistudio.google.com/app/apikey`) or migrate fully to Vertex AI / `google-cloud/vertexai` SDK.
+2. **Wizard modal / 3-page flow**: after AI extraction, auto-populate form then show conflict result before final POST; persist only after user confirms.
 3. **Real-time map refresh**: after POST success, trigger `map.html` to re-fetch `/api/projects/county/:county`; could use `BroadcastChannel` or simple reload.
 4. **Error handling & sanitization**: strict date parsing, county regex, duplicate-title guard already partially there; add rate limiting and input length caps.
 5. **GoDaddy / deployment**: add `.env` production variables, deploy script, HTTPS/production URL; currently only local `PORT=3000`.
