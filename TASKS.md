@@ -40,7 +40,7 @@
 | 5 | Florida county map (page 4) | `public/` (create) | `[x]` | Interactive map — clicking a county calls `/api/projects/county/:county` |
 | 6 | Display top 3 upcoming projects | `public/` (create) | `[x]` | Render list under map with title, company, start/end dates |
 | 7 | Responsive UI for construction companies & citizens | `public/` (create) | `[x]` | Two tones: professional for firms, friendly for citizens |
-| 8 | Frontend → backend API wiring | `public/` + `server.js` | `[ ] | | All GET/POST calls go through Express routes |
+| 8 | Frontend → backend API wiring | `public/` + `server.js` | `[x]` | All GET/POST calls go through Express routes |
 
 ---
 
