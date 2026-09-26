@@ -38,7 +38,7 @@
 | 3 | Gemini NLP processing (page 2→3) | `public/` (create) | `[x]` | Send transcript to Gemini, receive `{county, startTime, endTime}` |
 | 4 | Conflict feedback from wizard (page 3) | `public/` (create) | `[x]` | Compare extracted data with backend `/api/projects/conflicts`, show result |
 | 5 | Florida county map (page 4) | `public/` (create) | `[x]` | Interactive map — clicking a county calls `/api/projects/county/:county` |
-| 6 | Display top 3 upcoming projects | `public/` (create) | `[ ] | | Render list under map with title, company, start/end dates |
+| 6 | Display top 3 upcoming projects | `public/` (create) | `[x]` | Render list under map with title, company, start/end dates |
 | 7 | Responsive UI for construction companies & citizens | `public/` (create) | `[ ] | | Two tones: professional for firms, friendly for citizens |
 | 8 | Frontend → backend API wiring | `public/` + `server.js` | `[ ] | | All GET/POST calls go through Express routes |
 
