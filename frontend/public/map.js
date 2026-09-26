@@ -31,8 +31,8 @@ function renderProjects(county, projects) {
     .join('');
 }
 
-async function fetchCountyProjects(county) {
-  setStatus(`Loading ${county}...`, 'success');
+async function fetchCountyProjects(county, displayName = county) {
+  setStatus(`Loading ${displayName}...`, 'success');
 
   try {
     const response = await fetch(`/api/projects/county/${encodeURIComponent(county)}`);
@@ -42,7 +42,7 @@ async function fetchCountyProjects(county) {
       throw new Error(data.error || 'Failed to load county projects.');
     }
 
-    renderProjects(county, data.projects || []);
+    renderProjects(displayName, data.projects || []);
     setStatus('Projects loaded.', 'success');
   } catch (error) {
     console.error(error);
@@ -71,17 +71,21 @@ fetch('florida-counties.geojson')
         fillOpacity: 0.6
       },
       onEachFeature: (feature, layer) => {
-        const COUNTYNAME = feature.properties.COUNTYNAME; 
+      const countyName = feature.properties.COUNTYNAME; // used for backend calls — leave as-is
+      let displayName = countyName;
+      if (countyName.toLowerCase() === 'dade') {
+        displayName = 'MIAMI-DADE';
+      }
 
-        layer.on('click', () => {
-          if (selectedLayer) {
-            selectedLayer.setStyle({ fillColor: '#dfeef9', fillOpacity: 0.6 });
-          }
-          layer.setStyle({ fillColor: '#b9d5f5', fillOpacity: 0.8 });
-          selectedLayer = layer;
+      layer.on('click', () => {
+        if (selectedLayer) {
+          selectedLayer.setStyle({ fillColor: '#dfeef9', fillOpacity: 0.6 });
+        }
+        layer.setStyle({ fillColor: '#b9d5f5', fillOpacity: 0.8 });
+        selectedLayer = layer;
 
-          fetchCountyProjects(COUNTYNAME);
-        });
+        fetchCountyProjects(countyName, displayName);
+      });
 
         layer.on('mouseover', () => {
           if (layer !== selectedLayer) layer.setStyle({ fillColor: '#cee1f5' });
