@@ -480,6 +480,10 @@
 
           saveDraft();
           setStatus('Project details saved successfully. No conflicts detected.', 'success');
+          if (window.BroadcastChannel) {
+            const ch = new BroadcastChannel('sperry-refresh');
+            ch.postMessage({ county: payload.county, refresh: true });
+          }
         } catch (error) {
           setStatus(error.message || 'Unable to save project details.', 'error');
         }
@@ -591,8 +595,12 @@
 
       restoreDraft();
 
-      // Clear any lingering conflict state when returning to intake
+      // Clear any lingering conflict state when returning to intake (load or back-navigation)
       sessionStorage.removeItem('conflictCheck');
+
+      window.addEventListener('pageshow', () => {
+        sessionStorage.removeItem('conflictCheck');
+      });
 
       // Welcome with same wizard voice
       window.addEventListener('load', () => {

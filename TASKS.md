@@ -35,7 +35,7 @@
 |---|------|---------|----------|-------|
 | 1 | Chatbot/wizard intro page (page 1) | `frontend/public/onboarding.html` | `[x]` | Two-tone cards; links to `intake.html` and `map.html` now live |
 | 2 | Audio recording & Eleven Labs submit (page 2) | `frontend/public/intake.html` | `[x]` | Voice button uses `MediaRecorder`; sends `audioBase64` to `/api/ai/extract`; fills title, county, dates, description from Gemini response |
-| 3 | Gemini NLP processing (page 2→3) | `frontend/public/intake.html`, `conflict.html` | `[+]` | `intake.html` now has "Extract with AI" button hitting `/api/ai/extract`; `conflict.html` hits `/api/ai/check-conflicts` |
+| 3 | Gemini NLP processing (page 2→3) | `frontend/public/intake.html`, `conflict_check.html` | `[+]` | `intake.html` now has "Extract with AI" button hitting `/api/ai/extract`; `conflict_check.html` hits `/api/ai/check-conflicts` |
 | 4 | Conflict feedback from wizard (page 3) | `frontend/public/conflict.html` | `[+]` | New page created; shows county, dates, conflict count, overlapping project list |
 | 5 | Florida county map (page 4) | `frontend/public/map.html` | `[x]` | SVG map with click handlers; calls `/api/projects/county/:county`; renders top 3 |
 | 6 | Display top 3 upcoming projects | `frontend/public/map.html` | `[x]` | Renders under sidebar with title, company, start/end dates |
@@ -50,7 +50,7 @@
 |---|------|---------|----------|-------|
 | 1 | Gemini text extraction prompt engineering | `backend/ai.js` | `[x]` | System prompt + JSON response schema set |
 | 2 | Eleven Labs audio + Gemini pipeline | `backend/ai.js`, `.env` | `[x]` | ElevenLabs `speech_to_text.convert` wired; transcript fed to Gemini; `audioBase64` handled in `extractProjectFields`; `intake.html` uses MediaRecorder |
-| 3 | Wizard pop-up with feedback | `frontend/public/intake.html`, `conflict.html` | `[+]` | Conflict page exists; need modal in wizard (page 3 pop-up) instead of separate page for smoother flow |
+| 3 | Wizard pop-up with feedback | `frontend/public/intake.html`, `conflict_check.html` | `[+]` | Conflict page exists; need modal in wizard (page 3 pop-up) instead of separate page for smoother flow |
 | 4 | Persist user-submitted projects to MongoDB | `backend/server.js` (POST `/api/projects`) | `[x]` | Save works; not yet linked to wizard after conflict confirmation |
 | 5 | Real-time map refresh after new project | `frontend/public/map.html` | `[ ]` | No post-save refresh; could poll `/api/projects/county/:county` or use server-sent events |
 
@@ -61,12 +61,13 @@
 - [x] Added `responseSchema` (JSON mode) + `safeCompanyFallback` + lazy date parser to `ai.js`
 - [x] Added transcript display (`#transcript`) to `intake.html`
 - [x] Added quick text demo (`#demoText` + `#demoButton`) for typing without microphone
-- [x] Added navigation links (`map.html` sidebar, `conflict.html` back links)
-- [x] Created wizard intro page (`wizard.html`) with voice, icons, and citizen/company choices
+- [x] Added navigation links (`map.html` sidebar, `conflict_check.html` back links)
+- [x] Wizard opening page (`index.html`) with voice, icon, and citizen/company choices (replaced `onboarding.html` entry; `wizard.html` removed)
 - [x] Updated `index.html` redirect to wizard; linked wizard from onboarding and intake
 - [x] Added wizard speech to conflict page with remediation and nearest-window guidance
 - [x] Added wizard voice test button (`sayWizardWelcome`) on intake page
 - [x] Wired intake submit to check conflicts first via `/api/projects/conflicts` (direct backend check), redirects to conflict page if overlaps found
+- [x] Added `BroadcastChannel('sperry-refresh')` so `map.html` updates automatically after a new project is saved
 - [x] Fixed date timezone shift with `toUTCISO` so form dates stay consistent across timezones
 - [x] Updated backend conflict detection to compute next free window of the same duration as the submitted project
 - [x] Consolidated wizard voice across all pages via `wizard-voice.js` (British male, pitch `0.72`, rate `0.78`)
@@ -79,7 +80,7 @@
 ## WHAT IS MISSING / NEXT WORK
 
 1. **Gemini rate limits / billing link** (current blocker): free tier hits `429` after ~20 requests; link `.env` `GEMINI_API_KEY` to a new billing-enabled AI Studio key (`https://aistudio.google.com/app/apikey`) or migrate fully to Vertex AI / `google-cloud/vertexai` SDK.
-2. **Real-time map refresh**: after POST success, trigger `map.html` to re-fetch `/api/projects/county/:county`; could use `BroadcastChannel` or simple reload.
+2. **Real-time map refresh**: `BroadcastChannel` wired — `map.html` refreshes when `intake.html` saves. Add polling or SSE if cross-tab reliability needed.
 4. **Error handling & sanitization**: strict date parsing, county regex, duplicate-title guard already partially there; add rate limiting and input length caps.
 5. **GoDaddy / deployment**: add `.env` production variables, deploy script, HTTPS/production URL; currently only local `PORT=3000`.
 6. **Health / monitoring**: expose `/health` to frontend for status indicator; optional.
