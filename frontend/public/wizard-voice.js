@@ -1,6 +1,7 @@
 // Shared Architech Wizard voice — British male, consistent across all pages
 let wizardVoice = null;
 let voicesReady = false;
+let pendingSpeech = null;
 
 function loadVoices() {
   const voices = window.speechSynthesis.getVoices();
@@ -43,19 +44,30 @@ if (window.speechSynthesis) {
 
 function speakWizard(text) {
   if (!window.speechSynthesis) return;
+  pendingSpeech = text || 'I am the Architech Wizard.';
   window.speechSynthesis.cancel();
   // Ensure voice loaded; retry once if needed
   if (!voicesReady || !wizardVoice) {
     loadVoices();
     // Small delay then retry
-    setTimeout(() => speakWizard(text), 300);
+    setTimeout(() => speakWizard(pendingSpeech), 300);
     return;
   }
-  const u = new SpeechSynthesisUtterance(text || 'I am the Architech Wizard.');
+  const u = new SpeechSynthesisUtterance(pendingSpeech);
   // British male wizard settings: slower, slightly deep pitch
   u.rate = 0.78;
   u.pitch = 0.72;
   u.volume = 1;
   if (wizardVoice) u.voice = wizardVoice;
+  u.onstart = () => { pendingSpeech = null; };
+  window.speechSynthesis.resume();
   window.speechSynthesis.speak(u);
 }
+
+// Some browsers suppress speech started from page load until the user interacts.
+function retryPendingSpeech() {
+  if (pendingSpeech) speakWizard(pendingSpeech);
+}
+
+document.addEventListener('pointerdown', retryPendingSpeech, { once: true });
+document.addEventListener('keydown', retryPendingSpeech, { once: true });

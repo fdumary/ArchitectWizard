@@ -691,13 +691,14 @@
             reader.onloadend = async () => {
               const base64 = reader.result.split(',')[1];
               setStatus('Sending audio to Eleven Labs → Gemini...');
+              let data = null;
               try {
                 const res = await fetch('/api/ai/extract', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ audioBase64: base64, mimeType: 'audio/webm' })
                 });
-                const data = await res.json();
+                data = await res.json();
                 if (!res.ok) throw new Error(data.error || 'AI failed');
                 if (data.title) projectNameInput.value = data.title;
                 if (data.county) countyInput.value = data.county;
@@ -710,7 +711,8 @@
                 document.getElementById('transcript').textContent = 'Heard: ' + (data.transcript || 'No transcript');
                 setStatus('Filled from voice: ' + (data.county || data.title || 'OK'), 'success');
               } catch (e) {
-                setStatus('Audio parsing failed: ' + (e.message || 'unknown'), 'error');
+                const detail = data && data.detail ? ': ' + data.detail : '';
+                setStatus('Audio parsing failed: ' + (e.message || 'unknown') + detail, 'error');
               }
             };
             reader.readAsDataURL(blob);
