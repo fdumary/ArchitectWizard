@@ -24,7 +24,7 @@ button{background:linear-gradient(135deg,var(--primary) 0%, var(--accent) 100%);
 <main class="card">
   <span class="header-pill">Guide check</span>
   <h1>Project conflict check</h1>
-  <p>Guide note: paste your project description and the system will compare it against nearby schedules to flag any overlap clearly and informatively.</p>
+  <p id="wizardIntro" aria-live="polite">Guide note: I am the Architech Wizard. If conflicts appear, I will explain them and suggest the nearest available window for your work.</p>
   <form id="conflictForm" novalidate>
     <textarea id="textInput" placeholder="Example: We will upgrade the water main in Orange County from June 1 to June 30."></textarea>
     <button type="submit">Check conflicts</button>
@@ -33,6 +33,7 @@ button{background:linear-gradient(135deg,var(--primary) 0%, var(--accent) 100%);
   <div id="result" class="result" style="display:none;"></div>
   <p style="text-align:center;margin-top:14px;color:#627d8b;font-size:0.9rem;">← <a href="intake.html">Back to intake</a> | <a href="map.html">County map</a> | <a href="onboarding.html">Start</a></p>
 </main>
+<script src="wizard-voice.js"></script>
 <script>
   const form = document.getElementById('conflictForm');
   const status = document.getElementById('status');
@@ -43,6 +44,43 @@ button{background:linear-gradient(135deg,var(--primary) 0%, var(--accent) 100%);
     status.className = 'status';
     if(type) status.classList.add(type);
   }
+
+  function speakWizardConflict() {
+    const conflicts = result.querySelectorAll('li');
+    const count = conflicts.length;
+    let msg = 'Conflict check complete.';
+    if (count > 0) msg += ' There are ' + count + ' overlapping projects. Review them and consider the nearest available window.';
+    else msg += ' No conflicts found. You are clear to proceed.';
+    speakWizard(msg);
+  }
+
+  // Pre-load from intake redirect
+  window.addEventListener('load', () => {
+    try {
+      const saved = sessionStorage.getItem('conflictCheck');
+      if (saved) {
+        const data = JSON.parse(saved);
+        result.style.display = 'block';
+        result.innerHTML = '<strong>County:</strong> '+(data.county||'N/A')+
+          '<br><strong>Dates:</strong> '+(data.startTime?new Date(data.startTime).toLocaleDateString():'N/A')+
+          ' to '+(data.endTime?new Date(data.endTime).toLocaleDateString():'N/A')+
+          '<br><strong>Conflicts:</strong> '+(data.conflictCount||0)+
+          '<br><strong>Title:</strong> '+(data.title||'N/A');
+        if(data.conflicts && data.conflicts.length){
+          result.innerHTML += '<ul>' + data.conflicts.map(c=>'<li><strong>'+ (c.title||'Untitled') +'</strong> ('+(c.company||'Unknown')+') — '+(c.startTime?new Date(c.startTime).toLocaleDateString():'N/A')+' to '+(c.endTime?new Date(c.endTime).toLocaleDateString():'N/A')+'</li>').join('') + '</ul>';
+          const ends = data.conflicts.map(c => new Date(c.endTime || c.startTime)).filter(d => !isNaN(d));
+          if (ends.length) {
+            const latest = new Date(Math.max(...ends));
+            result.innerHTML += '<p style="margin-top:10px;color:#0d7d61;font-weight:700;">Remediation: the nearest available window for your project starts after <strong>'+latest.toLocaleDateString()+'</strong>.</p>';
+          }
+        }
+        setStatus('Conflict check complete.', 'success');
+        speakWizardConflict();
+        sessionStorage.removeItem('conflictCheck');
+      }
+    } catch(e){}
+    setTimeout(() => speakWizard('I am the Architech Wizard. Let me guide you through the conflict check.'), 800);
+  });
 
   form.addEventListener('submit', async (e)=>{
     e.preventDefault();
@@ -65,8 +103,19 @@ button{background:linear-gradient(135deg,var(--primary) 0%, var(--accent) 100%);
         '<br><strong>Title:</strong> '+(data.title||'N/A');
       if(data.conflicts && data.conflicts.length){
         result.innerHTML += '<ul>' + data.conflicts.map(c=>'<li><strong>'+ (c.title||'Untitled') +'</strong> ('+(c.company||'Unknown')+') — '+(c.startTime?new Date(c.startTime).toLocaleDateString():'N/A')+' to '+(c.endTime?new Date(c.endTime).toLocaleDateString():'N/A')+'</li>').join('') + '</ul>';
+        const latestStr = data.nearestWindow ? new Date(data.nearestWindow).toLocaleDateString() : null;
+        if (latestStr) {
+          result.innerHTML += '<p style="margin-top:10px;color:#0d7d61;font-weight:700;">Remediation: the nearest available window for your project starts after <strong>'+latestStr+'</strong>.</p>';
+        } else {
+          const ends = data.conflicts.map(c => new Date(c.endTime || c.startTime)).filter(d => !isNaN(d));
+          if (ends.length) {
+            const latest = new Date(Math.max(...ends));
+            result.innerHTML += '<p style="margin-top:10px;color:#0d7d61;font-weight:700;">Remediation: the nearest available window for your project starts after <strong>'+latest.toLocaleDateString()+'</strong>.</p>';
+          }
+        }
       }
       setStatus('Conflict check complete.', 'success');
+      speakWizardConflict();
     }catch(err){
       setStatus(err.message || 'Error', 'error');
       result.style.display = 'none';

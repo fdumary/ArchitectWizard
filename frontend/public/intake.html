@@ -195,8 +195,12 @@
     <main class="wizard-card">
       <section class="hero">
         <h1>Project intake</h1>
-        <p>Welcome. Tell us the essentials and we will map the project clearly, accurately, and in a way that stays easy to follow.</p>
+        <p>Welcome. I am the Architech Wizard. You can use your voice to fill this form out — just press the microphone button. Here are some quick tips: mention the county, the dates, and the company name clearly.</p>
       </section>
+
+      <div id="wizardTip" style="padding:14px 20px;background:rgba(122,209,255,0.08);border:1px solid rgba(122,209,255,0.18);border-radius:14px;margin:0 0 20px;color:#16314a;font-size:0.95rem;line-height:1.5;">
+        <strong>Wizard tip:</strong> Speak naturally. For example: <em>"FPL will upgrade pipes in Orange County from June 1 to June 30."</em>
+      </div>
 
       <form id="projectWizard" novalidate>
         <div class="guide-banner">Guide step 1: project details</div>
@@ -258,10 +262,16 @@
           <p id="demoResult" style="margin-top:8px;font-size:0.9rem;color:#183246;min-height:1.2em;"></p>
         </div>
 
-        <p style="margin-top:12px;font-size:0.9rem;color:#627d8b;">← <a href="onboarding.html">Back to start</a> | <a href="map.html">County map</a></p>
+        <p style="margin-top:12px;font-size:0.9rem;color:#627d8b;">← <a href="wizard.html">Back to wizard</a> | <a href="onboarding.html">Back to start</a> | <a href="map.html">County map</a></p>
+
+        <div style="margin-top:10px;padding:14px;background:#f9fbfd;border:1px solid #dfeaf5;border-radius:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <div><strong style="color:#1b4fbd;">Wizard voice test</strong> <span style="font-size:0.85rem;color:#627d8b;">— hear him say welcome.</span></div>
+          <button type="button" class="voice-button" id="wizardVoiceBtn" onclick="sayWizardWelcome()">Test wizard voice</button>
+        </div>
       </form>
     </main>
 
+    <script src="wizard-voice.js"></script>
     <script>
       const STORAGE_KEY = 'projectWizardDraft';
       const form = document.getElementById('projectWizard');
@@ -359,6 +369,26 @@
           company: companyInput.value.trim() || 'Unspecified'
         };
 
+        // First check for conflicts
+        try {
+          const text = payload.description || payload.title || (payload.company + ' project in ' + payload.county);
+          const checkRes = await fetch('/api/ai/check-conflicts', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text, county: payload.county, startTime: payload.startTime, endTime: payload.endTime })
+          });
+          const checkData = await checkRes.json();
+          if (checkData.conflictCount > 0) {
+            // Store for conflict page
+            sessionStorage.setItem('conflictCheck', JSON.stringify(checkData));
+            window.location.href = 'conflict.html';
+            return;
+          }
+        } catch (e) {
+          // If conflict check fails, proceed to save anyway (fallback)
+          console.error('Conflict check error:', e);
+        }
+
         try {
           const response = await fetch('/api/projects', {
             method: 'POST',
@@ -372,7 +402,7 @@
           }
 
           saveDraft();
-          setStatus('Project details saved successfully.', 'success');
+          setStatus('Project details saved successfully. No conflicts detected.', 'success');
         } catch (error) {
           setStatus(error.message || 'Unable to save project details.', 'error');
         }
@@ -483,6 +513,15 @@
       });
 
       restoreDraft();
+
+      // Welcome with same wizard voice
+      window.addEventListener('load', () => {
+        setTimeout(() => speakWizard('Welcome. I am the Architech Wizard. You can use your voice to fill this form out.'), 800);
+      });
+
+      function sayWizardWelcome() {
+        speakWizard('Welcome. I am the Architech Wizard.');
+      }
     </script>
   </body>
 </html>

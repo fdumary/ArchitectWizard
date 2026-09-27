@@ -135,7 +135,8 @@ app.post('/api/ai/check-conflicts', async (req, res) => {
       })
       .sort({ startTime: 1 })
       .toArray();
-    res.json({ success: true, county, startTime, endTime, title, description, conflictCount: conflicts.length, conflicts });
+    const nearestWindow = conflicts.length ? new Date(Math.max(...conflicts.map(c => new Date(c.endTime || c.startTime)))) : null;
+    res.json({ success: true, county, startTime, endTime, title, description, conflictCount: conflicts.length, conflicts, nearestWindow: nearestWindow ? nearestWindow.toISOString() : null });
   } catch (err) {
     console.error('AI conflict check error:', err.message || err);
     res.status(502).json({ error: 'AI service unavailable', detail: err.message || err });
@@ -186,10 +187,12 @@ app.get('/api/projects/conflicts', async (req, res) => {
       .sort({ startTime: 1 })
       .toArray();
 
+    const nearestWindow = conflicts.length ? new Date(Math.max(...conflicts.map(c => new Date(c.endTime || c.startTime)))) : null;
     res.json({
       county,
       conflictCount: conflicts.length,
-      conflicts
+      conflicts,
+      nearestWindow: nearestWindow ? nearestWindow.toISOString() : null
     });
   } catch (err) {
     console.error(err);
