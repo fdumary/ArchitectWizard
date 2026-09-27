@@ -345,6 +345,63 @@
     });
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recordedVoice = null;
+
+    async function startRecordedVoiceInput() {
+      if (!navigator.mediaDevices || !window.MediaRecorder) {
+        answer.textContent = 'Voice input is unavailable here. Please type your answer or choose an option.';
+        return;
+      }
+
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+          ? 'audio/webm;codecs=opus'
+          : 'audio/webm';
+        const recorder = new MediaRecorder(stream, { mimeType });
+        const chunks = [];
+        recordedVoice = recorder;
+        voiceButton.classList.add('listening');
+        answer.textContent = 'Listening... press the microphone again to stop.';
+        recorder.ondataavailable = (event) => {
+          if (event.data.size) chunks.push(event.data);
+        };
+        recorder.onstop = async () => {
+          stream.getTracks().forEach((track) => track.stop());
+          voiceButton.classList.remove('listening');
+          answer.textContent = 'Transcribing...';
+          const reader = new FileReader();
+          reader.onloadend = async () => {
+            try {
+              const response = await fetch('/api/ai/extract', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  audioBase64: reader.result.split(',')[1],
+                  mimeType: 'audio/webm'
+                })
+              });
+              const data = await response.json();
+              if (!response.ok) throw new Error(data.detail || data.error || 'Transcription failed');
+              message.value = data.transcript || '';
+              answer.textContent = data.transcript ? 'I heard: “' + data.transcript + '”' : 'No speech was detected. Please try again.';
+              const role = detectRole(message.value);
+              if (role) continueTo(role);
+            } catch (error) {
+              answer.textContent = 'Voice transcription failed. Please type your answer or choose an option.';
+              console.error(error);
+            }
+          };
+          reader.readAsDataURL(new Blob(chunks, { type: mimeType }));
+        };
+        recorder.start();
+      } catch (error) {
+        voiceButton.classList.remove('listening');
+        answer.textContent = 'Microphone access was unavailable. Please type your answer or choose an option.';
+        console.error(error);
+      }
+    }
+
     if (SpeechRecognition) {
       const recognition = new SpeechRecognition();
       recognition.lang = 'en-US';
@@ -370,9 +427,15 @@
         answer.textContent = 'Voice input was unavailable. Please type your answer or choose an option.';
       });
     } else {
-      voiceButton.disabled = true;
-      voiceButton.title = 'Voice input is not supported in this browser';
-      voiceButton.setAttribute('aria-label', 'Voice input is not supported in this browser');
+      voiceButton.title = 'Record voice input';
+      voiceButton.setAttribute('aria-label', 'Record voice input');
+      voiceButton.addEventListener('click', () => {
+        if (recordedVoice && recordedVoice.state === 'recording') {
+          recordedVoice.stop();
+          return;
+        }
+        startRecordedVoiceInput();
+      });
     }
   </script>
   <script src="wizard-voice.js"></script>
