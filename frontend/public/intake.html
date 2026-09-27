@@ -510,6 +510,9 @@
           return 'Please select a start date.';
         }
 
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(endDateInput.value);
+
         if (startDate < new Date(new Date().setHours(0,0,0,0))) {
           return 'Start date must be today or in the future.';
         }
@@ -517,9 +520,6 @@
         if (!endDateInput.value) {
           return 'Please select an end date.';
         }
-
-        const startDate = new Date(startDateInput.value);
-        const endDate = new Date(endDateInput.value);
 
         if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime())) {
           return 'Please provide valid dates.';
@@ -530,6 +530,23 @@
         }
 
         return '';
+      }
+
+      function applyLocalExtraction(text) {
+        const normalized = text.trim();
+        const countyOption = Array.from(countyInput.options).find((option) =>
+          normalized.toLowerCase().includes(option.value.toLowerCase())
+        );
+        const dateMatches = normalized.match(/\b\d{4}-\d{2}-\d{2}\b/g) || [];
+        if (countyOption) countyInput.value = countyOption.value;
+        if (dateMatches[0]) startDateInput.value = dateMatches[0];
+        if (dateMatches[1]) endDateInput.value = dateMatches[1];
+        if (!projectNameInput.value.trim()) {
+          projectNameInput.value = normalized.split(/[.!?]/)[0].trim().slice(0, 80);
+        }
+        if (!descriptionInput.value.trim()) descriptionInput.value = normalized;
+        saveDraft();
+        return Boolean(countyOption || dateMatches.length || projectNameInput.value.trim());
       }
 
       [projectNameInput, companyInput, descriptionInput, countyInput, startDateInput, endDateInput].forEach((field) => {
@@ -568,6 +585,9 @@
             // Store original dates along with conflict data for display
             sessionStorage.setItem('conflictCheck', JSON.stringify({
               ...checkData,
+              title: payload.title,
+              description: payload.description,
+              company: payload.company,
               queryCounty: payload.county,
               queryStartTime: payload.startTime,
               queryEndTime: payload.endTime
@@ -594,6 +614,7 @@
               endTime: payload.endTime,
               title: payload.title,
               description: payload.description,
+              company: payload.company,
               conflictCount: result.conflicts.length,
               conflicts: result.conflicts,
               nearestWindow: result.nearestWindow || null
@@ -606,11 +627,21 @@
           }
 
           saveDraft();
-          setStatus('Project details saved successfully. No conflicts detected.', 'success');
+          sessionStorage.setItem('conflictCheck', JSON.stringify({
+            title: payload.title,
+            description: payload.description,
+            company: payload.company,
+            queryCounty: payload.county,
+            queryStartTime: payload.startTime,
+            queryEndTime: payload.endTime,
+            conflictCount: 0,
+            conflicts: []
+          }));
           if (window.BroadcastChannel) {
             const ch = new BroadcastChannel('sperry-refresh');
             ch.postMessage({ county: payload.county, refresh: true });
           }
+          window.location.href = 'conflict_check.html';
         } catch (error) {
           setStatus(error.message || 'Unable to save project details.', 'error');
         }
@@ -631,7 +662,13 @@
           const ext = data.county || data.title || 'N/A';
           setStatus('AI found: '+ext, 'success');
         } catch (e) {
-          setStatus(e.message || 'AI error', 'error');
+          const usedFallback = applyLocalExtraction(text);
+          setStatus(
+            usedFallback
+              ? 'AI unavailable. Basic details were filled locally; please review them.'
+              : 'AI unavailable. Please enter the details manually.',
+            usedFallback ? '' : 'error'
+          );
         }
       });
 
@@ -654,8 +691,11 @@
           if (data.endTime) endDateInput.value = new Date(data.endTime).toISOString().split('T')[0];
           saveDraft();
         } catch (e) {
-          out.textContent = 'Error: ' + (e.message || 'unknown');
-          out.style.color = '#c63d3d';
+          const usedFallback = applyLocalExtraction(text);
+          out.textContent = usedFallback
+            ? 'AI unavailable. Basic details were filled locally; please review the form.'
+            : 'AI unavailable. Please enter the details manually.';
+          out.style.color = usedFallback ? '#0d7d61' : '#c63d3d';
         }
       });
 
