@@ -59,6 +59,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 let selectedLayer = null;
+let lastSelectedCounty = null;
 
 fetch('florida-counties.geojson')
   .then((res) => res.json())
@@ -85,6 +86,7 @@ fetch('florida-counties.geojson')
         selectedLayer = layer;
 
         fetchCountyProjects(countyName, displayName);
+        lastSelectedCounty = countyName;
       });
 
         layer.on('mouseover', () => {

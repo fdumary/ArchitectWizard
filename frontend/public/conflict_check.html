@@ -24,18 +24,20 @@ button{background:linear-gradient(135deg,var(--primary) 0%, var(--accent) 100%);
 <main class="card">
   <span class="header-pill">Guide check</span>
   <h1>Project conflict check</h1>
-  <p id="wizardIntro" aria-live="polite">Guide note: I am the Architech Wizard. If conflicts appear, I will explain them and suggest the nearest available window for your work.</p>
-  <form id="conflictForm" novalidate>
-    <textarea id="textInput" placeholder="Example: We will upgrade the water main in Orange County from June 1 to June 30."></textarea>
-    <button type="submit">Check conflicts</button>
-  </form>
+  <form id="conflictForm" novalidate style="display:none;"></form>
   <p id="status" class="status" aria-live="polite"></p>
   <div id="result" class="result" style="display:none;"></div>
   <p style="text-align:center;margin-top:14px;color:#627d8b;font-size:0.9rem;">← <a href="intake.html">Back to intake</a> | <a href="map.html">County map</a> | <a href="onboarding.html">Start</a></p>
 </main>
 <script src="wizard-voice.js"></script>
 <script>
-  const form = document.getElementById('conflictForm');
+function fmtUTC(dateStr) {
+  if (!dateStr) return 'N/A';
+  const d = new Date(dateStr);
+  return `${String(d.getUTCMonth()+1).padStart(2,'0')}/${String(d.getUTCDate()).padStart(2,'0')}/${d.getUTCFullYear()}`;
+}
+
+const form = document.getElementById('conflictForm');
   const status = document.getElementById('status');
   const result = document.getElementById('result');
 
@@ -48,9 +50,9 @@ button{background:linear-gradient(135deg,var(--primary) 0%, var(--accent) 100%);
   function speakWizardConflict() {
     const conflicts = result.querySelectorAll('li');
     const count = conflicts.length;
-    let msg = 'Conflict check complete.';
-    if (count > 0) msg += ' There are ' + count + ' overlapping projects. Review them and consider the nearest available window.';
-    else msg += ' No conflicts found. You are clear to proceed.';
+    let msg = 'The conflict check is complete.';
+    if (count > 0) msg += ' I see ' + count + ' overlapping timelines. Study them well, and consider the nearest window for your work.';
+    else msg += ' No clashes found. You are clear to proceed.';
     speakWizard(msg);
   }
 
@@ -60,26 +62,33 @@ button{background:linear-gradient(135deg,var(--primary) 0%, var(--accent) 100%);
       const saved = sessionStorage.getItem('conflictCheck');
       if (saved) {
         const data = JSON.parse(saved);
+        const queryCounty = data.queryCounty || data.county || 'N/A';
+        const queryStartTime = data.queryStartTime || data.startTime;
+        const queryEndTime = data.queryEndTime || data.endTime;
         result.style.display = 'block';
-        result.innerHTML = '<strong>County:</strong> '+(data.county||'N/A')+
-          '<br><strong>Dates:</strong> '+(data.startTime?new Date(data.startTime).toLocaleDateString():'N/A')+
-          ' to '+(data.endTime?new Date(data.endTime).toLocaleDateString():'N/A')+
-          '<br><strong>Conflicts:</strong> '+(data.conflictCount||0)+
-          '<br><strong>Title:</strong> '+(data.title||'N/A');
+        result.innerHTML = '<strong>County:</strong> '+queryCounty+
+          '<br><strong>Dates:</strong> '+(queryStartTime?fmtUTC(queryStartTime):'N/A')+
+          ' to '+(queryEndTime?fmtUTC(queryEndTime):'N/A')+
+          '<br><strong>Conflicts:</strong> '+(data.conflictCount||0);
         if(data.conflicts && data.conflicts.length){
-          result.innerHTML += '<ul>' + data.conflicts.map(c=>'<li><strong>'+ (c.title||'Untitled') +'</strong> ('+(c.company||'Unknown')+') — '+(c.startTime?new Date(c.startTime).toLocaleDateString():'N/A')+' to '+(c.endTime?new Date(c.endTime).toLocaleDateString():'N/A')+'</li>').join('') + '</ul>';
-          const ends = data.conflicts.map(c => new Date(c.endTime || c.startTime)).filter(d => !isNaN(d));
-          if (ends.length) {
-            const latest = new Date(Math.max(...ends));
-            result.innerHTML += '<p style="margin-top:10px;color:#0d7d61;font-weight:700;">Remediation: the nearest available window for your project starts after <strong>'+latest.toLocaleDateString()+'</strong>.</p>';
+          result.innerHTML += '<ul>' + data.conflicts.map(c=>'<li><strong>'+ (c.title||'Untitled') +'</strong> ('+(c.company||'Unknown')+') — '+(c.startTime?fmtUTC(c.startTime):'N/A')+' to '+(c.endTime?fmtUTC(c.endTime):'N/A')+'</li>').join('') + '</ul>';
+          if (data.nearestWindow) {
+            result.innerHTML += '<p style="margin-top:10px;color:#0d7d61;font-weight:700;">Remediation: the nearest available window for your project starts on <strong>'+fmtUTC(data.nearestWindow)+'</strong>.</p>';
+          } else {
+            const ends = data.conflicts.map(c => new Date(c.endTime || c.startTime)).filter(d => !isNaN(d));
+            if (ends.length) {
+              const latest = new Date(Math.max(...ends));
+              const after = new Date(latest.getTime() + 24*60*60*1000);
+              result.innerHTML += '<p style="margin-top:10px;color:#0d7d61;font-weight:700;">Remediation: the nearest available window for your project starts on <strong>'+fmtUTC(new Date(after.getTime()).toISOString())+'</strong>.</p>';
+            }
           }
         }
         setStatus('Conflict check complete.', 'success');
         speakWizardConflict();
-        sessionStorage.removeItem('conflictCheck');
+        // Keep sessionStorage so refresh shows result; intake.html clears it on return
       }
     } catch(e){}
-    setTimeout(() => speakWizard('I am the Architech Wizard. Let me guide you through the conflict check.'), 800);
+    setTimeout(() => speakWizard('Ah, the conflict check, It seems a fellow wizard has already scheduled a project during that time. Go back to the previous page and edit your time selection using my orbs reccomendation.'), 800);
   });
 
   form.addEventListener('submit', async (e)=>{
@@ -102,15 +111,16 @@ button{background:linear-gradient(135deg,var(--primary) 0%, var(--accent) 100%);
         '<br><strong>Conflicts:</strong> '+(data.conflictCount||0)+
         '<br><strong>Title:</strong> '+(data.title||'N/A');
       if(data.conflicts && data.conflicts.length){
-        result.innerHTML += '<ul>' + data.conflicts.map(c=>'<li><strong>'+ (c.title||'Untitled') +'</strong> ('+(c.company||'Unknown')+') — '+(c.startTime?new Date(c.startTime).toLocaleDateString():'N/A')+' to '+(c.endTime?new Date(c.endTime).toLocaleDateString():'N/A')+'</li>').join('') + '</ul>';
-        const latestStr = data.nearestWindow ? new Date(data.nearestWindow).toLocaleDateString() : null;
+        result.innerHTML += '<ul>' + data.conflicts.map(c=>'<li><strong>'+ (c.title||'Untitled') +'</strong> ('+(c.company||'Unknown')+') — '+(c.startTime?fmtUTC(c.startTime):'N/A')+' to '+(c.endTime?fmtUTC(c.endTime):'N/A')+'</li>').join('') + '</ul>';
+        const latestStr = data.nearestWindow ? fmtUTC(data.nearestWindow) : null;
         if (latestStr) {
-          result.innerHTML += '<p style="margin-top:10px;color:#0d7d61;font-weight:700;">Remediation: the nearest available window for your project starts after <strong>'+latestStr+'</strong>.</p>';
+          result.innerHTML += '<p style="margin-top:10px;color:#0d7d61;font-weight:700;">Remediation: the nearest available window for your project starts on <strong>'+latestStr+'</strong>.</p>';
         } else {
           const ends = data.conflicts.map(c => new Date(c.endTime || c.startTime)).filter(d => !isNaN(d));
           if (ends.length) {
             const latest = new Date(Math.max(...ends));
-            result.innerHTML += '<p style="margin-top:10px;color:#0d7d61;font-weight:700;">Remediation: the nearest available window for your project starts after <strong>'+latest.toLocaleDateString()+'</strong>.</p>';
+            const after = new Date(latest.getTime() + 24*60*60*1000);
+            result.innerHTML += '<p style="margin-top:10px;color:#0d7d61;font-weight:700;">Remediation: the nearest available window for your project starts on <strong>'+fmtUTC(new Date(after.getTime()).toISOString())+'</strong>.</p>';
           }
         }
       }
