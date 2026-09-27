@@ -66,15 +66,13 @@
 - [x] Updated `index.html` redirect to wizard; linked wizard from onboarding and intake
 - [x] Added wizard speech to conflict page with remediation and nearest-window guidance
 - [x] Added wizard voice test button (`sayWizardWelcome`) on intake page
-- [x] Wired intake submit to check conflicts first via `/api/ai/check-conflicts`; redirects to conflict page if overlaps found
-- [x] Updated `TASKS.md` to track wizard voice, conflict flow, and backend wiring
-- [x] Linked `onboarding.html` CTAs to `intake.html` and `map.html`
-- [x] Added "Extract with AI" button in `intake.html` (calls `/api/ai/extract`)
-- [x] Wired ElevenLabs STT (`speech_to_text.convert`) in `backend/ai.js`; `audioBase64` → transcript → Gemini
-- [x] Updated `intake.html` voice button to record via `MediaRecorder`, send base64, auto-fill form
-- [x] Created `frontend/public/conflict.html` wired to `/api/ai/check-conflicts` + conflict list render
-- [x] Added link from `intake.html` to `conflict.html`
-- [x] Installed `elevenlabs` package; `.env` key (`ELEVENLABS_API_KEY`) present
+- [x] Wired intake submit to check conflicts first via `/api/projects/conflicts` (direct backend check), redirects to conflict page if overlaps found
+- [x] Fixed date timezone shift with `toUTCISO` so form dates stay consistent across timezones
+- [x] Updated backend conflict detection to compute next free window of the same duration as the submitted project
+- [x] Consolidated wizard voice across all pages via `wizard-voice.js` (British male, pitch `0.72`, rate `0.78`)
+- [x] Removed redundant "Wizard voice test" UI from intake page
+- [x] Updated conflict page (`conflict_check.html`) to use sessionStorage, show wizard-guided remediation, and support both AI and direct conflict checks
+- [x] Added wizard voice to `index.html`, `onboarding.html`, and `map.html` with guiding text
 
 ---
 

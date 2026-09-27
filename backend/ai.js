@@ -11,7 +11,9 @@ const PROJECT = process.env.GOOGLE_CLOUD_PROJECT || 'project-b42dca89-e71d-4808-
 const LOCATION = process.env.GEMINI_LOCATION || 'us-central1';
 const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
+const ai = process.env.GOOGLE_APPLICATION_CREDENTIALS
+  ? new GoogleGenAI({ vertexai: true, project: PROJECT, location: LOCATION })
+  : new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 const elevenlabs = new ElevenLabsClient({ apiKey: process.env.ELEVENLABS_API_KEY || '' });
 
 const SYSTEM_PROMPT = `You are an expert NLP extraction engine for a Florida utility and construction coordination platform complying with FERC Order 1920.
