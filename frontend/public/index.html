@@ -17,6 +17,7 @@
     --gold: #c9a227;
     --bg-dark: #150f28;
     --bg-panel: #1f1638;
+    }
 
     .sparkle-field {
       position: fixed;
@@ -49,10 +50,10 @@
     }
 
     .sparkle-field::after {
-    background-size: 380px 280px;
-    animation-duration: 90s, 4s;
-    animation-delay: 0s, 1.5s;
-    opacity: 0.4;
+      background-size: 380px 280px;
+      animation-duration: 90s, 4s;
+      animation-delay: 0s, 1.5s;
+      opacity: 0.55;
     }
 
     @keyframes sparkle-drift {
@@ -61,10 +62,49 @@
     }
 
     @keyframes sparkle-twinkle {
-      from { opacity: 0.3; }
-      to { opacity: 0.9; }
+    from { opacity: 0.3; }
+    to { opacity: 1; }
     }
-  }
+
+    .plus-sparkle {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.9;
+      animation: plus-twinkle 2.5s ease-in-out infinite alternate;
+    }
+
+    .plus-sparkle::before,
+    .plus-sparkle::after {
+      content: '';
+      position: absolute;
+      background: var(--gold);
+      box-shadow: 0 0 12px 2px var(--gold), 0 0 24px 4px rgba(124, 77, 255, 0.6);
+      border-radius: 2px;
+    }
+
+    .plus-sparkle::before {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      transform: translateY(-50%);
+    }
+
+    .plus-sparkle::after {
+    left: 50%;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    transform: translateX(-50%);
+    }
+
+    @keyframes plus-twinkle {
+      from { opacity: 0.4; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1.15); }
+    }
 
   * { box-sizing: border-box; }
 
@@ -235,6 +275,13 @@
 </head>
 <body>
   <div class="sparkle-field" aria-hidden="true"></div>
+  <div class="sparkle-field" aria-hidden="true"></div>
+  <div class="plus-sparkle" style="top: 15%; left: 10%;" aria-hidden="true"></div>
+  <div class="plus-sparkle" style="top: 25%; left: 85%; animation-delay: 0.5s;" aria-hidden="true"></div>
+  <div class="plus-sparkle" style="top: 60%; left: 5%; animation-delay: 1s;" aria-hidden="true"></div>
+  <div class="plus-sparkle" style="top: 75%; left: 90%; animation-delay: 1.5s;" aria-hidden="true"></div>
+  <div class="plus-sparkle" style="top: 40%; left: 92%; animation-delay: 0.8s;" aria-hidden="true"></div>
+  <div class="plus-sparkle" style="top: 85%; left: 15%; animation-delay: 2s;" aria-hidden="true"></div>
   <main class="page">
     <img class="wizard-art" src="assets/wizard icon.png" alt="Blue wizard hat" />
     <h1>Welcome</h1>

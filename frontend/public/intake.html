@@ -4,201 +4,324 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Project Intake Wizard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IM+Fell+English&display=swap" rel="stylesheet">
     <style>
       :root {
-        --bg: #eaf6ff;
-        --panel: #f9fbff;
-        --primary: #1c4dbd;
-        --primary-dark: #112f76;
-        --primary-soft: #dfeaff;
-        --accent: #21c7cf;
-        --accent-soft: #dffaf8;
-        --text: #16314a;
-        --muted: #5f7a90;
-        --border: #d5e2f2;
-        --success: #0d8b71;
-        --error: #c53b48;
-      }
+      --bg-dark: #150f28;
+      --bg-panel: #2b1f4d;
+      --card-bg: #2f2358;
+      --primary: #7c4dff;
+      --primary-dark: #5a32d6;
+      --primary-soft: #3a2d66;
+      --accent: #c9a227;
+      --accent-soft: #3a2d52;
+      --text: #ece3ff;
+      --muted: #b3a4d9;
+      --border: #4a3b7a;
+      --success: #4fd6a8;
+      --error: #ff6b6b;
+    }
+      
+    .sparkle-field {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-      * { box-sizing: border-box; }
+    .sparkle-field::before,
+    .sparkle-field::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(3px 3px at 20px 30px, var(--accent), transparent),
+        radial-gradient(4px 4px at 160px 120px, var(--text), transparent),
+        radial-gradient(2px 2px at 90px 200px, var(--accent), transparent),
+        radial-gradient(3px 3px at 280px 60px, var(--text), transparent),
+        radial-gradient(4px 4px at 340px 220px, var(--accent), transparent),
+        radial-gradient(2px 2px at 420px 140px, var(--text), transparent),
+        radial-gradient(3px 3px at 60px 320px, var(--accent), transparent),
+        radial-gradient(4px 4px at 500px 90px, var(--text), transparent),
+        radial-gradient(3px 3px at 130px 380px, var(--accent), transparent),
+        radial-gradient(2px 2px at 240px 340px, var(--text), transparent);
+      background-repeat: repeat;
+      background-size: 300px 220px;
+      animation: sparkle-drift 60s linear infinite, sparkle-twinkle 3s ease-in-out infinite alternate;
+      opacity: 0.85;
+    }
 
-      body {
-        margin: 0;
-        min-height: 100vh;
-        background: radial-gradient(circle at top, #f4fbff 0%, #dfeeff 30%, #d8ebff 100%);
-        font-family: Arial, Helvetica, sans-serif;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
-      }
+    .sparkle-field::after {
+      background-size: 380px 280px;
+      animation-duration: 90s, 4s;
+      animation-delay: 0s, 1.5s;
+      opacity: 0.55;
+    }
 
-      .wizard-card {
-        width: min(100%, 720px);
-        background: rgba(255,255,255,0.88);
-        border: 1px solid rgba(19, 91, 180, 0.12);
-        border-radius: 24px;
-        overflow: hidden;
-        box-shadow: 0 22px 50px rgba(14, 38, 78, 0.12);
-        backdrop-filter: blur(4px);
-      }
+    @keyframes sparkle-drift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-400px); }
+    }
 
-      .hero {
-        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 40%, var(--accent) 100%);
-        color: #fff;
-        padding: 30px 28px 24px;
-        border-bottom: 1px solid rgba(255,255,255,0.18);
-      }
+    @keyframes sparkle-twinkle {
+    from { opacity: 0.3; }
+    to { opacity: 1; }
+    }
 
-      .hero h1 {
-        margin: 0;
-        font-size: clamp(2rem, 2.5vw, 2.8rem);
-        letter-spacing: 0.02em;
-      }
+    .plus-sparkle {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.9;
+      animation: plus-twinkle 2.5s ease-in-out infinite alternate;
+    }
 
-      .hero p {
-        margin: 10px 0 0;
-        color: rgba(255,255,255,0.9);
-        line-height: 1.5;
-      }
+    .plus-sparkle::before,
+    .plus-sparkle::after {
+      content: '';
+      position: absolute;
+      background: var(--accent);
+      box-shadow: 0 0 12px 2px var(--accent), 0 0 24px 4px rgba(201, 162, 39, 0.6);
+      border-radius: 2px;
+    }
 
-      form {
-        padding: 28px;
-        background: linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%);
-      }
+    .plus-sparkle::before {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      transform: translateY(-50%);
+    }
 
-      .field {
-        margin-bottom: 18px;
-      }
+    .plus-sparkle::after {
+    left: 50%;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    transform: translateX(-50%);
+    }
 
-      label {
-        display: block;
-        font-weight: 700;
-        margin-bottom: 8px;
-        color: var(--text);
-      }
+    @keyframes plus-twinkle {
+      from { opacity: 0.4; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1.15); }
+    }
 
-      input,
-      textarea,
-      select {
-        width: 100%;
-        background: #f7fbff;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 12px 14px;
-        color: var(--text);
-        font-size: 1rem;
-        box-shadow: inset 0 1px 2px rgba(17, 47, 118, 0.04);
-      }
+    .plus-sparkle {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.9;
+      animation: plus-twinkle 2.5s ease-in-out infinite alternate;
+    }
 
-      textarea {
-        min-height: 100px;
-        resize: vertical;
-      }
 
-      .row {
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #2b1f4d 0%, #150f28 60%, #0d0a1a 100%);
+      font-family: 'IM Fell English', Georgia, serif;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .wizard-card {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 720px);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 0 44px rgba(124, 77, 255, 0.3);
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary-dark) 60%, var(--primary) 100%);
+      color: #fff;
+      padding: 30px 28px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 2.5vw, 2.8rem);
+      letter-spacing: 0.02em;
+      color: var(--accent);
+      text-shadow: 0 0 18px rgba(201, 162, 39, 0.4);
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      color: rgba(236, 227, 255, 0.9);
+      line-height: 1.5;
+    }
+
+    form {
+      padding: 28px;
+      background: var(--card-bg);
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-size: 1rem;
+      font-family: inherit;
+      box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #9689c2;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .voice-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    .voice-button,
+    .primary-button,
+    .secondary-button {
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      padding: 12px 16px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .voice-button:hover,
+    .primary-button:hover,
+    .secondary-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .voice-button {
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid rgba(201, 162, 39, 0.4);
+      box-shadow: 0 0 12px rgba(201, 162, 39, 0.18);
+    }
+
+    .primary-button {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      width: 100%;
+      box-shadow: 0 0 20px rgba(124, 77, 255, 0.45);
+    }
+
+    .secondary-button {
+      background: var(--primary-soft);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .guide-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary-soft);
+      color: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .helper-text {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .status {
+      min-height: 24px;
+      margin-top: 16px;
+      font-size: 0.96rem;
+      font-weight: 700;
+    }
+
+    .status.success { color: var(--success); }
+    .status.error { color: var(--error); }
+
+    a { color: var(--accent); }
+    a:hover { color: var(--text); }
+
+    @media (max-width: 640px) {
+      .row, .actions {
+        grid-template-columns: 1fr;
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 16px;
       }
+    }
 
-      .voice-row {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 8px;
-      }
-
-      .voice-button,
-      .primary-button,
-      .secondary-button {
-        border: none;
-        border-radius: 12px;
-        font-weight: 700;
-        cursor: pointer;
-        padding: 12px 16px;
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
-      }
-
-      .voice-button:hover,
-      .primary-button:hover,
-      .secondary-button:hover {
-        transform: translateY(-1px);
-      }
-
-      .voice-button {
-        background: var(--accent-soft);
-        color: var(--primary-dark);
-        border: 1px solid rgba(33, 199, 207, 0.3);
-        box-shadow: 0 4px 12px rgba(33, 199, 207, 0.12);
-      }
-
-      .primary-button {
-        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-        color: white;
-        width: 100%;
-        box-shadow: 0 10px 18px rgba(28, 77, 189, 0.22);
-      }
-
-      .secondary-button {
-        background: var(--primary-soft);
-        color: var(--primary-dark);
-      }
-
-      .actions {
-        display: flex;
-        gap: 12px;
-        margin-top: 12px;
-      }
-
-      .guide-banner {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: var(--primary-soft);
-        color: var(--primary-dark);
-        border: 1px solid rgba(28, 77, 189, 0.15);
-        border-radius: 999px;
-        padding: 7px 12px;
-        font-size: 0.74rem;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        margin-bottom: 16px;
-      }
-
-      .helper-text {
-        margin: 0 0 12px;
-        color: var(--muted);
-        font-size: 0.92rem;
-        line-height: 1.5;
-      }
-
-      .status {
-        min-height: 24px;
-        margin-top: 16px;
-        font-size: 0.96rem;
-        font-weight: 700;
-      }
-
-      .status.success { color: var(--success); }
-      .status.error { color: var(--error); }
-
-      @media (max-width: 640px) {
-        .row, .actions {
-          grid-template-columns: 1fr;
-          display: grid;
-        }
-      }
     </style>
   </head>
   <body>
+    <div class="sparkle-field" aria-hidden="true"></div>
+    <div class="plus-sparkle" style="top: 12%; left: 8%;" aria-hidden="true"></div>
+    <div class="plus-sparkle" style="top: 20%; left: 90%; animation-delay: 0.5s;" aria-hidden="true"></div>
+    <div class="plus-sparkle" style="top: 70%; left: 5%; animation-delay: 1s;" aria-hidden="true"></div>
+    <div class="plus-sparkle" style="top: 85%; left: 92%; animation-delay: 1.5s;" aria-hidden="true"></div>
+    <div class="plus-sparkle" style="top: 45%; left: 95%; animation-delay: 0.8s;" aria-hidden="true"></div>
     <main class="wizard-card">
       <section class="hero">
         <h1>Project intake</h1>
         <p>Welcome. I am the Architech Wizard. You can use your voice to fill this form out — just press the microphone button. Here are some quick tips: mention the county, the dates, and the company name clearly.</p>
       </section>
 
-      <div id="wizardTip" style="padding:14px 20px;background:rgba(122,209,255,0.08);border:1px solid rgba(122,209,255,0.18);border-radius:14px;margin:0 0 20px;color:#16314a;font-size:0.95rem;line-height:1.5;">
+      <div id="wizardTip" style="padding:14px 20px;background:var(--accent-soft);border:1px solid var(--border);border-radius:14px;margin:0 0 20px;color:var(--text);font-size:0.95rem;line-height:1.5;">
         <strong>Wizard tip:</strong> Speak naturally. For example: <em>"FPL will upgrade pipes in Orange County from June 1 to June 30."</em>
       </div>
 
@@ -222,10 +345,73 @@
           <div class="field">
             <label for="county">County</label>
             <select id="county" name="county">
-              <option value="Orange">Orange</option>
-              <option value="Volusia">Volusia</option>
+              <option value="Alachua">Alachua</option>
+              <option value="Baker">Baker</option>
+              <option value="Bay">Bay</option>
+              <option value="Bradford">Bradford</option>
+              <option value="Brevard">Brevard</option>
+              <option value="Broward">Broward</option>
+              <option value="Calhoun">Calhoun</option>
+              <option value="Charlotte">Charlotte</option>
+              <option value="Citrus">Citrus</option>
+              <option value="Clay">Clay</option>
+              <option value="Collier">Collier</option>
+              <option value="Columbia">Columbia</option>
+              <option value="Dade">Miami-Dade</option>
+              <option value="DeSoto">DeSoto</option>
+              <option value="Dixie">Dixie</option>
+              <option value="Duval">Duval</option>
+              <option value="Escambia">Escambia</option>
+              <option value="Flagler">Flagler</option>
+              <option value="Franklin">Franklin</option>
+              <option value="Gadsden">Gadsden</option>
+              <option value="Gilchrist">Gilchrist</option>
+              <option value="Glades">Glades</option>
+              <option value="Gulf">Gulf</option>
+              <option value="Hamilton">Hamilton</option>
+              <option value="Hardee">Hardee</option>
+              <option value="Hendry">Hendry</option>
+              <option value="Hernando">Hernando</option>
+              <option value="Highlands">Highlands</option>
+              <option value="Hillsborough">Hillsborough</option>
+              <option value="Holmes">Holmes</option>
+              <option value="Indian River">Indian River</option>
+              <option value="Jackson">Jackson</option>
+              <option value="Jefferson">Jefferson</option>
+              <option value="Lafayette">Lafayette</option>
+              <option value="Lake">Lake</option>
+              <option value="Lee">Lee</option>
               <option value="Leon">Leon</option>
-              <option value="Miami-Dade">Miami-Dade</option>
+              <option value="Levy">Levy</option>
+              <option value="Liberty">Liberty</option>
+              <option value="Madison">Madison</option>
+              <option value="Manatee">Manatee</option>
+              <option value="Marion">Marion</option>
+              <option value="Martin">Martin</option>
+              <option value="Monroe">Monroe</option>
+              <option value="Nassau">Nassau</option>
+              <option value="Okaloosa">Okaloosa</option>
+              <option value="Okeechobee">Okeechobee</option>
+              <option value="Orange">Orange</option>
+              <option value="Osceola">Osceola</option>
+              <option value="Palm Beach">Palm Beach</option>
+              <option value="Pasco">Pasco</option>
+              <option value="Pinellas">Pinellas</option>
+              <option value="Polk">Polk</option>
+              <option value="Putnam">Putnam</option>
+              <option value="Santa Rosa">Santa Rosa</option>
+              <option value="Sarasota">Sarasota</option>
+              <option value="Seminole">Seminole</option>
+              <option value="St. Johns">St. Johns</option>
+              <option value="St. Lucie">St. Lucie</option>
+              <option value="Sumter">Sumter</option>
+              <option value="Suwanee">Suwanee</option>
+              <option value="Taylor">Taylor</option>
+              <option value="Union">Union</option>
+              <option value="Volusia">Volusia</option>
+              <option value="Wakulla">Wakulla</option>
+              <option value="Walton">Walton</option>
+              <option value="Washington">Washington</option>
             </select>
           </div>
 
@@ -253,21 +439,17 @@
           <button type="button" class="secondary-button" id="clearButton">Clear</button>
         </div>
         <p class="status" id="status" aria-live="polite"></p>
-        <p id="transcript" style="font-size:0.85rem;color:#627d8b;margin-top:8px;min-height:1.4em;">Voice transcript will appear here.</p>
+        <p id="transcript" style="font-size:0.85rem;color:var(--muted);margin-top:8px;min-height:1.4em;">Voice transcript will appear here.</p>
 
-        <div style="margin-top:14px;padding:16px;background:#f9fbfd;border:1px solid #dfeaf5;border-radius:12px;">
-          <label for="demoText" style="font-weight:700;color:#183246;">Quick text demo (no speaking) v1:</label>
-          <textarea id="demoText" rows="2" style="width:100%;margin-top:6px;padding:10px;border:1px solid #dfeaf5;border-radius:10px;resize:vertical;font-size:0.95rem;" placeholder="Ex: Upgrade water main in Orange County from June 1 to June 30"></textarea>
+        <div style="margin-top:14px;padding:16px;background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;">
+          <label for="demoText" style="font-weight:700;color:var(--text);">Quick text demo (no speaking) v1:</label>
+          <textarea id="demoText" rows="2" style="width:100%;margin-top:6px;padding:10px;background:var(--card-bg);color:var(--text);border:1px solid var(--border);border-radius:10px;resize:vertical;font-size:0.95rem;" placeholder="Ex: Upgrade water main in Orange County from June 1 to June 30"></textarea>
           <button type="button" class="secondary-button" id="demoButton" style="margin-top:8px;">Run AI extract on text</button>
-          <p id="demoResult" style="margin-top:8px;font-size:0.9rem;color:#183246;min-height:1.2em;"></p>
+          <p id="demoResult" style="margin-top:8px;font-size:0.9rem;color:var(--text);min-height:1.2em;"></p>
         </div>
 
-        <p style="margin-top:12px;font-size:0.9rem;color:#627d8b;">← <a href="wizard.html">Back to wizard</a> | <a href="onboarding.html">Back to start</a> | <a href="map.html">County map</a></p>
+        <p style="margin-top:12px;font-size:0.9rem;color:#627d8b;">← <a href="index.html">Back to wizard</a> | <a href="onboarding.html">Back to start</a> | <a href="map.html">County map</a></p>
 
-        <div style="margin-top:10px;padding:14px;background:#f9fbfd;border:1px solid #dfeaf5;border-radius:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <div><strong style="color:#1b4fbd;">Wizard voice test</strong> <span style="font-size:0.85rem;color:#627d8b;">— hear him say welcome.</span></div>
-          <button type="button" class="voice-button" id="wizardVoiceBtn" onclick="sayWizardWelcome()">Test wizard voice</button>
-        </div>
       </form>
     </main>
 
@@ -360,32 +542,36 @@
           return;
         }
 
+        const toUTCISO = (dateStr) => {
+          const [y,m,d] = dateStr.split('-').map(Number);
+          return new Date(Date.UTC(y, m-1, d)).toISOString();
+        };
+
         const payload = {
           title: projectNameInput.value.trim(),
           description: descriptionInput.value.trim(),
           county: countyInput.value,
-          startTime: new Date(startDateInput.value).toISOString(),
-          endTime: new Date(endDateInput.value).toISOString(),
+          startTime: toUTCISO(startDateInput.value),
+          endTime: toUTCISO(endDateInput.value),
           company: companyInput.value.trim() || 'Unspecified'
         };
 
-        // First check for conflicts
+        // First check for conflicts using form dates directly
         try {
-          const text = payload.description || payload.title || (payload.company + ' project in ' + payload.county);
-          const checkRes = await fetch('/api/ai/check-conflicts', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text, county: payload.county, startTime: payload.startTime, endTime: payload.endTime })
-          });
+          const checkRes = await fetch('/api/projects/conflicts?county='+encodeURIComponent(payload.county)+'&startTime='+encodeURIComponent(payload.startTime)+'&endTime='+encodeURIComponent(payload.endTime));
           const checkData = await checkRes.json();
           if (checkData.conflictCount > 0) {
-            // Store for conflict page
-            sessionStorage.setItem('conflictCheck', JSON.stringify(checkData));
-            window.location.href = 'conflict.html';
+            // Store original dates along with conflict data for display
+            sessionStorage.setItem('conflictCheck', JSON.stringify({
+              ...checkData,
+              queryCounty: payload.county,
+              queryStartTime: payload.startTime,
+              queryEndTime: payload.endTime
+            }));
+            window.location.href = 'conflict_check.html';
             return;
           }
         } catch (e) {
-          // If conflict check fails, proceed to save anyway (fallback)
           console.error('Conflict check error:', e);
         }
 
@@ -397,6 +583,20 @@
           });
 
           const result = await response.json();
+          if (response.status === 409 && result.conflicts) {
+            sessionStorage.setItem('conflictCheck', JSON.stringify({
+              county: payload.county,
+              startTime: payload.startTime,
+              endTime: payload.endTime,
+              title: payload.title,
+              description: payload.description,
+              conflictCount: result.conflicts.length,
+              conflicts: result.conflicts,
+              nearestWindow: result.nearestWindow || null
+            }));
+            window.location.href = 'conflict_check.html';
+            return;
+          }
           if (!response.ok) {
             throw new Error(result.error || 'Failed to save project details.');
           }
@@ -514,13 +714,16 @@
 
       restoreDraft();
 
+      // Clear any lingering conflict state when returning to intake
+      sessionStorage.removeItem('conflictCheck');
+
       // Welcome with same wizard voice
       window.addEventListener('load', () => {
-        setTimeout(() => speakWizard('Welcome. I am the Architech Wizard. You can use your voice to fill this form out.'), 800);
+        setTimeout(() => speakWizard('Greetings, builder. You may speak your project into being—tell me the county, the dates, and the company of your project and i shall ponder my orb and see if there are any conflicts.'), 800);
       });
 
       function sayWizardWelcome() {
-        speakWizard('Welcome. I am the Architech Wizard.');
+        speakWizard('Greetings. Speak freely, and I shall assist you.');
       }
     </script>
   </body>
