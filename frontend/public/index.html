@@ -264,5 +264,11 @@
       voiceButton.setAttribute('aria-label', 'Voice input is not supported in this browser');
     }
   </script>
+  <script src="wizard-voice.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      setTimeout(() => speakWizard('Greetings, traveler. I am the Architech Wizard. I shall guide you through this realm of construction and coordination. Are you a citizen seeking local knowledge, or a company ready to submit your project?'), 800);
+    });
+  </script>
 </body>
 </html>

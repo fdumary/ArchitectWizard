@@ -75,6 +75,30 @@ app.post('/api/projects', async (req, res) => {
       return res.status(409).json({ error: 'Project already exists for this title and county' });
     }
 
+    // Check for conflicts before saving
+    const queryStart = new Date(startTime);
+    const queryEnd = new Date(endTime);
+    const projectDurationMs = queryEnd.getTime() - queryStart.getTime();
+    const conflictCheck = await projectsCollection.find({
+      county: { $regex: new RegExp(`^\\s*${cleanCounty}\\s*$`, 'i') },
+      startTime: { $lte: queryEnd },
+      endTime: { $gte: queryStart },
+    }).sort({ startTime: 1 }).toArray();
+    if (conflictCheck.length > 0) {
+      // Find the next free window of the same duration after the conflicts
+      let candidateStart = new Date(queryStart);
+      for (const c of conflictCheck) {
+        const cStart = new Date(c.startTime);
+        const cEnd = new Date(c.endTime);
+        if (candidateStart.getTime() + projectDurationMs <= cStart.getTime()) {
+          break; // free window found before this conflict
+        }
+        candidateStart = new Date(cEnd.getTime() + 24*60*60*1000); // move past this conflict
+      }
+      const nearestWindow = candidateStart;
+      return res.status(409).json({ error: 'Project conflicts with existing schedule', conflicts: conflictCheck, nearestWindow: nearestWindow.toISOString() });
+    }
+
     const newProject = {
       title: cleanTitle,
       description: description || '',
@@ -135,7 +159,18 @@ app.post('/api/ai/check-conflicts', async (req, res) => {
       })
       .sort({ startTime: 1 })
       .toArray();
-    const nearestWindow = conflicts.length ? new Date(Math.max(...conflicts.map(c => new Date(c.endTime || c.startTime)))) : null;
+    const projectDurationMs = new Date(endTime).getTime() - new Date(startTime).getTime();
+    // Find next free window of the same duration as the input project
+    let candidateStart = new Date(startTime);
+    for (const c of conflicts) {
+      const cStart = new Date(c.startTime);
+      const cEnd = new Date(c.endTime);
+      if (candidateStart.getTime() + projectDurationMs <= cStart.getTime()) {
+        break;
+      }
+      candidateStart = new Date(cEnd.getTime() + 24*60*60*1000);
+    }
+    const nearestWindow = candidateStart;
     res.json({ success: true, county, startTime, endTime, title, description, conflictCount: conflicts.length, conflicts, nearestWindow: nearestWindow ? nearestWindow.toISOString() : null });
   } catch (err) {
     console.error('AI conflict check error:', err.message || err);
@@ -187,12 +222,22 @@ app.get('/api/projects/conflicts', async (req, res) => {
       .sort({ startTime: 1 })
       .toArray();
 
-    const nearestWindow = conflicts.length ? new Date(Math.max(...conflicts.map(c => new Date(c.endTime || c.startTime)))) : null;
+    const projectDurationMs = queryEnd.getTime() - queryStart.getTime();
+    let candidateStart = new Date(queryStart);
+    for (const c of conflicts) {
+      const cStart = new Date(c.startTime);
+      const cEnd = new Date(c.endTime);
+      if (candidateStart.getTime() + projectDurationMs <= cStart.getTime()) {
+        break;
+      }
+      candidateStart = new Date(cEnd.getTime() + 24*60*60*1000);
+    }
+    const nearestWindow = candidateStart;
     res.json({
       county,
       conflictCount: conflicts.length,
       conflicts,
-      nearestWindow: nearestWindow ? nearestWindow.toISOString() : null
+      nearestWindow: nearestWindow.toISOString()
     });
   } catch (err) {
     console.error(err);
