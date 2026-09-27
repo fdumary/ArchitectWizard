@@ -172,6 +172,18 @@ const form = document.getElementById('conflictForm');
         const queryCounty = data.queryCounty || data.county || 'N/A';
         const queryStartTime = data.queryStartTime || data.startTime;
         const queryEndTime = data.queryEndTime || data.endTime;
+        if (data.conflictCount > 0) {
+          const conflictParams = new URLSearchParams({
+            title: data.title || 'New project',
+            description: data.description || '',
+            company: data.company || 'Unspecified',
+            county: queryCounty,
+            startTime: queryStartTime || '',
+            endTime: queryEndTime || ''
+          });
+          window.location.replace('conflict.html?' + conflictParams.toString());
+          return;
+        }
         result.style.display = 'block';
         result.innerHTML = '<strong>County:</strong> '+queryCounty+
           '<br><strong>Dates:</strong> '+(queryStartTime?fmtUTC(queryStartTime):'N/A')+
