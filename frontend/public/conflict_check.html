@@ -85,7 +85,7 @@ const form = document.getElementById('conflictForm');
         }
         setStatus('Conflict check complete.', 'success');
         speakWizardConflict();
-        sessionStorage.removeItem('conflictCheck');
+        // Keep sessionStorage so refresh shows result; intake.html clears it on return
       }
     } catch(e){}
     setTimeout(() => speakWizard('Ah, the conflict check, It seems a fellow wizard has already scheduled a project during that time. Go back to the previous page and edit your time selection using my orbs reccomendation.'), 800);

@@ -164,6 +164,14 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="map.js"></script>
+    <script>
+      const refreshChannel = new BroadcastChannel('sperry-refresh');
+      refreshChannel.onmessage = (event) => {
+        if (window.lastSelectedCounty) {
+          fetchCountyProjects(window.lastSelectedCounty, window.lastSelectedCounty);
+        }
+      };
+    </script>
     <script src="wizard-voice.js"></script>
     <script>
       window.addEventListener('load', () => {
