@@ -705,60 +705,102 @@
         setStatus('Draft cleared.', 'success');
       });
 
-      document.getElementById('voiceButton').addEventListener('click', async () => {
-        if (!navigator.mediaDevices || !window.MediaRecorder) {
-          setStatus('Recording not supported.', 'error'); return;
+      let activeRecorder = null;
+      let activeStream = null;
+      let stopRecording = null;
+
+      function showRecordedAudio(blob) {
+        let preview = document.getElementById('recordedAudio');
+        if (!preview) {
+          preview = document.createElement('audio');
+          preview.id = 'recordedAudio';
+          preview.controls = true;
+          preview.style.cssText = 'display:block;width:100%;margin-top:10px;';
+          document.getElementById('transcript').insertAdjacentElement('afterend', preview);
         }
-        setStatus('Recording... press button again to stop.');
+        if (preview.src) URL.revokeObjectURL(preview.src);
+        preview.src = URL.createObjectURL(blob);
+      }
+
+      function applyRecordedFallback() {
+        const text = descriptionInput.value.trim();
+        const usedFallback = applyLocalExtraction(text);
+        document.getElementById('transcript').textContent = text
+          ? 'Recorded audio saved. Using the text already entered in the form.'
+          : 'Recorded audio saved. Please enter the project details manually.';
+        setStatus(
+          usedFallback
+            ? 'Recording saved. AI unavailable; existing form text was used.'
+            : 'Recording saved. Please complete the form manually.',
+          usedFallback ? '' : 'error'
+        );
+      }
+
+      document.getElementById('voiceButton').addEventListener('click', async () => {
+        if (activeRecorder && activeRecorder.state === 'recording') {
+          stopRecording();
+          return;
+        }
+        if (!navigator.mediaDevices || !window.MediaRecorder) {
+          setStatus('Recording is not supported in this browser.', 'error');
+          return;
+        }
+
         try {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          const mediaRecorder = new MediaRecorder(stream);
+          activeStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+            ? 'audio/webm;codecs=opus'
+            : MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : 'audio/webm';
+          activeRecorder = new MediaRecorder(activeStream, { mimeType });
           const chunks = [];
-          mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
-          mediaRecorder.start();
-          let stopped = false;
-          const stopHandler = () => {
-            if (stopped || mediaRecorder.state === 'inactive') return;
-            stopped = true;
-            mediaRecorder.stop();
-            stream.getTracks().forEach(t => t.stop());
+          activeRecorder.ondataavailable = (event) => {
+            if (event.data.size > 0) chunks.push(event.data);
           };
-          document.getElementById('voiceButton').addEventListener('click', stopHandler, { once: true });
-          setTimeout(stopHandler, 6000);
-          mediaRecorder.onstop = async () => {
-            const blob = new Blob(chunks, { type: 'audio/webm' });
+          activeRecorder.onstop = async () => {
+            activeStream.getTracks().forEach((track) => track.stop());
+            activeStream = null;
+            const blob = new Blob(chunks, { type: mimeType });
+            showRecordedAudio(blob);
+            setStatus('Recording saved. Sending it for transcription...');
             const reader = new FileReader();
             reader.onloadend = async () => {
-              const base64 = reader.result.split(',')[1];
-              setStatus('Sending audio to Eleven Labs → Gemini...');
               let data = null;
               try {
                 const res = await fetch('/api/ai/extract', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ audioBase64: base64, mimeType: 'audio/webm' })
+                  body: JSON.stringify({ audioBase64: reader.result.split(',')[1], mimeType })
                 });
                 data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'AI failed');
+                if (!res.ok) throw new Error(data.detail || data.error || 'AI failed');
                 if (data.title) projectNameInput.value = data.title;
                 if (data.county) countyInput.value = data.county;
                 if (data.company) companyInput.value = data.company;
                 if (data.description) descriptionInput.value = data.description;
-                if (data.company) companyInput.value = data.company;
                 if (data.startTime) startDateInput.value = new Date(data.startTime).toISOString().split('T')[0];
                 if (data.endTime) endDateInput.value = new Date(data.endTime).toISOString().split('T')[0];
                 saveDraft();
                 document.getElementById('transcript').textContent = 'Heard: ' + (data.transcript || 'No transcript');
                 setStatus('Filled from voice: ' + (data.county || data.title || 'OK'), 'success');
-              } catch (e) {
-                const detail = data && data.detail ? ': ' + data.detail : '';
-                setStatus('Audio parsing failed: ' + (e.message || 'unknown') + detail, 'error');
+              } catch (error) {
+                console.error('Audio parsing failed:', error, data && data.detail);
+                applyRecordedFallback();
               }
             };
             reader.readAsDataURL(blob);
           };
-        } catch (e) {
-          setStatus('Microphone error: ' + (e.message || ''), 'error');
+          activeRecorder.start(250);
+          setStatus('Recording... press the button again to stop (up to 10 seconds).');
+          stopRecording = () => {
+            if (activeRecorder && activeRecorder.state === 'recording') activeRecorder.stop();
+          };
+          window.setTimeout(() => {
+            if (activeRecorder && activeRecorder.state === 'recording') stopRecording();
+          }, 10000);
+        } catch (error) {
+          if (activeStream) activeStream.getTracks().forEach((track) => track.stop());
+          activeStream = null;
+          setStatus('Microphone error: ' + (error.message || 'access denied'), 'error');
         }
       });
 

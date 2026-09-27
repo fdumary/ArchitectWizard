@@ -9,7 +9,7 @@ const { ElevenLabsClient } = require('elevenlabs');
 
 const PROJECT = process.env.GOOGLE_CLOUD_PROJECT || 'project-b42dca89-e71d-4808-91b';
 const LOCATION = process.env.GEMINI_LOCATION || 'us-central1';
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite';
 
 const ai = process.env.GOOGLE_APPLICATION_CREDENTIALS
   ? new GoogleGenAI({ vertexai: true, project: PROJECT, location: LOCATION })

@@ -424,7 +424,8 @@
       recognition.addEventListener('end', () => voiceButton.classList.remove('listening'));
       recognition.addEventListener('error', () => {
         voiceButton.classList.remove('listening');
-        answer.textContent = 'Voice input was unavailable. Please type your answer or choose an option.';
+        answer.textContent = 'Browser speech recognition was unavailable. Starting microphone recording...';
+        startRecordedVoiceInput();
       });
     } else {
       voiceButton.title = 'Record voice input';
