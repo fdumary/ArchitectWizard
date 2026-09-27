@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test:ai": "node ai.test.js"
+    "test:ai": "node ai.test.js",
+    "deploy": "echo 'Deploy to GoDaddy (shadow-wizard-architect-gang.us) — configure HTTPS / PM2 / Docker in .env'"
   },
   "dependencies": {
     "@google/genai": "^2.24.0",
