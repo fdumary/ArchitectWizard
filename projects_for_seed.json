@@ -1,0 +1,1090 @@
+[
+  {
+    "title": "I-75 Northbound Resurfacing - Exit 384 to Exit 399",
+    "company": "Florida DOT",
+    "county": "Alachua",
+    "description": "I-75 Northbound Resurfacing - Exit 384 to Exit 399",
+    "startTime": "2026-11-01T07:00:00Z",
+    "endTime": "2027-03-15T18:00:00Z"
+  },
+  {
+    "title": "I-75 Northbound Resurfacing - Exit 384 to Exit 399",
+    "company": "Florida DOT",
+    "county": "Alachua",
+    "description": "I-75 Northbound Resurfacing - Exit 384 to Exit 399",
+    "startTime": "2026-11-01T07:00:00Z",
+    "endTime": "2027-03-15T18:00:00Z"
+  },
+  {
+    "title": "SR 228 Roadway Widening - Macclenny to Lake City",
+    "company": "Baker County Engineering",
+    "county": "Baker",
+    "description": "SR 228 Roadway Widening - Macclenny to Lake City",
+    "startTime": "2026-09-15T08:00:00Z",
+    "endTime": "2026-12-20T17:00:00Z"
+  },
+  {
+    "title": "SR 228 Roadway Widening - Macclenny to Lake City",
+    "company": "Baker County Engineering",
+    "county": "Baker",
+    "description": "SR 228 Roadway Widening - Macclenny to Lake City",
+    "startTime": "2026-09-15T08:00:00Z",
+    "endTime": "2026-12-20T17:00:00Z"
+  },
+  {
+    "title": "US 98 Coastal Highway Upgrade - Panama City Beach Segment",
+    "company": "Bay County Public Works",
+    "county": "Bay",
+    "description": "US 98 Coastal Highway Upgrade - Panama City Beach Segment",
+    "startTime": "2026-10-10T07:30:00Z",
+    "endTime": "2027-02-28T17:30:00Z"
+  },
+  {
+    "title": "US 98 Coastal Highway Upgrade - Panama City Beach Segment",
+    "company": "Bay County Public Works",
+    "county": "Bay",
+    "description": "US 98 Coastal Highway Upgrade - Panama City Beach Segment",
+    "startTime": "2026-10-10T07:30:00Z",
+    "endTime": "2027-02-28T17:30:00Z"
+  },
+  {
+    "title": "US 301 Bridge Replacement - Santa Fe River Crossing",
+    "company": "Florida DOT",
+    "county": "Bradford",
+    "description": "US 301 Bridge Replacement - Santa Fe River Crossing",
+    "startTime": "2027-01-10T08:00:00Z",
+    "endTime": "2027-08-30T18:00:00Z"
+  },
+  {
+    "title": "US 301 Bridge Replacement - Santa Fe River Crossing",
+    "company": "Florida DOT",
+    "county": "Bradford",
+    "description": "US 301 Bridge Replacement - Santa Fe River Crossing",
+    "startTime": "2027-01-10T08:00:00Z",
+    "endTime": "2027-08-30T18:00:00Z"
+  },
+  {
+    "title": "SR 528 Space Coast Parkway Resurfacing - Titusville Exit",
+    "company": "Brevard County",
+    "county": "Brevard",
+    "description": "SR 528 Space Coast Parkway Resurfacing - Titusville Exit",
+    "startTime": "2026-11-20T07:00:00Z",
+    "endTime": "2027-02-15T18:00:00Z"
+  },
+  {
+    "title": "SR 528 Space Coast Parkway Resurfacing - Titusville Exit",
+    "company": "Brevard County",
+    "county": "Brevard",
+    "description": "SR 528 Space Coast Parkway Resurfacing - Titusville Exit",
+    "startTime": "2026-11-20T07:00:00Z",
+    "endTime": "2027-02-15T18:00:00Z"
+  },
+  {
+    "title": "I-595 Corridor Improvements - Fort Lauderdale Segment",
+    "company": "Florida DOT",
+    "county": "Broward",
+    "description": "I-595 Corridor Improvements - Fort Lauderdale Segment",
+    "startTime": "2026-12-01T07:00:00Z",
+    "endTime": "2027-05-30T18:00:00Z"
+  },
+  {
+    "title": "I-595 Corridor Improvements - Fort Lauderdale Segment",
+    "company": "Florida DOT",
+    "county": "Broward",
+    "description": "I-595 Corridor Improvements - Fort Lauderdale Segment",
+    "startTime": "2026-12-01T07:00:00Z",
+    "endTime": "2027-05-30T18:00:00Z"
+  },
+  {
+    "title": "SR 71 River Crossing Bridge Rehabilitation",
+    "company": "Calhoun County",
+    "county": "Calhoun",
+    "description": "SR 71 River Crossing Bridge Rehabilitation",
+    "startTime": "2026-10-05T08:00:00Z",
+    "endTime": "2027-01-20T17:00:00Z"
+  },
+  {
+    "title": "SR 71 River Crossing Bridge Rehabilitation",
+    "company": "Calhoun County",
+    "county": "Calhoun",
+    "description": "SR 71 River Crossing Bridge Rehabilitation",
+    "startTime": "2026-10-05T08:00:00Z",
+    "endTime": "2027-01-20T17:00:00Z"
+  },
+  {
+    "title": "SR 776 Harbor Boulevard Reconstruction - Punta Gorda",
+    "company": "Charlotte County",
+    "county": "Charlotte",
+    "description": "SR 776 Harbor Boulevard Reconstruction - Punta Gorda",
+    "startTime": "2027-02-01T07:00:00Z",
+    "endTime": "2027-07-31T18:00:00Z"
+  },
+  {
+    "title": "SR 776 Harbor Boulevard Reconstruction - Punta Gorda",
+    "company": "Charlotte County",
+    "county": "Charlotte",
+    "description": "SR 776 Harbor Boulevard Reconstruction - Punta Gorda",
+    "startTime": "2027-02-01T07:00:00Z",
+    "endTime": "2027-07-31T18:00:00Z"
+  },
+  {
+    "title": "US 19 Resurfacing - Crystal River to Homosassa",
+    "company": "Citrus County",
+    "county": "Citrus",
+    "description": "US 19 Resurfacing - Crystal River to Homosassa",
+    "startTime": "2026-11-15T07:30:00Z",
+    "endTime": "2027-03-20T17:30:00Z"
+  },
+  {
+    "title": "US 19 Resurfacing - Crystal River to Homosassa",
+    "company": "Citrus County",
+    "county": "Citrus",
+    "description": "US 19 Resurfacing - Crystal River to Homosassa",
+    "startTime": "2026-11-15T07:30:00Z",
+    "endTime": "2027-03-20T17:30:00Z"
+  },
+  {
+    "title": "SR 21 Black Creek Bridge Replacement",
+    "company": "Clay County Engineering",
+    "county": "Clay",
+    "description": "SR 21 Black Creek Bridge Replacement",
+    "startTime": "2026-12-10T08:00:00Z",
+    "endTime": "2027-04-10T18:00:00Z"
+  },
+  {
+    "title": "SR 21 Black Creek Bridge Replacement",
+    "company": "Clay County Engineering",
+    "county": "Clay",
+    "description": "SR 21 Black Creek Bridge Replacement",
+    "startTime": "2026-12-10T08:00:00Z",
+    "endTime": "2027-04-10T18:00:00Z"
+  },
+  {
+    "title": "I-75 Alligator Alley Expansion - Naples Section",
+    "company": "Collier County",
+    "county": "Collier",
+    "description": "I-75 Alligator Alley Expansion - Naples Section",
+    "startTime": "2027-01-15T07:00:00Z",
+    "endTime": "2027-09-15T18:00:00Z"
+  },
+  {
+    "title": "I-75 Alligator Alley Expansion - Naples Section",
+    "company": "Collier County",
+    "county": "Collier",
+    "description": "I-75 Alligator Alley Expansion - Naples Section",
+    "startTime": "2027-01-15T07:00:00Z",
+    "endTime": "2027-09-15T18:00:00Z"
+  },
+  {
+    "title": "I-75 Northbound Resurfacing - Lake City to Valdosta Line",
+    "company": "Florida DOT",
+    "county": "Columbia",
+    "description": "I-75 Northbound Resurfacing - Lake City to Valdosta Line",
+    "startTime": "2026-09-01T08:00:00Z",
+    "endTime": "2027-01-31T18:00:00Z"
+  },
+  {
+    "title": "I-75 Northbound Resurfacing - Lake City to Valdosta Line",
+    "company": "Florida DOT",
+    "county": "Columbia",
+    "description": "I-75 Northbound Resurfacing - Lake City to Valdosta Line",
+    "startTime": "2026-09-01T08:00:00Z",
+    "endTime": "2027-01-31T18:00:00Z"
+  },
+  {
+    "title": "SR 836/I-395 FROM WEST OF I-95 TO MACARTHUR CSWY BRIDGE",
+    "company": "Florida Power & Light (FPL)",
+    "county": "Dade",
+    "description": "SR 836/I-395 FROM WEST OF I-95 TO MACARTHUR CSWY BRIDGE",
+    "startTime": "2026-10-01T08:00:00Z",
+    "endTime": "2027-04-30T17:00:00Z"
+  },
+  {
+    "title": "SR 836/I-395 FROM WEST OF I-95 TO MACARTHUR CSWY BRIDGE",
+    "company": "Florida Power & Light (FPL)",
+    "county": "Dade",
+    "description": "SR 836/I-395 FROM WEST OF I-95 TO MACARTHUR CSWY BRIDGE",
+    "startTime": "2026-10-01T08:00:00Z",
+    "endTime": "2027-04-30T17:00:00Z"
+  },
+  {
+    "title": "SR 70 Arcadia Road Reconstruction",
+    "company": "DeSoto County",
+    "county": "DeSoto",
+    "description": "SR 70 Arcadia Road Reconstruction",
+    "startTime": "2026-12-05T07:00:00Z",
+    "endTime": "2027-03-05T18:00:00Z"
+  },
+  {
+    "title": "SR 70 Arcadia Road Reconstruction",
+    "company": "DeSoto County",
+    "county": "DeSoto",
+    "description": "SR 70 Arcadia Road Reconstruction",
+    "startTime": "2026-12-05T07:00:00Z",
+    "endTime": "2027-03-05T18:00:00Z"
+  },
+  {
+    "title": "US 19 Coastal Highway Upgrade - Cedar Key Access",
+    "company": "Dixie County",
+    "county": "Dixie",
+    "description": "US 19 Coastal Highway Upgrade - Cedar Key Access",
+    "startTime": "2027-01-20T08:00:00Z",
+    "endTime": "2027-08-20T18:00:00Z"
+  },
+  {
+    "title": "US 19 Coastal Highway Upgrade - Cedar Key Access",
+    "company": "Dixie County",
+    "county": "Dixie",
+    "description": "US 19 Coastal Highway Upgrade - Cedar Key Access",
+    "startTime": "2027-01-20T08:00:00Z",
+    "endTime": "2027-08-20T18:00:00Z"
+  },
+  {
+    "title": "I-95 Northbound Widening - Jacksonville Beltway",
+    "company": "Florida DOT",
+    "county": "Duval",
+    "description": "I-95 Northbound Widening - Jacksonville Beltway",
+    "startTime": "2026-10-15T07:00:00Z",
+    "endTime": "2027-03-15T18:00:00Z"
+  },
+  {
+    "title": "I-95 Northbound Widening - Jacksonville Beltway",
+    "company": "Florida DOT",
+    "county": "Duval",
+    "description": "I-95 Northbound Widening - Jacksonville Beltway",
+    "startTime": "2026-10-15T07:00:00Z",
+    "endTime": "2027-03-15T18:00:00Z"
+  },
+  {
+    "title": "US 90 Scenic Highway Reconstruction - Pensacola Segment",
+    "company": "Escambia County",
+    "county": "Escambia",
+    "description": "US 90 Scenic Highway Reconstruction - Pensacola Segment",
+    "startTime": "2027-02-10T07:30:00Z",
+    "endTime": "2027-07-10T18:30:00Z"
+  },
+  {
+    "title": "US 90 Scenic Highway Reconstruction - Pensacola Segment",
+    "company": "Escambia County",
+    "county": "Escambia",
+    "description": "US 90 Scenic Highway Reconstruction - Pensacola Segment",
+    "startTime": "2027-02-10T07:30:00Z",
+    "endTime": "2027-07-10T18:30:00Z"
+  },
+  {
+    "title": "SR 100 Flagler Beach Roadway Upgrade",
+    "company": "Flagler County",
+    "county": "Flagler",
+    "description": "SR 100 Flagler Beach Roadway Upgrade",
+    "startTime": "2026-11-01T07:00:00Z",
+    "endTime": "2027-01-30T18:00:00Z"
+  },
+  {
+    "title": "SR 100 Flagler Beach Roadway Upgrade",
+    "company": "Flagler County",
+    "county": "Flagler",
+    "description": "SR 100 Flagler Beach Roadway Upgrade",
+    "startTime": "2026-11-01T07:00:00Z",
+    "endTime": "2027-01-30T18:00:00Z"
+  },
+  {
+    "title": "US 98 Coastal Highway Upgrade - Apalachicola",
+    "company": "Franklin County",
+    "county": "Franklin",
+    "description": "US 98 Coastal Highway Upgrade - Apalachicola",
+    "startTime": "2027-03-01T08:00:00Z",
+    "endTime": "2027-09-30T18:00:00Z"
+  },
+  {
+    "title": "US 98 Coastal Highway Upgrade - Apalachicola",
+    "company": "Franklin County",
+    "county": "Franklin",
+    "description": "US 98 Coastal Highway Upgrade - Apalachicola",
+    "startTime": "2027-03-01T08:00:00Z",
+    "endTime": "2027-09-30T18:00:00Z"
+  },
+  {
+    "title": "SR 12 Havana Road Reconstruction - Lake Talquin",
+    "company": "Gadsden County",
+    "county": "Gadsden",
+    "description": "SR 12 Havana Road Reconstruction - Lake Talquin",
+    "startTime": "2026-10-20T07:00:00Z",
+    "endTime": "2027-02-28T18:00:00Z"
+  },
+  {
+    "title": "SR 12 Havana Road Reconstruction - Lake Talquin",
+    "company": "Gadsden County",
+    "county": "Gadsden",
+    "description": "SR 12 Havana Road Reconstruction - Lake Talquin",
+    "startTime": "2026-10-20T07:00:00Z",
+    "endTime": "2027-02-28T18:00:00Z"
+  },
+  {
+    "title": "US 129 Resurfacing - Trenton to Bell",
+    "company": "Gilchrist County",
+    "county": "Gilchrist",
+    "description": "US 129 Resurfacing - Trenton to Bell",
+    "startTime": "2026-12-01T08:00:00Z",
+    "endTime": "2027-04-01T18:00:00Z"
+  },
+  {
+    "title": "US 129 Resurfacing - Trenton to Bell",
+    "company": "Gilchrist County",
+    "county": "Gilchrist",
+    "description": "US 129 Resurfacing - Trenton to Bell",
+    "startTime": "2026-12-01T08:00:00Z",
+    "endTime": "2027-04-01T18:00:00Z"
+  },
+  {
+    "title": "SR 78 Lake Okeechobee Rim Road Repair",
+    "company": "Glades County",
+    "county": "Glades",
+    "description": "SR 78 Lake Okeechobee Rim Road Repair",
+    "startTime": "2027-01-05T07:30:00Z",
+    "endTime": "2027-06-05T18:30:00Z"
+  },
+  {
+    "title": "SR 78 Lake Okeechobee Rim Road Repair",
+    "company": "Glades County",
+    "county": "Glades",
+    "description": "SR 78 Lake Okeechobee Rim Road Repair",
+    "startTime": "2027-01-05T07:30:00Z",
+    "endTime": "2027-06-05T18:30:00Z"
+  },
+  {
+    "title": "SR 30A Coastal Highway Repair - Cape San Blas",
+    "company": "Gulf County",
+    "county": "Gulf",
+    "description": "SR 30A Coastal Highway Repair - Cape San Blas",
+    "startTime": "2026-11-10T07:00:00Z",
+    "endTime": "2027-02-28T18:00:00Z"
+  },
+  {
+    "title": "SR 30A Coastal Highway Repair - Cape San Blas",
+    "company": "Gulf County",
+    "county": "Gulf",
+    "description": "SR 30A Coastal Highway Repair - Cape San Blas",
+    "startTime": "2026-11-10T07:00:00Z",
+    "endTime": "2027-02-28T18:00:00Z"
+  },
+  {
+    "title": "US 129 Bridge Replacement - Alapaha River",
+    "company": "Hamilton County",
+    "county": "Hamilton",
+    "description": "US 129 Bridge Replacement - Alapaha River",
+    "startTime": "2027-02-15T08:00:00Z",
+    "endTime": "2027-08-15T18:00:00Z"
+  },
+  {
+    "title": "US 129 Bridge Replacement - Alapaha River",
+    "company": "Hamilton County",
+    "county": "Hamilton",
+    "description": "US 129 Bridge Replacement - Alapaha River",
+    "startTime": "2027-02-15T08:00:00Z",
+    "endTime": "2027-08-15T18:00:00Z"
+  },
+  {
+    "title": "SR 62 Wauchula Road Reconstruction",
+    "company": "Hardee County",
+    "county": "Hardee",
+    "description": "SR 62 Wauchula Road Reconstruction",
+    "startTime": "2026-10-01T07:00:00Z",
+    "endTime": "2027-03-31T18:00:00Z"
+  },
+  {
+    "title": "SR 62 Wauchula Road Reconstruction",
+    "company": "Hardee County",
+    "county": "Hardee",
+    "description": "SR 62 Wauchula Road Reconstruction",
+    "startTime": "2026-10-01T07:00:00Z",
+    "endTime": "2027-03-31T18:00:00Z"
+  },
+  {
+    "title": "SR 80 LaBelle Highway Upgrade - Clewiston",
+    "company": "Hendry County",
+    "county": "Hendry",
+    "description": "SR 80 LaBelle Highway Upgrade - Clewiston",
+    "startTime": "2027-01-01T07:00:00Z",
+    "endTime": "2027-07-01T18:00:00Z"
+  },
+  {
+    "title": "SR 80 LaBelle Highway Upgrade - Clewiston",
+    "company": "Hendry County",
+    "county": "Hendry",
+    "description": "SR 80 LaBelle Highway Upgrade - Clewiston",
+    "startTime": "2027-01-01T07:00:00Z",
+    "endTime": "2027-07-01T18:00:00Z"
+  },
+  {
+    "title": "US 19 Spring Hill Resurfacing - Weeki Wachee",
+    "company": "Hernando County",
+    "county": "Hernando",
+    "description": "US 19 Spring Hill Resurfacing - Weeki Wachee",
+    "startTime": "2026-11-25T07:30:00Z",
+    "endTime": "2027-03-25T18:30:00Z"
+  },
+  {
+    "title": "US 19 Spring Hill Resurfacing - Weeki Wachee",
+    "company": "Hernando County",
+    "county": "Hernando",
+    "description": "US 19 Spring Hill Resurfacing - Weeki Wachee",
+    "startTime": "2026-11-25T07:30:00Z",
+    "endTime": "2027-03-25T18:30:00Z"
+  },
+  {
+    "title": "US 27 Sebring Highway Reconstruction",
+    "company": "Highlands County",
+    "county": "Highlands",
+    "description": "US 27 Sebring Highway Reconstruction",
+    "startTime": "2027-01-10T08:00:00Z",
+    "endTime": "2027-06-10T18:00:00Z"
+  },
+  {
+    "title": "US 27 Sebring Highway Reconstruction",
+    "company": "Highlands County",
+    "county": "Highlands",
+    "description": "US 27 Sebring Highway Reconstruction",
+    "startTime": "2027-01-10T08:00:00Z",
+    "endTime": "2027-06-10T18:00:00Z"
+  },
+  {
+    "title": "Howard Frankland Bridge Rehabilitation - Tampa",
+    "company": "Hillsborough County",
+    "county": "Hillsborough",
+    "description": "Howard Frankland Bridge Rehabilitation - Tampa",
+    "startTime": "2026-10-05T07:00:00Z",
+    "endTime": "2027-06-30T18:00:00Z"
+  },
+  {
+    "title": "Howard Frankland Bridge Rehabilitation - Tampa",
+    "company": "Hillsborough County",
+    "county": "Hillsborough",
+    "description": "Howard Frankland Bridge Rehabilitation - Tampa",
+    "startTime": "2026-10-05T07:00:00Z",
+    "endTime": "2027-06-30T18:00:00Z"
+  },
+  {
+    "title": "US 90 Bonifay Road Reconstruction",
+    "company": "Holmes County",
+    "county": "Holmes",
+    "description": "US 90 Bonifay Road Reconstruction",
+    "startTime": "2026-12-15T08:00:00Z",
+    "endTime": "2027-03-15T18:00:00Z"
+  },
+  {
+    "title": "US 90 Bonifay Road Reconstruction",
+    "company": "Holmes County",
+    "county": "Holmes",
+    "description": "US 90 Bonifay Road Reconstruction",
+    "startTime": "2026-12-15T08:00:00Z",
+    "endTime": "2027-03-15T18:00:00Z"
+  },
+  {
+    "title": "SR 60 Vero Beach Roadway Upgrade",
+    "company": "Indian River County",
+    "county": "Indian River",
+    "description": "SR 60 Vero Beach Roadway Upgrade",
+    "startTime": "2027-03-10T07:00:00Z",
+    "endTime": "2027-09-10T18:00:00Z"
+  },
+  {
+    "title": "SR 60 Vero Beach Roadway Upgrade",
+    "company": "Indian River County",
+    "county": "Indian River",
+    "description": "SR 60 Vero Beach Roadway Upgrade",
+    "startTime": "2027-03-10T07:00:00Z",
+    "endTime": "2027-09-10T18:00:00Z"
+  },
+  {
+    "title": "US 231 Chipley Road Reconstruction",
+    "company": "Jackson County",
+    "county": "Jackson",
+    "description": "US 231 Chipley Road Reconstruction",
+    "startTime": "2026-09-20T08:00:00Z",
+    "endTime": "2027-02-28T18:00:00Z"
+  },
+  {
+    "title": "US 231 Chipley Road Reconstruction",
+    "company": "Jackson County",
+    "county": "Jackson",
+    "description": "US 231 Chipley Road Reconstruction",
+    "startTime": "2026-09-20T08:00:00Z",
+    "endTime": "2027-02-28T18:00:00Z"
+  },
+  {
+    "title": "SR 59 Lloyd Road Reconstruction - Monticello",
+    "company": "Jefferson County",
+    "county": "Jefferson",
+    "description": "SR 59 Lloyd Road Reconstruction - Monticello",
+    "startTime": "2026-11-05T07:00:00Z",
+    "endTime": "2027-04-05T18:00:00Z"
+  },
+  {
+    "title": "SR 59 Lloyd Road Reconstruction - Monticello",
+    "company": "Jefferson County",
+    "county": "Jefferson",
+    "description": "SR 59 Lloyd Road Reconstruction - Monticello",
+    "startTime": "2026-11-05T07:00:00Z",
+    "endTime": "2027-04-05T18:00:00Z"
+  },
+  {
+    "title": "SR 51 Mayo Road Reconstruction",
+    "company": "Lafayette County",
+    "county": "Lafayette",
+    "description": "SR 51 Mayo Road Reconstruction",
+    "startTime": "2027-02-20T07:30:00Z",
+    "endTime": "2027-07-20T18:30:00Z"
+  },
+  {
+    "title": "SR 51 Mayo Road Reconstruction",
+    "company": "Lafayette County",
+    "county": "Lafayette",
+    "description": "SR 51 Mayo Road Reconstruction",
+    "startTime": "2027-02-20T07:30:00Z",
+    "endTime": "2027-07-20T18:30:00Z"
+  },
+  {
+    "title": "SR 44 Eustis Road Reconstruction - Leesburg",
+    "company": "Lake County",
+    "county": "Lake",
+    "description": "SR 44 Eustis Road Reconstruction - Leesburg",
+    "startTime": "2026-10-10T08:00:00Z",
+    "endTime": "2027-03-10T18:00:00Z"
+  },
+  {
+    "title": "SR 44 Eustis Road Reconstruction - Leesburg",
+    "company": "Lake County",
+    "county": "Lake",
+    "description": "SR 44 Eustis Road Reconstruction - Leesburg",
+    "startTime": "2026-10-10T08:00:00Z",
+    "endTime": "2027-03-10T18:00:00Z"
+  },
+  {
+    "title": "I-75 Caloosahatchee Bridge Replacement - Fort Myers",
+    "company": "Lee County",
+    "county": "Lee",
+    "description": "I-75 Caloosahatchee Bridge Replacement - Fort Myers",
+    "startTime": "2027-01-01T07:00:00Z",
+    "endTime": "2027-08-31T18:00:00Z"
+  },
+  {
+    "title": "I-75 Caloosahatchee Bridge Replacement - Fort Myers",
+    "company": "Lee County",
+    "county": "Lee",
+    "description": "I-75 Caloosahatchee Bridge Replacement - Fort Myers",
+    "startTime": "2027-01-01T07:00:00Z",
+    "endTime": "2027-08-31T18:00:00Z"
+  },
+  {
+    "title": "Capital Circle Resurfacing - Tallahassee",
+    "company": "Leon County",
+    "county": "Leon",
+    "description": "Capital Circle Resurfacing - Tallahassee",
+    "startTime": "2026-11-01T07:00:00Z",
+    "endTime": "2027-04-30T18:00:00Z"
+  },
+  {
+    "title": "Capital Circle Resurfacing - Tallahassee",
+    "company": "Leon County",
+    "county": "Leon",
+    "description": "Capital Circle Resurfacing - Tallahassee",
+    "startTime": "2026-11-01T07:00:00Z",
+    "endTime": "2027-04-30T18:00:00Z"
+  },
+  {
+    "title": "US 19 Chiefland Road Reconstruction",
+    "company": "Levy County",
+    "county": "Levy",
+    "description": "US 19 Chiefland Road Reconstruction",
+    "startTime": "2026-12-10T07:00:00Z",
+    "endTime": "2027-03-10T18:00:00Z"
+  },
+  {
+    "title": "US 19 Chiefland Road Reconstruction",
+    "company": "Levy County",
+    "county": "Levy",
+    "description": "US 19 Chiefland Road Reconstruction",
+    "startTime": "2026-12-10T07:00:00Z",
+    "endTime": "2027-03-10T18:00:00Z"
+  },
+  {
+    "title": "SR 20 Bristol Road Reconstruction",
+    "company": "Liberty County",
+    "county": "Liberty",
+    "description": "SR 20 Bristol Road Reconstruction",
+    "startTime": "2027-01-20T08:00:00Z",
+    "endTime": "2027-05-20T18:00:00Z"
+  },
+  {
+    "title": "SR 20 Bristol Road Reconstruction",
+    "company": "Liberty County",
+    "county": "Liberty",
+    "description": "SR 20 Bristol Road Reconstruction",
+    "startTime": "2027-01-20T08:00:00Z",
+    "endTime": "2027-05-20T18:00:00Z"
+  },
+  {
+    "title": "US 90 Madison Road Reconstruction",
+    "company": "Madison County",
+    "county": "Madison",
+    "description": "US 90 Madison Road Reconstruction",
+    "startTime": "2026-09-15T07:30:00Z",
+    "endTime": "2027-02-15T18:30:00Z"
+  },
+  {
+    "title": "US 90 Madison Road Reconstruction",
+    "company": "Madison County",
+    "county": "Madison",
+    "description": "US 90 Madison Road Reconstruction",
+    "startTime": "2026-09-15T07:30:00Z",
+    "endTime": "2027-02-15T18:30:00Z"
+  },
+  {
+    "title": "SR 70 Bradenton Road Reconstruction - Lakewood Ranch",
+    "company": "Manatee County",
+    "county": "Manatee",
+    "description": "SR 70 Bradenton Road Reconstruction - Lakewood Ranch",
+    "startTime": "2026-10-15T07:00:00Z",
+    "endTime": "2027-03-15T18:00:00Z"
+  },
+  {
+    "title": "SR 70 Bradenton Road Reconstruction - Lakewood Ranch",
+    "company": "Manatee County",
+    "county": "Manatee",
+    "description": "SR 70 Bradenton Road Reconstruction - Lakewood Ranch",
+    "startTime": "2026-10-15T07:00:00Z",
+    "endTime": "2027-03-15T18:00:00Z"
+  },
+  {
+    "title": "I-75 Ocala Road Reconstruction - Exit 350 to 358",
+    "company": "Marion County",
+    "county": "Marion",
+    "description": "I-75 Ocala Road Reconstruction - Exit 350 to 358",
+    "startTime": "2026-11-10T08:00:00Z",
+    "endTime": "2027-05-10T18:00:00Z"
+  },
+  {
+    "title": "I-75 Ocala Road Reconstruction - Exit 350 to 358",
+    "company": "Marion County",
+    "county": "Marion",
+    "description": "I-75 Ocala Road Reconstruction - Exit 350 to 358",
+    "startTime": "2026-11-10T08:00:00Z",
+    "endTime": "2027-05-10T18:00:00Z"
+  },
+  {
+    "title": "SR A1A Stuart Beach Road Reconstruction",
+    "company": "Martin County",
+    "county": "Martin",
+    "description": "SR A1A Stuart Beach Road Reconstruction",
+    "startTime": "2027-01-05T07:00:00Z",
+    "endTime": "2027-07-05T18:00:00Z"
+  },
+  {
+    "title": "SR A1A Stuart Beach Road Reconstruction",
+    "company": "Martin County",
+    "county": "Martin",
+    "description": "SR A1A Stuart Beach Road Reconstruction",
+    "startTime": "2027-01-05T07:00:00Z",
+    "endTime": "2027-07-05T18:00:00Z"
+  },
+  {
+    "title": "SR 836/I-395 FROM WEST OF I-95 TO MACARTHUR CSWY BRIDGE",
+    "company": "Florida Power & Light (FPL)",
+    "county": "Miami-Dade",
+    "description": "BRIDGE-REPLACE AND A",
+    "startTime": "2026-10-01T08:00:00Z",
+    "endTime": "2027-04-30T17:00:00Z"
+  },
+  {
+    "title": "SR 836/I-395 FROM WEST OF I-95 TO MACARTHUR CSWY BRIDGE",
+    "company": "Duke Energy Florida",
+    "county": "Miami-Dade",
+    "description": "BRIDGE-REPLACE AND A",
+    "startTime": "2026-10-01T08:00:00Z",
+    "endTime": "2027-04-30T17:00:00Z"
+  },
+  {
+    "title": "US 1 Overseas Highway Reconstruction - Key Largo Segment",
+    "company": "Monroe County",
+    "county": "Monroe",
+    "description": "US 1 Overseas Highway Reconstruction - Key Largo Segment",
+    "startTime": "2026-09-10T07:30:00Z",
+    "endTime": "2027-03-30T18:30:00Z"
+  },
+  {
+    "title": "US 1 Overseas Highway Reconstruction - Key Largo Segment",
+    "company": "Monroe County",
+    "county": "Monroe",
+    "description": "US 1 Overseas Highway Reconstruction - Key Largo Segment",
+    "startTime": "2026-09-10T07:30:00Z",
+    "endTime": "2027-03-30T18:30:00Z"
+  },
+  {
+    "title": "SR 200 Callahan Road Reconstruction",
+    "company": "Nassau County",
+    "county": "Nassau",
+    "description": "SR 200 Callahan Road Reconstruction",
+    "startTime": "2026-11-05T07:00:00Z",
+    "endTime": "2027-02-28T18:00:00Z"
+  },
+  {
+    "title": "SR 200 Callahan Road Reconstruction",
+    "company": "Nassau County",
+    "county": "Nassau",
+    "description": "SR 200 Callahan Road Reconstruction",
+    "startTime": "2026-11-05T07:00:00Z",
+    "endTime": "2027-02-28T18:00:00Z"
+  },
+  {
+    "title": "SR 85 Crestview Road Reconstruction",
+    "company": "Okaloosa County",
+    "county": "Okaloosa",
+    "description": "SR 85 Crestview Road Reconstruction",
+    "startTime": "2027-02-01T08:00:00Z",
+    "endTime": "2027-07-01T18:00:00Z"
+  },
+  {
+    "title": "SR 85 Crestview Road Reconstruction",
+    "company": "Okaloosa County",
+    "county": "Okaloosa",
+    "description": "SR 85 Crestview Road Reconstruction",
+    "startTime": "2027-02-01T08:00:00Z",
+    "endTime": "2027-07-01T18:00:00Z"
+  },
+  {
+    "title": "US 441 Lake Okeechobee Rim Road Repair",
+    "company": "Okeechobee County",
+    "county": "Okeechobee",
+    "description": "US 441 Lake Okeechobee Rim Road Repair",
+    "startTime": "2026-10-20T07:00:00Z",
+    "endTime": "2027-03-20T18:00:00Z"
+  },
+  {
+    "title": "US 441 Lake Okeechobee Rim Road Repair",
+    "company": "Okeechobee County",
+    "county": "Okeechobee",
+    "description": "US 441 Lake Okeechobee Rim Road Repair",
+    "startTime": "2026-10-20T07:00:00Z",
+    "endTime": "2027-03-20T18:00:00Z"
+  },
+  {
+    "title": "SR 50 FROM CHULUOTARD TO SR 520",
+    "company": "Duke Energy Florida",
+    "county": "Orange",
+    "description": "ADD LANES & REHABILI",
+    "startTime": "2026-10-01T08:00:00Z",
+    "endTime": "2027-04-30T17:00:00Z"
+  },
+  {
+    "title": "I-4 Ultimate Project - Orlando East Section",
+    "company": "Orlando Utilities Commission (OUC)",
+    "county": "Orange",
+    "description": "I-4 Ultimate Project - Orlando East Section",
+    "startTime": "2026-10-01T08:00:00Z",
+    "endTime": "2027-04-30T17:00:00Z"
+  },
+  {
+    "title": "SR 535 Kissimmee Road Reconstruction",
+    "company": "Osceola County",
+    "county": "Osceola",
+    "description": "SR 535 Kissimmee Road Reconstruction",
+    "startTime": "2026-11-15T07:30:00Z",
+    "endTime": "2027-03-15T18:30:00Z"
+  },
+  {
+    "title": "SR 535 Kissimmee Road Reconstruction",
+    "company": "Osceola County",
+    "county": "Osceola",
+    "description": "SR 535 Kissimmee Road Reconstruction",
+    "startTime": "2026-11-15T07:30:00Z",
+    "endTime": "2027-03-15T18:30:00Z"
+  },
+  {
+    "title": "SR 7 Royal Palm Beach Road Reconstruction",
+    "company": "Palm Beach County",
+    "county": "Palm Beach",
+    "description": "SR 7 Royal Palm Beach Road Reconstruction",
+    "startTime": "2026-12-01T08:00:00Z",
+    "endTime": "2027-06-01T18:00:00Z"
+  },
+  {
+    "title": "SR 7 Royal Palm Beach Road Reconstruction",
+    "company": "Palm Beach County",
+    "county": "Palm Beach",
+    "description": "SR 7 Royal Palm Beach Road Reconstruction",
+    "startTime": "2026-12-01T08:00:00Z",
+    "endTime": "2027-06-01T18:00:00Z"
+  },
+  {
+    "title": "US 19 New Port Richey Resurfacing",
+    "company": "Pasco County",
+    "county": "Pasco",
+    "description": "US 19 New Port Richey Resurfacing",
+    "startTime": "2026-10-01T07:00:00Z",
+    "endTime": "2027-01-15T18:00:00Z"
+  },
+  {
+    "title": "US 19 New Port Richey Resurfacing",
+    "company": "Pasco County",
+    "county": "Pasco",
+    "description": "US 19 New Port Richey Resurfacing",
+    "startTime": "2026-10-01T07:00:00Z",
+    "endTime": "2027-01-15T18:00:00Z"
+  },
+  {
+    "title": "US 19 Clearwater Road Reconstruction",
+    "company": "Pinellas County",
+    "county": "Pinellas",
+    "description": "US 19 Clearwater Road Reconstruction",
+    "startTime": "2027-02-10T07:00:00Z",
+    "endTime": "2027-08-10T18:00:00Z"
+  },
+  {
+    "title": "US 19 Clearwater Road Reconstruction",
+    "company": "Pinellas County",
+    "county": "Pinellas",
+    "description": "US 19 Clearwater Road Reconstruction",
+    "startTime": "2027-02-10T07:00:00Z",
+    "endTime": "2027-08-10T18:00:00Z"
+  },
+  {
+    "title": "US 27 Lakeland Highway Reconstruction",
+    "company": "Polk County",
+    "county": "Polk",
+    "description": "US 27 Lakeland Highway Reconstruction",
+    "startTime": "2026-12-05T08:00:00Z",
+    "endTime": "2027-05-05T18:00:00Z"
+  },
+  {
+    "title": "US 27 Lakeland Highway Reconstruction",
+    "company": "Polk County",
+    "county": "Polk",
+    "description": "US 27 Lakeland Highway Reconstruction",
+    "startTime": "2026-12-05T08:00:00Z",
+    "endTime": "2027-05-05T18:00:00Z"
+  },
+  {
+    "title": "US 17 Palatka Road Reconstruction",
+    "company": "Putnam County",
+    "county": "Putnam",
+    "description": "US 17 Palatka Road Reconstruction",
+    "startTime": "2026-11-20T07:30:00Z",
+    "endTime": "2027-03-20T18:30:00Z"
+  },
+  {
+    "title": "US 17 Palatka Road Reconstruction",
+    "company": "Putnam County",
+    "county": "Putnam",
+    "description": "US 17 Palatka Road Reconstruction",
+    "startTime": "2026-11-20T07:30:00Z",
+    "endTime": "2027-03-20T18:30:00Z"
+  },
+  {
+    "title": "US 98 Navarre Road Reconstruction",
+    "company": "Santa Rosa County",
+    "county": "Santa Rosa",
+    "description": "US 98 Navarre Road Reconstruction",
+    "startTime": "2027-03-05T07:00:00Z",
+    "endTime": "2027-09-05T18:00:00Z"
+  },
+  {
+    "title": "US 98 Navarre Road Reconstruction",
+    "company": "Santa Rosa County",
+    "county": "Santa Rosa",
+    "description": "US 98 Navarre Road Reconstruction",
+    "startTime": "2027-03-05T07:00:00Z",
+    "endTime": "2027-09-05T18:00:00Z"
+  },
+  {
+    "title": "SR 780 Fruitville Road Reconstruction",
+    "company": "Sarasota County",
+    "county": "Sarasota",
+    "description": "SR 780 Fruitville Road Reconstruction",
+    "startTime": "2026-10-10T07:00:00Z",
+    "endTime": "2027-02-10T18:00:00Z"
+  },
+  {
+    "title": "SR 780 Fruitville Road Reconstruction",
+    "company": "Sarasota County",
+    "county": "Sarasota",
+    "description": "SR 780 Fruitville Road Reconstruction",
+    "startTime": "2026-10-10T07:00:00Z",
+    "endTime": "2027-02-10T18:00:00Z"
+  },
+  {
+    "title": "I-4 Sanford Road Reconstruction",
+    "company": "Seminole County",
+    "county": "Seminole",
+    "description": "I-4 Sanford Road Reconstruction",
+    "startTime": "2026-11-25T08:00:00Z",
+    "endTime": "2027-04-25T18:00:00Z"
+  },
+  {
+    "title": "I-4 Sanford Road Reconstruction",
+    "company": "Seminole County",
+    "county": "Seminole",
+    "description": "I-4 Sanford Road Reconstruction",
+    "startTime": "2026-11-25T08:00:00Z",
+    "endTime": "2027-04-25T18:00:00Z"
+  },
+  {
+    "title": "SR A1A Ponte Vedra Beach Reconstruction",
+    "company": "St. Johns County",
+    "county": "St. Johns",
+    "description": "SR A1A Ponte Vedra Beach Reconstruction",
+    "startTime": "2027-01-10T07:30:00Z",
+    "endTime": "2027-06-10T18:30:00Z"
+  },
+  {
+    "title": "SR A1A Ponte Vedra Beach Reconstruction",
+    "company": "St. Johns County",
+    "county": "St. Johns",
+    "description": "SR A1A Ponte Vedra Beach Reconstruction",
+    "startTime": "2027-01-10T07:30:00Z",
+    "endTime": "2027-06-10T18:30:00Z"
+  },
+  {
+    "title": "US 1 Fort Pierce Road Reconstruction",
+    "company": "St. Lucie County",
+    "county": "St. Lucie",
+    "description": "US 1 Fort Pierce Road Reconstruction",
+    "startTime": "2026-09-15T07:00:00Z",
+    "endTime": "2027-03-15T18:00:00Z"
+  },
+  {
+    "title": "US 1 Fort Pierce Road Reconstruction",
+    "company": "St. Lucie County",
+    "county": "St. Lucie",
+    "description": "US 1 Fort Pierce Road Reconstruction",
+    "startTime": "2026-09-15T07:00:00Z",
+    "endTime": "2027-03-15T18:00:00Z"
+  },
+  {
+    "title": "SR 44 The Villages Road Reconstruction",
+    "company": "Sumter County",
+    "county": "Sumter",
+    "description": "SR 44 The Villages Road Reconstruction",
+    "startTime": "2026-11-10T07:00:00Z",
+    "endTime": "2027-05-10T18:00:00Z"
+  },
+  {
+    "title": "SR 44 The Villages Road Reconstruction",
+    "company": "Sumter County",
+    "county": "Sumter",
+    "description": "SR 44 The Villages Road Reconstruction",
+    "startTime": "2026-11-10T07:00:00Z",
+    "endTime": "2027-05-10T18:00:00Z"
+  },
+  {
+    "title": "US 90 Live Oak Road Reconstruction",
+    "company": "Suwanee County",
+    "county": "Suwanee",
+    "description": "US 90 Live Oak Road Reconstruction",
+    "startTime": "2027-01-25T08:00:00Z",
+    "endTime": "2027-07-25T18:00:00Z"
+  },
+  {
+    "title": "US 90 Live Oak Road Reconstruction",
+    "company": "Suwanee County",
+    "county": "Suwanee",
+    "description": "US 90 Live Oak Road Reconstruction",
+    "startTime": "2027-01-25T08:00:00Z",
+    "endTime": "2027-07-25T18:00:00Z"
+  },
+  {
+    "title": "SR 14 Perry Road Reconstruction",
+    "company": "Taylor County",
+    "county": "Taylor",
+    "description": "SR 14 Perry Road Reconstruction",
+    "startTime": "2026-12-01T07:00:00Z",
+    "endTime": "2027-03-01T18:00:00Z"
+  },
+  {
+    "title": "SR 14 Perry Road Reconstruction",
+    "company": "Taylor County",
+    "county": "Taylor",
+    "description": "SR 14 Perry Road Reconstruction",
+    "startTime": "2026-12-01T07:00:00Z",
+    "endTime": "2027-03-01T18:00:00Z"
+  },
+  {
+    "title": "SR 121 Lake Butler Road Reconstruction",
+    "company": "Union County",
+    "county": "Union",
+    "description": "SR 121 Lake Butler Road Reconstruction",
+    "startTime": "2026-11-15T07:30:00Z",
+    "endTime": "2027-03-15T18:30:00Z"
+  },
+  {
+    "title": "SR 121 Lake Butler Road Reconstruction",
+    "company": "Union County",
+    "county": "Union",
+    "description": "SR 121 Lake Butler Road Reconstruction",
+    "startTime": "2026-11-15T07:30:00Z",
+    "endTime": "2027-03-15T18:30:00Z"
+  },
+  {
+    "title": "I-95 Daytona Beach Resurfacing - Exit 256 to 265",
+    "company": "Volusia County",
+    "county": "Volusia",
+    "description": "I-95 Daytona Beach Resurfacing - Exit 256 to 265",
+    "startTime": "2027-02-01T07:00:00Z",
+    "endTime": "2027-09-01T18:00:00Z"
+  },
+  {
+    "title": "I-95 Daytona Beach Resurfacing - Exit 256 to 265",
+    "company": "Volusia County",
+    "county": "Volusia",
+    "description": "I-95 Daytona Beach Resurfacing - Exit 256 to 265",
+    "startTime": "2027-02-01T07:00:00Z",
+    "endTime": "2027-09-01T18:00:00Z"
+  },
+  {
+    "title": "US 98 Crawfordville Road Reconstruction",
+    "company": "Wakulla County",
+    "county": "Wakulla",
+    "description": "US 98 Crawfordville Road Reconstruction",
+    "startTime": "2026-10-25T07:00:00Z",
+    "endTime": "2027-01-25T18:00:00Z"
+  },
+  {
+    "title": "US 98 Crawfordville Road Reconstruction",
+    "company": "Wakulla County",
+    "county": "Wakulla",
+    "description": "US 98 Crawfordville Road Reconstruction",
+    "startTime": "2026-10-25T07:00:00Z",
+    "endTime": "2027-01-25T18:00:00Z"
+  },
+  {
+    "title": "US 331 DeFuniak Springs Road Reconstruction",
+    "company": "Walton County",
+    "county": "Walton",
+    "description": "US 331 DeFuniak Springs Road Reconstruction",
+    "startTime": "2026-11-30T08:00:00Z",
+    "endTime": "2027-03-30T18:00:00Z"
+  },
+  {
+    "title": "US 331 DeFuniak Springs Road Reconstruction",
+    "company": "Walton County",
+    "county": "Walton",
+    "description": "US 331 DeFuniak Springs Road Reconstruction",
+    "startTime": "2026-11-30T08:00:00Z",
+    "endTime": "2027-03-30T18:00:00Z"
+  },
+  {
+    "title": "SR 77 Chipley Road Reconstruction",
+    "company": "Washington County",
+    "county": "Washington",
+    "description": "SR 77 Chipley Road Reconstruction",
+    "startTime": "2027-01-15T07:00:00Z",
+    "endTime": "2027-07-15T18:00:00Z"
+  },
+  {
+    "title": "SR 77 Chipley Road Reconstruction",
+    "company": "Washington County",
+    "county": "Washington",
+    "description": "SR 77 Chipley Road Reconstruction",
+    "startTime": "2027-01-15T07:00:00Z",
+    "endTime": "2027-07-15T18:00:00Z"
+  }
+]

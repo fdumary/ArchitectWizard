@@ -510,6 +510,10 @@
           return 'Please select a start date.';
         }
 
+        if (startDate < new Date(new Date().setHours(0,0,0,0))) {
+          return 'Start date must be today or in the future.';
+        }
+
         if (!endDateInput.value) {
           return 'Please select an end date.';
         }

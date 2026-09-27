@@ -83,6 +83,7 @@ app.post('/api/projects', async (req, res) => {
       county: { $regex: new RegExp(`^\\s*${cleanCounty}\\s*$`, 'i') },
       startTime: { $lte: queryEnd },
       endTime: { $gte: queryStart },
+      endTime: { $gte: new Date() }
     }).sort({ startTime: 1 }).toArray();
     if (conflictCheck.length > 0) {
       // Find the next free window of the same duration after the conflicts
@@ -97,6 +98,13 @@ app.post('/api/projects', async (req, res) => {
       }
       const nearestWindow = candidateStart;
       return res.status(409).json({ error: 'Project conflicts with existing schedule', conflicts: conflictCheck, nearestWindow: nearestWindow.toISOString() });
+    }
+
+    const newProjectStart = new Date(startTime);
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    if (newProjectStart < today) {
+      return res.status(400).json({ error: 'Project start date must be today or in the future.' });
     }
 
     const newProject = {
@@ -184,8 +192,12 @@ app.get('/api/projects/county/:county', async (req, res) => {
     const { county } = req.params;
 
     // Matches county and sorts by earliest start time, returns top 3
+    const now = new Date();
     const countyProjects = await projectsCollection
-      .find({ county: { $regex: new RegExp(`^\\s*${county}\\s*$`, 'i') } }) // case-insensitive match
+      .find({
+        county: { $regex: new RegExp(`^\\s*${county}\\s*$`, 'i') },
+        endTime: { $gte: now }
+      }) // case-insensitive match
       .sort({ startTime: 1 })
       .limit(3)
       .toArray();
