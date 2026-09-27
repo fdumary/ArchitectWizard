@@ -5,140 +5,246 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Florida County Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IM+Fell+English&display=swap" rel="stylesheet">
     <style>
       :root {
-        --bg: #ebf7ff;
-        --panel: #f9fbff;
-        --primary: #1b4fbd;
-        --primary-dark: #112f76;
-        --accent: #22c7cf;
-        --text: #16314a;
-        --muted: #5b7690;
-        --border: #d4e3f3;
-        --success: #0d8b71;
-        --warning: #d88b28;
-        --error: #c63d3d;
-      }
+      --bg-dark: #150f28;
+      --bg-panel: #1f1638;
+      --card-bg: #2f2358;
+      --primary: #7c4dff;
+      --primary-dark: #5a32d6;
+      --primary-soft: #3a2d66;
+      --accent: #c9a227;
+      --accent-soft: #3a2d52;
+      --text: #ece3ff;
+      --muted: #b3a4d9;
+      --border: #4a3b7a;
+      --success: #4fd6a8;
+      --warning: #e0a940;
+      --error: #ff6b6b;
+    }
 
-      * { box-sizing: border-box; }
+    .sparkle-field {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-      body {
-        margin: 0;
-        min-height: 100vh;
-        background: radial-gradient(circle at top, #f5fbff 0%, #dfeeff 28%, #d3ebff 100%);
-        font-family: Arial, Helvetica, sans-serif;
-        color: var(--text);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
-      }
+    .sparkle-field::before,
+    .sparkle-field::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(3px 3px at 20px 30px, var(--accent), transparent),
+        radial-gradient(4px 4px at 160px 120px, var(--text), transparent),
+        radial-gradient(2px 2px at 90px 200px, var(--accent), transparent),
+        radial-gradient(3px 3px at 280px 60px, var(--text), transparent),
+        radial-gradient(4px 4px at 340px 220px, var(--accent), transparent),
+        radial-gradient(2px 2px at 420px 140px, var(--text), transparent),
+        radial-gradient(3px 3px at 60px 320px, var(--accent), transparent),
+        radial-gradient(4px 4px at 500px 90px, var(--text), transparent),
+        radial-gradient(3px 3px at 130px 380px, var(--accent), transparent),
+        radial-gradient(2px 2px at 240px 340px, var(--text), transparent);
+      background-repeat: repeat;
+      background-size: 300px 220px;
+      animation: sparkle-drift 60s linear infinite, sparkle-twinkle 3s ease-in-out infinite alternate;
+      opacity: 0.85;
+    }
 
-      .panel {
-        width: min(100%, 1000px);
-        background: rgba(255,255,255,0.9);
-        border: 1px solid rgba(18, 47, 118, 0.12);
-        border-radius: 24px;
-        box-shadow: 0 18px 42px rgba(15, 41, 87, 0.12);
-        overflow: hidden;
-      }
+    .sparkle-field::after {
+      background-size: 380px 280px;
+      animation-duration: 90s, 4s;
+      animation-delay: 0s, 1.5s;
+      opacity: 0.55;
+    }
 
-      .header {
-        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 42%, var(--accent) 100%);
-        color: white;
-        padding: 30px 28px 22px;
-      }
+    @keyframes sparkle-drift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-400px); }
+    }
 
-      .header h1 {
-        margin: 0;
-        font-size: clamp(2rem, 2.5vw, 2.7rem);
-        letter-spacing: 0.02em;
-      }
+    @keyframes sparkle-twinkle {
+      from { opacity: 0.3; }
+      to { opacity: 1; }
+    }
 
-      .header p {
-        margin: 12px 0 0;
-        color: rgba(255,255,255,0.86);
-        line-height: 1.5;
-      }
+    .plus-sparkle {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.9;
+      animation: plus-twinkle 2.5s ease-in-out infinite alternate;
+    }
 
+    .plus-sparkle::before,
+    .plus-sparkle::after {
+      content: '';
+      position: absolute;
+      background: var(--accent);
+      box-shadow: 0 0 12px 2px var(--accent), 0 0 24px 4px rgba(201, 162, 39, 0.6);
+      border-radius: 2px;
+    }
+
+    .plus-sparkle::before {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      transform: translateY(-50%);
+    }
+
+    .plus-sparkle::after {
+      left: 50%;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      transform: translateX(-50%);
+    }
+
+    @keyframes plus-twinkle {
+      from { opacity: 0.4; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1.15); }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #2b1f4d 0%, #150f28 60%, #0d0a1a 100%);
+      font-family: 'IM Fell English', Georgia, serif;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .panel {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 1000px);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: 0 0 44px rgba(124, 77, 255, 0.3);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary-dark) 60%, var(--primary) 100%);
+      color: white;
+      padding: 30px 28px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header h1 {
+      margin: 0;
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 2.5vw, 2.7rem);
+      letter-spacing: 0.02em;
+      color: var(--accent);
+      text-shadow: 0 0 18px rgba(201, 162, 39, 0.4);
+    }
+
+    .header p {
+      margin: 12px 0 0;
+      color: rgba(236, 227, 255, 0.9);
+      line-height: 1.5;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      padding: 24px;
+      background: var(--card-bg);
+    }
+
+    .map-wrap {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--bg-panel);
+      padding: 18px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+
+    #map {
+      height: 560px;
+      border-radius: 12px;
+    }
+
+    .sidebar {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--bg-panel);
+      padding: 18px;
+    }
+
+    .sidebar h2 {
+      margin: 0 0 14px;
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      color: var(--text);
+    }
+
+    .guide-badge {
+      display: inline-block;
+      background: var(--primary-soft);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .status {
+      min-height: 28px;
+      margin-bottom: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .status.success { color: var(--success); }
+    .status.error { color: var(--error); }
+
+    ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+    }
+
+    li {
+      margin-bottom: 8px;
+      line-height: 1.4;
+      color: var(--text);
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+
+    @media (max-width: 780px) {
       .content {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        gap: 24px;
-        padding: 24px;
-        background: linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%);
+        grid-template-columns: 1fr;
       }
-
-      .map-wrap {
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        background: linear-gradient(180deg, #f9fbff 0%, #edf6ff 100%);
-        padding: 18px;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
-      }
-
-      #map {
-        height: 560px;
-        border-radius: 12px;
-      }
-
-      .sidebar {
-        border: 1px solid var(--border);
-        border-radius: 18px;
-        background: linear-gradient(180deg, #f9fcff 0%, #edf6ff 100%);
-        padding: 18px;
-      }
-
-      .sidebar h2 {
-        margin: 0 0 14px;
-        font-size: 1.5rem;
-      }
-
-      .guide-badge {
-        display: inline-block;
-        background: rgba(28, 79, 189, 0.08);
-        border: 1px solid rgba(28, 79, 189, 0.12);
-        border-radius: 999px;
-        padding: 6px 10px;
-        font-size: 0.72rem;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: var(--primary-dark);
-        margin-bottom: 12px;
-      }
-
-      .status {
-        min-height: 28px;
-        margin-bottom: 12px;
-        font-weight: 700;
-      }
-
-      .status.success { color: var(--success); }
-      .status.error { color: var(--error); }
-
-      ul {
-        margin: 12px 0 0;
-        padding-left: 18px;
-      }
-
-      li {
-        margin-bottom: 8px;
-        line-height: 1.4;
-        background: rgba(255,255,255,0.65);
-        border: 1px solid rgba(214,227,244,0.9);
-        border-radius: 10px;
-        padding: 8px 10px;
-      }
-
-      @media (max-width: 780px) {
-        .content {
-          grid-template-columns: 1fr;
-        }
-      }
+    }
     </style>
   </head>
   <body>
+    <div class="sparkle-field" aria-hidden="true"></div>
+    <div class="plus-sparkle" style="top: 10%; left: 6%;" aria-hidden="true"></div>
+    <div class="plus-sparkle" style="top: 18%; left: 92%; animation-delay: 0.5s;" aria-hidden="true"></div>
+    <div class="plus-sparkle" style="top: 80%; left: 4%; animation-delay: 1s;" aria-hidden="true"></div>
+    <div class="plus-sparkle" style="top: 88%; left: 90%; animation-delay: 1.5s;" aria-hidden="true"></div>
     <main class="panel">
       <section class="header">
         <h1>Florida county map</h1>
@@ -153,7 +259,7 @@
         <aside class="sidebar">
           <span class="guide-badge">Guide step 2</span>
           <h2 id="countyTitle">Select a county</h2>
-          <p style="font-size:0.85rem;color:#627d8b;">Follow the map guide to compare local project timing and stay informed before work begins.</p>
+          <p style="font-size:0.85rem;color:var(--muted);">Follow the map guide to compare local project timing and stay informed before work begins.</p>
           <p id="status" class="status" aria-live="polite">Ready</p>
           <ul id="projectList">
             <li>Click a county to load the top 3 upcoming projects.</li>
