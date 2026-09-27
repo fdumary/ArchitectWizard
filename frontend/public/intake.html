@@ -708,6 +708,7 @@
       let activeRecorder = null;
       let activeStream = null;
       let stopRecording = null;
+      let recordingBusy = false;
 
       function showRecordedAudio(blob) {
         let preview = document.getElementById('recordedAudio');
@@ -741,12 +742,14 @@
           stopRecording();
           return;
         }
+        if (recordingBusy) return;
         if (!navigator.mediaDevices || !window.MediaRecorder) {
           setStatus('Recording is not supported in this browser.', 'error');
           return;
         }
 
         try {
+          recordingBusy = true;
           activeStream = await navigator.mediaDevices.getUserMedia({ audio: true });
           const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
             ? 'audio/webm;codecs=opus'
@@ -785,6 +788,10 @@
               } catch (error) {
                 console.error('Audio parsing failed:', error, data && data.detail);
                 applyRecordedFallback();
+              } finally {
+                recordingBusy = false;
+                activeRecorder = null;
+                stopRecording = null;
               }
             };
             reader.readAsDataURL(blob);
@@ -798,6 +805,7 @@
             if (activeRecorder && activeRecorder.state === 'recording') stopRecording();
           }, 10000);
         } catch (error) {
+          recordingBusy = false;
           if (activeStream) activeStream.getTracks().forEach((track) => track.stop());
           activeStream = null;
           setStatus('Microphone error: ' + (error.message || 'access denied'), 'error');

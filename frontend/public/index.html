@@ -346,14 +346,18 @@
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let recordedVoice = null;
+    let useRecordedVoice = !SpeechRecognition;
+    let recordedVoiceBusy = false;
 
     async function startRecordedVoiceInput() {
+      if (recordedVoiceBusy) return;
       if (!navigator.mediaDevices || !window.MediaRecorder) {
         answer.textContent = 'Voice input is unavailable here. Please type your answer or choose an option.';
         return;
       }
 
       try {
+        recordedVoiceBusy = true;
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
           ? 'audio/webm;codecs=opus'
@@ -390,12 +394,15 @@
             } catch (error) {
               answer.textContent = 'Voice transcription failed. Please type your answer or choose an option.';
               console.error(error);
+            } finally {
+              recordedVoiceBusy = false;
             }
           };
           reader.readAsDataURL(new Blob(chunks, { type: mimeType }));
         };
         recorder.start();
       } catch (error) {
+        recordedVoiceBusy = false;
         voiceButton.classList.remove('listening');
         answer.textContent = 'Microphone access was unavailable. Please type your answer or choose an option.';
         console.error(error);
@@ -409,6 +416,14 @@
       recognition.maxAlternatives = 1;
 
       voiceButton.addEventListener('click', () => {
+        if (useRecordedVoice) {
+          if (recordedVoice && recordedVoice.state === 'recording') {
+            recordedVoice.stop();
+          } else if (!recordedVoiceBusy) {
+            startRecordedVoiceInput();
+          }
+          return;
+        }
         recognition.start();
         voiceButton.classList.add('listening');
         answer.textContent = 'Listening...';
@@ -424,6 +439,7 @@
       recognition.addEventListener('end', () => voiceButton.classList.remove('listening'));
       recognition.addEventListener('error', () => {
         voiceButton.classList.remove('listening');
+        useRecordedVoice = true;
         answer.textContent = 'Browser speech recognition was unavailable. Starting microphone recording...';
         startRecordedVoiceInput();
       });
