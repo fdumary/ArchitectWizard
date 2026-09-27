@@ -5,13 +5,8 @@ let pendingSpeech = null;
 
 function loadVoices() {
   const voices = window.speechSynthesis.getVoices();
-  // Filter British male voices by language tag and male-ish names
-  const britishMale = voices.filter(v => {
-    const isGB = /en[-_]?gb/i.test(v.lang) || /great britain/i.test(v.name) || /united kingdom/i.test(v.name); // sometimes lang missing
-    // Also accept names commonly associated with British male voices
-    const isMaleName = /daniel|thomas|arthur|george|oliver|james|william|harry/i.test(v.name.toLowerCase());
-    return (isGB || /en/i.test(v.lang)) && isMaleName;
-  });
+  const britishVoices = voices.filter(v => /en[-_]?gb/i.test(v.lang) || /great britain|united kingdom/i.test(v.name));
+  const britishMale = britishVoices.filter(v => /daniel|thomas|arthur|george|oliver|james|william|harry/i.test(v.name.toLowerCase()));
   if (britishMale.length) {
     // Prefer deeper male names
     const preferredNames = ['daniel', 'thomas', 'arthur', 'george', 'oliver', 'james'];
@@ -23,6 +18,8 @@ function loadVoices() {
       }
     }
     if (!wizardVoice) wizardVoice = britishMale[0];
+  } else if (britishVoices.length) {
+    wizardVoice = britishVoices[0];
   } else {
     // Fallback: any male-sounding voice
     const maleLike = voices.filter(v => /male/i.test(v.name) || /daniel|thomas|arthur|george/i.test(v.name.toLowerCase()));
@@ -55,6 +52,7 @@ function speakWizard(text) {
   }
   const u = new SpeechSynthesisUtterance(pendingSpeech);
   // British male wizard settings: slower, slightly deep pitch
+  u.lang = 'en-GB';
   u.rate = 0.78;
   u.pitch = 0.72;
   u.volume = 1;
